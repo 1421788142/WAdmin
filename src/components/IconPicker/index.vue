@@ -6,8 +6,8 @@
                     <component :is="iconValue"></component>
                 </div>
                 <template v-slot:content>
-                    <div :style="{ width:'300px', height: '250px',overflow:'auto'}">
-                        <div class="flex flex-wrap justify-between p-1">
+                    <div :style="{ width:'340px', height: '250px',overflow:'auto'}">
+                        <div class="grid grid-cols-8 gap-2 p-1">
                             <div
                                 v-for="item in getPaginationList"
                                 :key="item"
@@ -19,7 +19,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="pt-4">
+                    <div class="pt-2 text-center">
                         <a-pagination
                             :showSizeChanger="false"
                             show-less-items
@@ -39,7 +39,7 @@
 import { ref, computed, unref } from "vue"
 import iconList from './icon'
 const currentPage = ref<number>(1)
-const pageSize = ref<number>(50)
+const pageSize = ref<number>(48)
 const getTotal = computed(():number => unref(iconList).length)
 const props = defineProps({
     icon:String

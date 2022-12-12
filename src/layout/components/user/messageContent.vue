@@ -1,7 +1,7 @@
 <template>
     <a-tabs v-model:activeKey="activeKey" centered>
         <a-tab-pane key="1" :tab="`通知(${NoticeList.length})`">
-            <div class="border rounded-md border-zinc-400 p-2 max-h-[400px] overflow-y-auto">
+            <div class="rounded-md border-zinc-400 px-2 max-h-[400px] overflow-y-auto">
                 <div v-for="(item,index) in NoticeList" :key="index">
                     <div class="flex">
                         <a-image :preview="false" :width="40" :src="ImgList[item.type]"></a-image>
@@ -15,7 +15,7 @@
             </div>
         </a-tab-pane>
         <a-tab-pane key="2" :tab="`通知(${MessageList.length})`" force-render>
-            <div class="border rounded-md border-zinc-400 p-2 max-h-[400px] overflow-y-auto">
+            <div class="rounded-md border-zinc-400 px-2 max-h-[400px] overflow-y-auto">
                 <div v-for="(item,index) in MessageList" :key="index">
                     <div class="flex">
                         <a-image :preview="false" :width="100" :src="item.avatar"></a-image>
