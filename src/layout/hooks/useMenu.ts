@@ -48,7 +48,7 @@ export const useMenu = (
     watch(()=>getConfigState('menuType'),()=>setMenuList())
     // 监听路由变化设置选中菜单和展开菜单
     watch(()=>route.path,(newValue,oldValue)=>{
-        let routePath = (route.meta.parentPath ?? route.path) as string
+        let routePath = route.meta.parentPath as string ?? newValue
         // 展开菜单
         state.openKeys = []
         if(!getConfigState('isHasCollapsed')) state.openKeys = openKey(routePath);

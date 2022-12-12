@@ -7,9 +7,6 @@
                 <a-button type="primary" class="mx-5" :disabled="!params.id">
                     <router-link type="" :to="'/feat/infoPage/detail/'+params.id">跳转详情页</router-link>
                 </a-button>
-                <a-button type="primary" :disabled="!params.id">
-                    <router-link type="" :to="'/feat/infoPage/info/'+params.id">需权限的详情页</router-link>
-                </a-button>
             </div>
         </div>
     </a-card>

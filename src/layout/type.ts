@@ -7,12 +7,13 @@ export namespace Layout {
         wapMenuVisible:boolean,
         darkId:string,
         isDev:boolean,
-        darkContent:any
+        darkContent:any,
+        selectedKeys:string[],
     }
     export interface menuStatePrpos {
         menuList:menuListType[],
-        selectedKeys:string [],
-        openKeys:string [],
+        selectedKeys:string[],
+        openKeys:string[],
         mode:mode,
         isHasLogo:boolean,
     }

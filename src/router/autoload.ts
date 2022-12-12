@@ -1,5 +1,6 @@
 import _ from 'loadsh'
 import { Layout } from './layout'
+import { layoutRoute } from './routers'
 // 根据后台返回的菜单生成路由
 export default function getRoutes(routerList:menuListType[]) {
     let menuList = _.cloneDeep(routerList) as menuListType[]
@@ -26,7 +27,7 @@ export default function getRoutes(routerList:menuListType[]) {
     function setRedirect(){//获取启动页
         let redirect = null
         for(let i=0; i<router.length; i++){
-            if(!router[i].meta?.hidden){
+            if(!router[i].meta?.hidden && !router[i].meta?.isDetail){
                 redirect = router[i].path
                 break;
             } 
@@ -34,7 +35,6 @@ export default function getRoutes(routerList:menuListType[]) {
         return redirect
     }
     setRedirect()
-
     let routers = {
         path:'/',
         name:'Layout',
@@ -45,7 +45,8 @@ export default function getRoutes(routerList:menuListType[]) {
 			icon: ""
 		},
         children:[
-            ...router
+            ...router,
+            ...layoutRoute
         ]
     }
     return routers

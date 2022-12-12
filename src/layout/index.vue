@@ -87,7 +87,7 @@
 
 <script setup lang="ts">
 import { ref, nextTick, onMounted, provide, computed } from 'vue';
-import { guide, getFirstPath, setBreadCrumbs } from './index'
+import { guide, getFirstPath } from './index'
 import { debounce } from '@/utils/util'
 
 import menuVue from '@/layout/components/sidebar/menu.vue'
@@ -106,7 +106,6 @@ const route = useRoute()
 const router = useRouter()
 
 // 混合菜单跳转菜单
-const selectedKeys = ref<string[]>([setBreadCrumbs(route.path)[0].path ?? ''])
 const toPage = (path:string = '/')=>{
     selectedKeys.value = []
     router.push({ path: getFirstPath(path) || '/' })
@@ -118,6 +117,7 @@ const {
     wapMenuVisible,
     crumbsList,
     menuMixList,
+    selectedKeys,
     switchDark,
     setupColorblind,
     setupGrey,

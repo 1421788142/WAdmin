@@ -2,7 +2,7 @@ import { App } from "vue";
 //          创建路由    路由模式
 import { createRouter, createWebHashHistory } from "vue-router";
 // 引入所有组件
-import routes from "./routers";//常用路由
+import { routes } from "./routers";//常用路由
 import getRoutes from "./autoload";//自动注册路由
 import guard from "./guard";//路由守卫
 import { storeToRefs } from "pinia"

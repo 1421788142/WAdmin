@@ -25,11 +25,13 @@ export const useLayout = (
         darkId:'theme-dark',//暗黑模式Id
         isDev:import.meta.env.DEV,//当前环境
         darkContent:null,
+        selectedKeys:[]
     })
     
     // 头部面包屑
     const crumbsList = computed(()=>setBreadCrumbs(route.path))
-
+    let parentPath = route.meta.parentPath as string
+    state.selectedKeys = [crumbsList.value.length && crumbsList.value[0].path || parentPath || '']
     // 切换暗黑和亮色主题
     const switchDark = async (checked:boolean) => {
         setConfigState('isHasDark',checked)
@@ -85,7 +87,6 @@ export const useLayout = (
             setupGrey(newGrey)
             setupColorblind(newColorblind)
         })
-
 
     // 初始化
     switchDark(getConfigState('isHasDark'))

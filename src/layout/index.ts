@@ -110,6 +110,8 @@ export const filterKeepAlive = ()=>{
         });
     }
     filterFn(userRouterList.value, cacheRouter);
+
+    // 将静态详情页面加入缓存
     return cacheRouter
 }
 
