@@ -7,7 +7,7 @@ XiaoWuAdmin，基于 Vue3.2、TypeScript、Vite2、Pinia、antDesigns 开源的�
 ### ？为什么开发这个管理系统 🤷‍♂️
 
 - 主要是学习下 Vue3 + TypeScript
-- 目前看了很多 Vue3 的开源后台管理系统，感觉都非常庞大，很多功能基本上也用不到，所以自己就尝试写了一下这个管理系统（适合自己的才是最好的 🤣）
+- 目前看了很多 Vue3 的开源后台管理系统，感觉都非常庞大，很多功能基本上也用不到，所以自己就尝试写了一下这个管理系统
 
 ### 一、在线预览 👀
 
@@ -24,8 +24,8 @@ XiaoWuAdmin，基于 Vue3.2、TypeScript、Vite2、Pinia、antDesigns 开源的�
 
 - 🚀 使用 Vue3 开发，单文件组件 `＜script setup＞`
 - 🚀 采用 Vite2 作为项目开发、打包工具（配置了TSX 语法）
-- 🚀 整个项目集成了 TypeScript （完全是为了想学习 🤣）
-- 🚀 使用 Pinia🍍 替代 Vuex，轻量、简单、易用（香啊~🤤 集成了持久化插件）
+- 🚀 整个项目集成了 TypeScript （完全是为了想学习）
+- 🚀 使用 Pinia🍍 替代 Vuex，轻量、简单、易用）
 - 🚀 使用 TypeScript 对 Axios 整个二次封装 （全局错误拦截、常用请求封装、取消重复请求……）
 - 🚀 对表格的所有操作基本都封装成了 Hooks （表格数据搜索、重置、查询、分页、多选、单条数据操作、文件上传、下载、格式化单元格内容……）
 - 🚀 基于 antDesign 二次封装 [use-Table 组件] ，表格页面全部传成配置项 Columns
