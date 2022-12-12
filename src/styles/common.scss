@@ -1,0 +1,93 @@
+html,body{
+	width: 100vw;
+	height: 100vh;
+	overflow:hidden
+}
+/* scroll bar */
+::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+	background-color: white;
+}
+::-webkit-scrollbar-thumb {
+	background-color: #dddee0;
+	border-radius: 20px;
+	box-shadow: inset 0 0 0 white;
+}
+
+body.color-weak, html.color-weak {
+	filter: invert(80%)!important;
+}
+
+/* fade-transform */
+.fade-transform-leave-active,
+.fade-transform-enter-active {
+	transition: all 0.5s;
+}
+.fade-transform-enter-from {
+	opacity: 0;
+	transition: all 0.5s;
+	transform: translateX(-60px);
+}
+.fade-transform-leave-to {
+	opacity: 0;
+	transition: all 0.5s;
+	display: none;
+	transform: translateX(60px);
+}
+
+.wrapper-box .ant-back-top {
+	bottom: 80px;
+	right: 80px;
+}
+.wrapper-box .ant-back-top-icon {
+	height: 40px;
+	width: 40px;
+	line-height: 35px;
+	border-radius: 4px;
+	color: #fff;
+	text-align: center;
+	font-size: 20px;
+}
+.ant-message-custom-content{
+	display: flex;
+    align-items: center;
+}
+
+// table表格按钮
+.w-table-btn{
+	@apply flex flex-col items-center justify-center md:flex-row;
+	.ant-btn{
+		@apply p-1
+	}
+}
+// 修改查看图片的css冲突
+.ant-image-preview-img-wrapper{
+	img{
+		display: inline-block;
+	}
+}
+// 富文本样式
+html.dark {
+    --w-e-toolbar-bg-color: #141414;
+    --w-e-toolbar-color: #fff;
+    --w-e-textarea-bg-color: #141414;
+    --w-e-textarea-color: #333;
+    --w-e-textarea-border-color: #141414;
+    --w-e-textarea-slight-border-color: #141414;
+    --w-e-textarea-slight-color: #d4d4d4;
+    --w-e-textarea-slight-bg-color: #f5f2f0;
+    --w-e-textarea-selected-border-color: #b4d5ff;
+    --w-e-textarea-handler-bg-color: #4290f7;
+    --w-e-toolbar-active-color: #fff;
+    --w-e-toolbar-active-bg-color: #fff;
+    --w-e-toolbar-disabled-color: #999;
+    --w-e-toolbar-border-color: #141414;
+    --w-e-modal-button-bg-color: #141414;
+    --w-e-modal-button-border-color: #d9d9d9;
+    .w-e-menu-tooltip-v5:before,
+    .w-e-text-container [role='textarea'],
+    .w-e-bar-item button:hover {
+      color: #fff;
+    }
+}
