@@ -5,10 +5,10 @@ import { layoutRoute } from './routers'
 export default function getRoutes(routerList:menuListType[]) {
     let menuList = _.cloneDeep(routerList) as menuListType[]
     let router = []
+    const views = import.meta.globEager('../views/**/*.vue')
     function setRoute(menus:menuListType[]){
         menus.forEach(item => {
             if(item.component !== 'Layout' && item.status === 1){
-                const views = import.meta.globEager('../views/**/*.vue')
                 Object.entries(views).forEach(([file, module]) => {
                     let fileName = file.split('../views/')?.pop()?.split('.vue').shift()
                     if(fileName === item.component){
@@ -23,7 +23,23 @@ export default function getRoutes(routerList:menuListType[]) {
                 : ""
         })
     }
+
+    function setDitailRoute(){
+        layoutRoute.forEach(item=>{
+            Object.entries(views).forEach(([file, module]) => {
+                let fileName = file.split('../views/')?.pop()?.split('.vue').shift()
+                if(fileName === item.component){
+                    module.default.name = item.path
+                    item.component = module.default
+                    router.push(item)
+                }
+            })
+        })
+    }
+
+    setDitailRoute()
     setRoute(menuList)
+
     function setRedirect(){//获取启动页
         let redirect = null
         for(let i=0; i<router.length; i++){
@@ -46,7 +62,6 @@ export default function getRoutes(routerList:menuListType[]) {
 		},
         children:[
             ...router,
-            ...layoutRoute
         ]
     }
     return routers

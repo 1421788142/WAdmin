@@ -4,7 +4,7 @@
         <div class="grid justify-start grid-flow-col gap-2 overflow-y-auto w-[70%]">
             <a-button
                 v-for="(item,index) of historyMenu" :key="index"
-                :type="currentPage == item.path ? 'primary' : ''"
+                :type="item.path === currentPage ? 'primary' : ''"
                 @click.stop="tabPage(item.path)"
                 size="small"
             >

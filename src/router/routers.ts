@@ -25,12 +25,13 @@ export const routes = [
 // layout路由
 export const layoutRoute = [
     {
-        component:()=>import('@/views/feat/infoPage/detail/index.vue'),
+        component:'feat/infoPage/detail/index',
         path: "/feat/infoPage/detail/:id",
         meta:{
             title:'详情页',
             icon:'',
-            parentPath:'/feat/infoPage'
+            parentPath:'/feat/infoPage',
+            currentPath: "/feat/infoPage/detail/:id",
         }
     }
-] as RouteRecordRaw[]
+]

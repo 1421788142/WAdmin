@@ -1,7 +1,8 @@
-import { reactive, toRefs } from "vue"
+import { reactive, toRefs, nextTick } from "vue"
 import type { Router } from "vue-router"
 import userStore from '@/store/user';
 import { message } from "ant-design-vue";
+
 const { setHistoryMenu, getHistoryMenu } = userStore()
 export interface itemType {
     title:string,
@@ -12,7 +13,8 @@ export interface itemType {
 
 interface stateInterface {
     tabItmes:itemType[],
-    historyMenu:menuItem[]
+    historyMenu:menuItem[],
+    detailList:string[]
 }
 export const useTagData = (route?:any,router?:Router)=>{
     const state = reactive<stateInterface>({
@@ -47,10 +49,12 @@ export const useTagData = (route?:any,router?:Router)=>{
                 disabled:true
             },
         ],
-        historyMenu:[]
+        historyMenu:[],
+        detailList:[]
     })
     
     const getList = async ()=>{
+        await nextTick()
         let menuList = await getHistoryMenu()
         state.historyMenu = menuList.length && menuList || []
     }
@@ -58,12 +62,19 @@ export const useTagData = (route?:any,router?:Router)=>{
     getList()
 
     const set = ()=>{
+        let parentPath = route.meta.parentPath as string || ''
         if(['/login','/403','404'].includes(route.path)) return //如果是登录或错误页面则不缓存菜单
         const isHas = state.historyMenu.some(x=>x.path === route.path)
-        if(!isHas) state.historyMenu.unshift({
-            title:route.meta.title,
-            path:route.path
-        })
+        const isHasDetail = state.detailList.includes(parentPath)
+        isHasDetail && (state.historyMenu = state.historyMenu.filter(x=>x.parentPath !== parentPath))
+        if(!isHas || isHasDetail){
+            parentPath && state.detailList.push(parentPath)
+            state.historyMenu.unshift({
+                title:route.meta.title,
+                path:route.path,
+                parentPath:route.meta.parentPath || ''
+            })
+        }
         if(state.historyMenu.length>10){
             state.historyMenu.pop()
         }
