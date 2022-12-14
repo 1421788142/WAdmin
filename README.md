@@ -47,7 +47,6 @@ git clone https://github.com/1421788142/XiaoWuAdmin.git
 
 ```
 yarn
-# yarn install 安装失败，请nodejs 版本控制在 14.15.4
 ```
 
 - **Run**
