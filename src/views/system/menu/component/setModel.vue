@@ -72,8 +72,8 @@
                             <span class="mx-2">是否外链</span>
                         </template>
                         <a-radio-group v-model:value="ruleForm.isFrame" button-style="solid">
-                            <a-radio-button :value="0">是</a-radio-button>
-                            <a-radio-button :value="1">否</a-radio-button>
+                            <a-radio-button :value="0">否</a-radio-button>
+                            <a-radio-button :value="1">是</a-radio-button>
                         </a-radio-group>
                     </a-form-item>
                 </a-col>

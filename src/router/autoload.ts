@@ -11,7 +11,7 @@ export default function getRoutes(routerList:menuListType[]) {
     const views = import.meta.globEager('../views/**/*.vue')
     function setRoute(menus:menuListType[]){
         menus.forEach(item => {
-            if(item.component !== 'Layout' && item.status === 1){
+            if(item.component !== 'Layout' && !item.isFrame && item.status === 1){
                 Object.entries(views).forEach(([file, module]) => {
                     let fileName = file.split('../views/')?.pop()?.split('.vue').shift()
                     if(fileName === item.component){
@@ -40,13 +40,13 @@ export default function getRoutes(routerList:menuListType[]) {
         })
     }
 
-    setDitailRoute()
     setRoute(menuList)
+    setDitailRoute()
 
     function setRedirect(){//获取启动页
         let redirect = null
         for(let i=0; i<router.length; i++){
-            if(!router[i].meta?.hidden && !router[i].meta?.isDetail){
+            if(!router[i].meta?.hidden && !router[i].meta?.parentPath){
                 redirect = router[i].path
                 break;
             } 

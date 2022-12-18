@@ -11,7 +11,7 @@ const formData = {
     status:1,
     perms:'',
     path:'',
-    isFrame:1
+    isFrame:0
 }
 
 const columns: Partial<useTableColumn>[] = [

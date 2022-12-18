@@ -27,7 +27,7 @@
             >
                 <div class="flex flex-col h-screen">
                     <logo :collapsed="isHasCollapsed" :menuType="menuType" v-if="getConfigState('isHasLogo')"/>
-                    <menuVue :collapsed="isHasCollapsed" menuTheme="dark" />
+                    <menuVue ref="leftMenu" :collapsed="isHasCollapsed" menuTheme="dark" />
                 </div>
             </a-layout-sider>
             <!-- 右侧 -->
@@ -57,7 +57,7 @@
                                 class="!justify-center flex-1 max-w-[100%]"
                                 :selectedKeys="selectedKeys"
                             >
-                                <a-menu-item  @click="toPage(item.path)" :key="item.path" v-for="item in menuMixList">
+                                <a-menu-item @click="toPage(item)" :key="item.path" v-for="item in menuMixList">
                                     <span class="nav-text">{{item.meta.title || '未命名'}}</span>
                                     <template #icon>
                                         <component v-if="item.icon" :is="item.icon"></component>
@@ -87,7 +87,7 @@
 
 <script setup lang="ts">
 import { ref, nextTick, onMounted, provide, computed } from 'vue';
-import { guide, getFirstPath } from './index'
+import { guide, getFirstMenu } from './index'
 import { debounce } from '@/utils/util'
 
 import menuVue from '@/layout/components/sidebar/menu.vue'
@@ -105,12 +105,6 @@ import { useRoute, useRouter } from 'vue-router';
 const route = useRoute()
 const router = useRouter()
 
-// 混合菜单跳转菜单
-const toPage = (path:string = '/')=>{
-    selectedKeys.value = []
-    router.push({ path: getFirstPath(path) || '/' })
-    selectedKeys.value.push(path)
-}
 const isHasCollapsed = computed(()=>getConfigState('isHasCollapsed'))
 const menuType = computed(()=>getConfigState('menuType'))
 const {  
@@ -135,6 +129,21 @@ let sysConfig = {
     resetConfig
 }
 provide('sysConfig',sysConfig)
+
+const leftMenu = ref<ComponentRef>()
+
+// 混合菜单跳转菜单
+const toPage = (menuItem:menuListType)=>{
+    if(menuItem.isFrame && !menuItem.children) return window.open(menuItem.path)
+    let firstMenu = getFirstMenu(menuItem.path)
+    if(firstMenu.isFrame){
+        window.open(firstMenu.path)
+        leftMenu.value.setMenuList(menuItem.path)
+        return
+    } 
+    selectedKeys.value = [firstMenu.path,menuItem.path]
+    router.push({ path: firstMenu.path || '/' })
+}
 
 // 防抖函数监听页面尺寸
 const newSize = ()=> {

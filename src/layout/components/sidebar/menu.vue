@@ -30,8 +30,11 @@ const {
     theme,
     mode,
     menuClass,
-    getConfigState
+    getConfigState,
+    setMenuList
 } = useMenu(props.menuTheme,route);
+
+defineExpose({ setMenuList })
 </script>
 
 <style>

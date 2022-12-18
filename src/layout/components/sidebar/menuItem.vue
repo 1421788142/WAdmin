@@ -12,26 +12,39 @@ const toPage = (val:menuListType)=>{
 </script>
 <template>
     <!-- 如果存在子路由 -->
-    <template v-if="menuItemValue.children && menuItemValue.menuType === 'M' && menuItemValue.hidden === 1">
-        <a-sub-menu :key="menuItemValue.path">
-            <template #icon>
-                <component v-if="menuItemValue.icon" :is="menuItemValue.icon"></component>
-            </template>
-            <template #title>
-                <span class="nav-text">{{menuItemValue.meta.title || '未命名'}}</span>
-            </template>
-            <template v-for="children of menuItemValue.children">
-                <menu-item :menuItemValue="children" /> <!-- 递归菜单 -->
-            </template>
-        </a-sub-menu>
-    </template>
-    <template v-else>
-        <a-menu-item :key="menuItemValue.path" v-if="menuItemValue.hidden === 1" @click="toPage(menuItemValue)">
-            <span>{{menuItemValue.meta.title}}</span>
-            <template #icon>
-                <component v-if="menuItemValue.icon" :is="menuItemValue.icon"></component>
-            </template>
-        </a-menu-item>
+    <template v-if="menuItemValue.hidden">
+        <template v-if="!menuItemValue.isFrame">
+            <!-- 递归菜单 -->
+            <a-sub-menu :key="menuItemValue.path" v-if="menuItemValue.children && menuItemValue.menuType === 'M'">
+                <template #icon>
+                    <component v-if="menuItemValue.icon" :is="menuItemValue.icon"></component>
+                </template>
+                <template #title>
+                    <span class="nav-text">{{menuItemValue.meta.title || '未命名'}}</span>
+                </template>
+                <template v-for="children of menuItemValue.children">
+                    <menu-item :menuItemValue="children" />
+                </template>
+            </a-sub-menu>
+
+            <!-- 页面 -->
+            <a-menu-item :key="menuItemValue.path" @click="toPage(menuItemValue)" v-if="menuItemValue.menuType === 'C'">
+                <span>{{menuItemValue.meta.title}}</span>
+                <template #icon>
+                    <component v-if="menuItemValue.icon" :is="menuItemValue.icon"></component>
+                </template>
+            </a-menu-item>
+        </template>
+
+        <!-- 外链 -->
+        <a :href="menuItemValue.path" target="_blank" v-else class="!text-[#262626] dark:text-white">
+            <a-menu-item>
+                <span>{{menuItemValue.meta.title}}</span>
+                <template #icon>
+                    <component v-if="menuItemValue.icon" :is="menuItemValue.icon"></component>
+                </template>
+            </a-menu-item>
+        </a>
     </template>
 </template>
 <style lang="scss">

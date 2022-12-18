@@ -117,20 +117,18 @@ export const filterKeepAlive = ()=>{
 
 /**
  * @description 动态取路由第一个path
- * @param {String} path  当前菜单
- * @return string
  */
- export const getFirstPath = (path:string):string=>{
-    let pathStr = ''
+ export const getFirstMenu = (path:string):menuListType=>{
+    let firstMenu:menuListType = null
     let filterFn = (item:menuListType[])=>{
         for(let i=0; i< item.length; i++){
-            item[i].component === 'Layout' && item[i].children.length > 0 ? filterFn(item[i].children) : pathStr = item[i].path
+            item[i].component === 'Layout' && item[i].children && item[i].children.length > 0 ? filterFn(item[i].children) : firstMenu = item[i]
             break
         }
     }
     let menuItem = userRouterList.value.filter(x=>x.path == path)
     filterFn(menuItem)
-    return pathStr
+    return firstMenu
 }
 
 // 用户首次登录则引导页

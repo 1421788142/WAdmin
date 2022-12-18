@@ -35,10 +35,10 @@ export const useMenu = (
 	/**
 	 * @description 获取菜单用computed方便后面迭代菜单对菜单修改
 	 * */
-    const setMenuList = ()=>{
+    const setMenuList = (path = '')=>{
         state.menuList = []
         if(getConfigState('menuType') === 'mix' && getConfigState('sysMode') === 'web'){
-            let routePath = (route.meta.parentPath ?? route.path) as string
+            let routePath = (path || route.meta.parentPath || route.path) as string
             state.menuList = userRouterList.value.filter(item=>routePath === item.path && item.children)
             if(state.menuList.length === 0) state.menuList = setBreadCrumbs(routePath)[0]?.children || []
         } else {
@@ -47,7 +47,7 @@ export const useMenu = (
     }
     watch(()=>getConfigState('menuType'),()=>setMenuList())
     // 监听路由变化设置选中菜单和展开菜单
-    watch(()=>route.path,(newValue,oldValue)=>{
+    watch(()=>route.path,(newValue)=>{
         let routePath = route.meta.parentPath as string ?? newValue
         // 展开菜单
         state.openKeys = []
@@ -82,6 +82,7 @@ export const useMenu = (
 		...toRefs(state),
         menuClass,
         theme,
-        getConfigState
+        getConfigState,
+        setMenuList
 	};
 }
