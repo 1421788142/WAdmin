@@ -1,10 +1,13 @@
 import _ from 'loadsh'
 import { Layout } from './layout'
 import { layoutRoute } from './routers'
+import { deepCopy } from '@/utils/util'
 // 根据后台返回的菜单生成路由
 export default function getRoutes(routerList:menuListType[]) {
     let menuList = _.cloneDeep(routerList) as menuListType[]
     let router = []
+    let layoutRoutes = deepCopy<any[]>(layoutRoute)
+
     const views = import.meta.globEager('../views/**/*.vue')
     function setRoute(menus:menuListType[]){
         menus.forEach(item => {
@@ -25,7 +28,7 @@ export default function getRoutes(routerList:menuListType[]) {
     }
 
     function setDitailRoute(){
-        layoutRoute.forEach(item=>{
+        layoutRoutes.forEach(item=>{
             Object.entries(views).forEach(([file, module]) => {
                 let fileName = file.split('../views/')?.pop()?.split('.vue').shift()
                 if(fileName === item.component){
