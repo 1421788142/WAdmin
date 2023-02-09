@@ -4,7 +4,7 @@ import {AxiosRequestConfig} from "axios";
 import userStore from '@/store/user';
 import { RequestOptions } from "@/types/axios";
 
-export const baseURL = import.meta.env.VITE_API_URL as string
+const baseURL = import.meta.env.VITE_API_URL as string
 export function HandlingInterface (config:AxiosRequestConfig,options:RequestOptions):AxiosRequestConfig {
     let RequestConfig:AxiosRequestConfig = Object.assign({},config)
     if(!options) return RequestConfig
@@ -25,7 +25,7 @@ export function HandlingInterface (config:AxiosRequestConfig,options:RequestOpti
         let result = ''
         for (const propName of Object.keys(data)) {
           const value = data[propName];
-          var part = encodeURIComponent(propName) + "=";
+          let part = encodeURIComponent(propName) + "=";
           if (value !== null && value !== "" && typeof (value) !== "undefined") {
             if (typeof value === 'object') {
               for (const key of Object.keys(value)) {
@@ -48,16 +48,14 @@ export function HandlingInterface (config:AxiosRequestConfig,options:RequestOpti
     joinTime && setJoinTime(config)
     function setJoinTime(config:AxiosRequestConfig){
         let { url } = config
-        let urlJoin:string[] =  RequestConfig.url.split(url) || null
-        let str:string
-        if(urlJoin && urlJoin[1]){
-            str = urlJoin[1].substring(0,1) || null
-        }
+        let [ str, urlJoin ] = [ '', RequestConfig.url.split(url) || [] ]
+        if(urlJoin.length) str = urlJoin[1].substring(0,1) || null
         if(str === '?') RequestConfig.url += `&_t=${new Date().getTime()}`
         if(!str) RequestConfig.url += `?_t=${new Date().getTime()}`
     }
     return RequestConfig
 }
+
 export function setUpConfig(config:AxiosRequestConfig,options:RequestOptions){
     let RequestConfig:AxiosRequestConfig = Object.assign({},config)
     if(!options) return RequestConfig

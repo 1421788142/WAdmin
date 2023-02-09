@@ -52,7 +52,6 @@ const {
 
 const imgList = ref<any[]>([])
 
-
 const form = ref<ComponentRef>()
 const add = ()=>{
 	visible.value = true
