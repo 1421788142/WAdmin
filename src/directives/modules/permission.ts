@@ -2,12 +2,12 @@ import { Directive, DirectiveBinding } from 'vue'
 interface ElType extends HTMLElement {
   __handleClick__: () => any
 }
-const debounce: Directive = {
+const permission: Directive = {
   mounted(el: ElType, binding: DirectiveBinding) {
     if (typeof binding.value !== 'object') {
       throw 'callback must be a objcet'
     }
-    !binding.value[1].some((x:string) => x === binding.value[0]) ? el.parentNode.removeChild(el) : ''
+    !binding.value[1]?.some((x:string) => x === binding.value[0]) ? el.parentNode.removeChild(el) : ''
   }
 }
-export default debounce
+export default permission
