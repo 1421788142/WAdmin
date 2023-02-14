@@ -8,13 +8,16 @@
         <a-row :gutter="gutter">
             <template v-for="item in formColumns" :key="item.prop">
                 <a-col :span="span">
-                    <a-form-item v-if="item.isHasShow" :label="`${item.title} :`" :rules="item?.rule" :name="item['value']">
+                    <useFormItem :formParam="formParam" :item="item">
+                        <slot :name="`${item['name']}FormItem`" :row="formParam"></slot>
+                    </useFormItem>
+                    <!-- <a-form-item v-if="item.isHasShow" :label="`${item.title} :`" :rules="item?.rule" :name="item['value']">
                         <useFormItem v-if="item.componentType === 'default'" :formParam="formParam" :item="item"/>
-                        <!-- 按需插槽 -->
+                        按需插槽
                         <slot v-if="item.componentType === 'slot'" :name="`${item['value']}FormItem`" :row="formParam"></slot>
-                        <!-- 自定义模板渲染 -->
+                        自定义模板渲染
                         <component v-if="item.componentType === 'component' && item?.renderForm" :is="item?.renderForm" :row="formParam"></component>
-                    </a-form-item>
+                    </a-form-item> -->
                 </a-col>
             </template>
         </a-row>
@@ -53,9 +56,10 @@ const formParam = ref<any>({})
 // 重置数据
 const setupFormData = ()=>{
     props.columns.forEach(item=>{
-        formParam.value[item.value] = null
+        formParam.value[item.name] = null
     })
     formParam.value = Object.assign(formParam.value,props.initFormParam)
+    console.log(formParam.value)
 }
 
 setupFormData()

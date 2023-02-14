@@ -18,7 +18,7 @@ export default defineConfig(({ mode, command }: ConfigEnv): UserConfig => {
     },
     server:{
       host:'0.0.0.0',
-      port:55
+      port:5555
     },  
     define: {
       __VUE_I18N_FULL_INSTALL__: true,

@@ -19,13 +19,12 @@ type inputType = 'text' | 'number' | 'password' | 'color' | 'email'
 type componentType = 'default' | 'slot' | 'component'
 
 declare interface useFormProps {
-	value: string; // 表单name（必填）
-	title: string; // 表单标题（必填）
+	value?: string; // 表单name（必填）
+	title?: string; // 表单标题（必填）
 	isHasShow?: boolean; // 是否显示
 	componentType?: componentType; // 表单类型
-	renderForm?: (params: any) => any; //自定义表单 （componentType为component必传）
 	clearable?: boolean, //是否可清空
-	formItemType?: formItemType, // 表单项类型默认文本
+	formItemType?: any, // 表单项类型默认文本
 	rule?: any[], //校验规则
 	selectList?: any[], //select | tree配置项,
 	selectLabel?: string, //选择器的label
@@ -34,4 +33,9 @@ declare interface useFormProps {
 	inputType?: inputType, //文本框输入类型
 	minNumber?: number, //数字输入最小值
 	maxNumber?: number, //数字输入最大值
+	
+	componentOption?: any, //表单组件api组合
+	formItemOption: any, //form-item的api
+	name: string, //form对应的键名
+	renderForm?: (params: any) => any; //自定义表单 （componentType为component必传）
 }

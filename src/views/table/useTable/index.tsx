@@ -9,9 +9,9 @@ interface stateInterface {
 }
 
 // 自定义(使用tsx语法)
-const renderAge = (scope:any) => {
+const renderAge = ({ row, value }) => {
 	return (
-		<a-input-number step={1} min={1} max={100} v-model:value={scope.row.age}></a-input-number>
+		<a-input-number step={1} min={1} max={100} v-model:value={row!['age']}></a-input-number>
 	);
 };
 
@@ -85,32 +85,70 @@ export const usePageData = ()=>{
 			}
 		],
 		formColumns:[
-			{ title:'用户姓名', value:'nickname', rule:[{ required: true, trigger: ['change', 'blur'] }] },
-			{ title:'用户年龄', value:'age',
-				componentType:'component',
+			{
+				name: 'nickname',
+				formItemOption:{
+					label: '用户姓名',
+					rules: [{ required: true, trigger: ['change', 'blur'] }],
+				},
+			},
+			{
+				name: 'age',
+				formItemOption:{
+					label: '用户年龄',
+					rules: [{ required: true, trigger: ['change', 'blur'] }],
+				},
 				renderForm:renderAge
 			},
-			{ title:'门户地址', value:'url' },
-			{ title:'用户头像', value:'avatar', 
-				componentType:'slot',
-				rule:[{ required: true, trigger: ['change', 'blur'] }] 
+			{
+				name: 'url',
+				formItemOption:{
+					label: '门户地址',
+					rules: [{ required: true, trigger: ['change', 'blur'] }],
+				},
 			},
-			{ title:'会员等级', value:'stars', formItemType:'select',
-				selectList:[
-					{lable:'一级', value:1},
-					{lable:'二级', value:2},
-					{lable:'三级', value:3},
-					{lable:'四级', value:4},
-					{lable:'五级', value:5},
-				],
-				rule:[{ required: true, trigger: ['change', 'blur'] }]
+			{
+				name: 'avatar',
+				formItemOption:{
+					label: '用户头像',
+					rules: [{ required: true, trigger: ['blur'] }],
+				},
 			},
-			{ title:'用户类型', value:'userType', formItemType:'select', 
-				selectList:[
-					{lable:'普通用户', value:1},
-					{lable:'管理员', value:2}
-				],
-				rule:[{ required: true, trigger: ['change', 'blur'] }]
+			{
+				name: 'stars',
+				formItemType:'a-select',
+				formItemOption:{
+					label: '会员等级',
+					rules: [{ required: true, trigger: ['change', 'blur'] }],
+				},
+				componentOption:{
+					options:[
+						{ label:'一级', value:1 },
+						{ label:'二级', value:2 },
+						{ label:'三级', value:3 },
+						{ label:'四级', value:4 },
+						{ label:'五级', value:5 },
+					],
+					showSearch:true,
+					allowClear:true,
+					filterOption:(input: string, option: any) => {
+						return option.label.indexOf(input) != -1
+					}
+				}
+			},
+			{
+				name: 'userType',
+				formItemType:'a-select',
+				formItemOption:{
+					label: '用户类型',
+					rules: [{ required: true, trigger: ['change', 'blur'] }],
+				},
+				componentOption:{
+					options:[
+						{ label:'普通用户', value:1 },
+						{ label:'管理员', value:2 },
+					]
+				}
 			}
 		]
 	})
