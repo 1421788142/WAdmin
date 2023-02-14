@@ -11,13 +11,6 @@
                     <useFormItem :formParam="formParam" :item="item">
                         <slot :name="`${item['name']}FormItem`" :row="formParam"></slot>
                     </useFormItem>
-                    <!-- <a-form-item v-if="item.isHasShow" :label="`${item.title} :`" :rules="item?.rule" :name="item['value']">
-                        <useFormItem v-if="item.componentType === 'default'" :formParam="formParam" :item="item"/>
-                        按需插槽
-                        <slot v-if="item.componentType === 'slot'" :name="`${item['value']}FormItem`" :row="formParam"></slot>
-                        自定义模板渲染
-                        <component v-if="item.componentType === 'component' && item?.renderForm" :is="item?.renderForm" :row="formParam"></component>
-                    </a-form-item> -->
                 </a-col>
             </template>
         </a-row>
@@ -59,17 +52,13 @@ const setupFormData = ()=>{
         formParam.value[item.name] = null
     })
     formParam.value = Object.assign(formParam.value,props.initFormParam)
-    console.log(formParam.value)
 }
 
 setupFormData()
 
- //表单配置项
+ //表单配置项  这里预留配置项
 const formColumns = props.columns.map((item):useFormProps=>{
     return {
-        isHasShow:true,
-        clearable:true,
-        componentType:'default',
         ...item
     }
 })
