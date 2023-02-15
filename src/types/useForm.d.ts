@@ -8,6 +8,7 @@ type formItemType =
 	| "a-cascader" //级联选择
 	| "a-checkbox-group" //多选框
 	| "a-date-picker" //日期选择框
+	| "a-range-picker" //日期范围选择器
 	| "a-rate" //评分
 	| "a-slider" //滑动输入条
 	| "a-time-picker" //时间选择框
@@ -26,5 +27,5 @@ declare interface useFormProps {
 	tooltipPlacement?: string,
 	label?: string, // 使用tooltip时需要label(并且formItemOption里面不能有label,否则冲突)
 	renderForm?: (params: any) => any; //自定义表单 （componentType为component必传）
-	isHide?: (params: any) => any; //自定义表单 （componentType为component必传）
+	isHide?: (params: any) => any; //自定义表单tsx
 }

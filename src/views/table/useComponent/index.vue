@@ -108,11 +108,9 @@ const btnOk = ()=>{
 const table = ref<ComponentRef>()
 const submitApi = async (params:userListInterface) => {
 	if(params.id){
-		// let { code, data } = await update(params)
-		message.success('修改成功')
+		message.warn('修改失败,演示模式不允许操作')
 	} else {
-		// let { code, data } = await add(params)
-		message.success('提交成功')
+		message.warn('提交失败,演示模式不允许操作')
 	}
 	visible.value = false
 	table.value.refresh()

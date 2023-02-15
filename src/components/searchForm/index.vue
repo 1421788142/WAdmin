@@ -4,9 +4,7 @@
             <a-row :gutter="16">
                 <template v-for="item in getSearchList" :key="item.prop">
                     <a-col :xs="24" :sm="12" :lg="6" :order="1">
-                        <a-form-item :label="`${item.title} :`">
-                            <search-form-item :item="item" :searchParam="searchParam" />
-                        </a-form-item>
+                        <search-form-item :item="item" :searchParam="searchParam" />
                     </a-col>
                 </template>
             </a-row>
@@ -35,6 +33,7 @@ import { ref, computed } from 'vue'
 
 import { DownOutlined, UpOutlined } from '@ant-design/icons-vue';
 import searchFormItem from './components/searchFormItem.vue'
+
 
 interface UseTableProps {
 	columns: useTableColumn[]; // 搜索配置列

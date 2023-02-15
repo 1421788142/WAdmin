@@ -68,7 +68,7 @@
 		>
 			<!-- 自定义表头 data-index值拼接TableHeader -->
 			<template #headerCell="{ column }">
-				<slot :name="`${column['data-index']}TableHeader`" :row="column"></slot>
+				<slot :name="`${column['dataIndex']}TableHeader`" :row="column"></slot>
 			</template>
 			<!-- 内容 -->
 			<template v-for="item in tableColumns" :key="item">
@@ -187,7 +187,7 @@ const searchColumns = props.columns.filter(item => item.search);
 
 // 设置搜索表单的默认值
 searchColumns.forEach(column => {
-	if (column.initSearchParam !== undefined && column.initSearchParam !== null) {
+	if ([undefined,null].includes(column.initSearchParam)) {
 		initSearchParam.value[column.dataIndex!] = column.initSearchParam;
 	}
 });

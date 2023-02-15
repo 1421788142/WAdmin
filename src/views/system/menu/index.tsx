@@ -10,14 +10,7 @@ interface stateInterface {
 	formColumns:useFormProps[]
 }
 
-const getMenu = () => {
-	getRouter().then(({ code, data })=>{
-		if (code === 200) return arrayToTree<menuListType>(data.dataList);
-		return []
-	})
-};
-
-export const usePageData = ()=>{
+export const usePageData = (refresh:Function)=>{
 	const state = reactive<stateInterface>({
 		title:'新增数据',
 		visible:false,
@@ -57,13 +50,15 @@ export const usePageData = ()=>{
 			{
 				width: 50,
 				title:'状态',
-				dataIndex: "hidden",
+				dataIndex: "status",
 				search: true,
-				searchType:'select',
-				enum:[
-					{ label:'启用', value: 'false' },
-					{ label:'隐藏', value: 'true' },
-				]
+				searchType:'a-select',
+				componentOption:{
+					options:[
+						{ label:'正常', value: 1},
+						{ label:'停用', value: 2 },
+					]
+				}
 			},
 			{
 				dataIndex: "operation",
@@ -243,10 +238,12 @@ export const usePageData = ()=>{
 	const submitApi = async (params:any) => {
 		params['children'] && delete params['children']
 		if(params.id){
-			return message.success('修改失败,演示模式不允许操作')
+			message.warn('修改失败,演示模式不允许操作')
 		} else {
-			return message.success('新增失败,演示模式不允许操作')
+			message.warn('新增失败,演示模式不允许操作')
 		}
+		state.visible = false
+		refresh()
 	}
 
 	return {

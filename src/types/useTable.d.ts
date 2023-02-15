@@ -7,18 +7,14 @@ interface enumProps {
 
 // 搜索控件类型
 type searchType =
-	| "text" //文本
-	| "select" //下拉选择
-	| "multipleSelect" //下拉选择多选
-	| "treeSelect" //树选择器
-	| "multipleTreeSelect" //多选树选择器
-	| "time" //时间--时分秒
-	| "timeAnge"  //时间区间--时分秒
-	| "date" //日期--年月日
-	| "dateTime" //日期--年月日时分秒
-	| "dateAnge" // 日期区间--年月日
-	| "dateTimeAnge"; //日期区间--年月日时分秒
-						//index索引  选择框   展开下级
+| "a-input" //文本
+| "a-input-number" //数字输入框
+| "a-date-picker" //日期选择框
+| "a-range-picker" //时间选择框
+| "a-time-picker" //时间选择框
+| "a-tree" //树形控件
+| "a-select" //选择器
+
 type fixedProp = 'left' | 'right' //固定列表
 type alignProp = 'left' | 'center' | 'right' //固定列表
 interface useTableColumn {
@@ -41,4 +37,7 @@ interface useTableColumn {
 	initSearchParam?: string | number | boolean | any[]; // 搜索项初始值
 	enum?: enumProps[]; // 枚举类型（渲染值的字典）
 	fixed?: fixedProp //表格固定
+	label?: string, // 搜索表单label无则取title
+	componentOption?: any, //表单组件api组合
+	renderForm?: (params: any) => any; //自定义表单 tsx
 }

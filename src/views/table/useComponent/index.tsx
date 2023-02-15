@@ -8,6 +8,14 @@ interface stateInterface {
 	formColumns:useFormProps[]
 }
 
+const starsList = [
+	{ label:'一级', tagType: "blue", value: 1 },
+	{ label:'二级', tagType: "#FF9800", value: 2 },
+	{ label:'三级', tagType: "red", value: 3 },
+	{ label:'四级', tagType: "yellow", value: 4 },
+	{ label:'五级', tagType: "#9C27B0", value: 5 },
+]
+
 // 自定义(使用tsx语法)
 const renderAge = ({ row, value }) => {
 	return (
@@ -27,6 +35,7 @@ export const usePageData = ()=>{
 		tableColumns:[
 			{
 				title:'用户姓名',
+				label:'用户姓名',
 				dataIndex: "nickname",
 				search: true
 			},
@@ -34,11 +43,11 @@ export const usePageData = ()=>{
 				title:'创建时间',
 				dataIndex: "createdTime",
 				search: true,
-				searchType:'dateTime',
+				searchType:'a-date-picker',
 				sorter: (a: any, b: any) =>{
 					const t1 = new Date(a.createdTime).getTime();
 					const t2 = new Date(b.createdTime).getTime();
-						return t1 - t2
+					return t1 - t2
 				},
 			},
 			{
@@ -61,28 +70,25 @@ export const usePageData = ()=>{
 				dataIndex: "stars",
 				tag:true,
 				search: true,
-				searchType:'select',
+				searchType:'a-select',
 				sorter: (a: any, b: any) => a.stars - b.stars,
 				showEnum:true,
-				enum:[
-					{ label:'一级', tagType: "blue", value: 1 },
-					{ label:'二级', tagType: "#FF9800", value: 2 },
-					{ label:'三级', tagType: "red", value: 3 },
-					{ label:'四级', tagType: "yellow", value: 4 },
-					{ label:'五级', tagType: "#9C27B0", value: 5 },
-				]
+				componentOption:{
+					options:starsList
+				},
+				enum:starsList
 			},
 			{
 				title:'用户类型',
 				dataIndex: "userType",
-				tag:true,
 				search: true,
-				searchType:'select',
-				showEnum:true,
-				enum:[
-					{ label:'管理员', tagType: "red", value: 1 },
-					{ label:'普通用户', tagType: "blue", value: 2 }
-				]
+				searchType:'a-select',
+				componentOption:{
+					options:[
+						{ label:'管理员', tagType: "red", value: 1 },
+						{ label:'普通用户', tagType: "blue", value: 2 }
+					]
+				}
 			},
 			{
 				dataIndex: "operation",
@@ -128,13 +134,7 @@ export const usePageData = ()=>{
 					rules: [{ required: true, trigger: ['change', 'blur'] }],
 				},
 				componentOption:{
-					options:[
-						{ label:'一级', value:1 },
-						{ label:'二级', value:2 },
-						{ label:'三级', value:3 },
-						{ label:'四级', value:4 },
-						{ label:'五级', value:5 },
-					],
+					options:starsList,
 					showSearch:true,
 					allowClear:true,
 					filterOption:(input: string, option: any) => {

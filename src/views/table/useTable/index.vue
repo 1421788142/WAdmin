@@ -9,17 +9,17 @@
 				<a href="">{{scope.row.value}}</a>
 			</template>
 			<template #operation="{ row }">
-					<div class="w-table-btn">
-						<a-button type="text" @click="update(row.record)" class="!flex !items-center">
-							<template #icon><form-outlined /></template>
-							<span>编辑</span>
-						</a-button>
-						<a-button danger type="text" class="!flex !items-center">
-							<template #icon><delete-outlined /></template>
-							<span>删除</span>
-						</a-button>
-					</div>
-				</template>
+				<div class="w-table-btn">
+					<a-button type="text" @click="update(row.record)" class="!flex !items-center">
+						<template #icon><form-outlined /></template>
+						<span>编辑</span>
+					</a-button>
+					<a-button danger type="text" class="!flex !items-center">
+						<template #icon><delete-outlined /></template>
+						<span>删除</span>
+					</a-button>
+				</div>
+			</template>
 		</useTable>
 		<!-- 新增编辑框 -->
 		<useModal :title="title" width="1000px" v-model:visible="visible" @btnOk="btnOk">
@@ -74,11 +74,9 @@ const btnOk = ()=>{
 const table = ref<ComponentRef>()
 const submitApi = async (params:userListInterface) => {
 	if(params.id){
-		// let { code, data } = await update(params)
-		message.success('修改成功')
+		message.warn('修改失败,演示模式不允许操作')
 	} else {
-		// let { code, data } = await add(params)
-		message.success('提交成功')
+		message.warn('提交失败,演示模式不允许操作')
 	}
 	visible.value = false
 	table.value.refresh()

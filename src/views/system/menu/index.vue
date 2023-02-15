@@ -1,18 +1,15 @@
 <template>
 	<div>
-		<useTable :selection="false" :setTableList="setTableList" :pagination="false" :requestApi="getRouter" :columns="tableColumns">
+		<useTable ref="table" :selection="false" :setTableList="setTableList" :pagination="false" :requestApi="getRouter" :columns="tableColumns">
 			<template #tableHeader>
 				<permission-button btnType="primary" @click="update()" />
-			</template>
-			<template #title="{ row }">
-				{{row.record.title}}
 			</template>
 			<template #icon="{ row }">
 				<component v-if="row.record.icon" :is="row.record.icon"></component>
 			</template>
-			<template #hidden="{ row }">
-				<a-tag v-if="row.record.status === 1" color="green">启用</a-tag>
-				<a-tag v-else color="red">禁用</a-tag>
+			<template #status="{ row }">
+				<a-tag v-if="row.record.status === 1" color="green">正常</a-tag>
+				<a-tag v-else color="red">停用</a-tag>
 			</template>
 			<template #operation="{ row }">
 				<div class="w-table-btn">
@@ -40,7 +37,10 @@ import { message, Modal } from 'ant-design-vue'
 import PermissionButton from '@/components/global/permissionButton.vue';
 
 const setTableList = (value:any)=>arrayToTree(value.dataList)
-
+const table = ref<ComponentRef>()
+const refresh = ()=>{
+	table.value.refresh()
+}
 const { 
 	title,
 	visible,
@@ -49,7 +49,7 @@ const {
 	tableColumns,
 	submitApi,
 	getMenu
-} = usePageData()
+} = usePageData(refresh)
 const initFormQuery = ref<any>()
 const update = async (type:string = 'add', row?:menuListType)=>{
 	if(type === 'delete'){
