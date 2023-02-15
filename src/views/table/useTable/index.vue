@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="h-full">
 		<useTable ref="table" :requestApi="userList" :columns="tableColumns">
 			<template #tableHeader="scope">
 				<permission-button btnType="primary" @click="add" />

@@ -20,7 +20,7 @@ export function deepCopy<T>(obj: any): T {
 		newObj = {};
 	}
 	for (let attr in obj) {
-		if (typeof obj[attr] === "object") {
+		if (typeof obj[attr] === "object" && ![null,'null'].includes(obj[attr])) {
 			newObj[attr] = deepCopy(obj[attr]);
 		} else {
 			newObj[attr] = obj[attr];

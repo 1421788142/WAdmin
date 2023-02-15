@@ -7,7 +7,7 @@
     >
         <a-row :gutter="gutter">
             <template v-for="item in formColumns" :key="item.prop">
-                <a-col :span="span">
+                <a-col :span="span"  v-if="item.isHide ? item.isHide(formParam) : true">
                     <useFormItem :formParam="formParam" :item="item">
                         <slot :name="`${item['name']}FormItem`" :row="formParam"></slot>
                     </useFormItem>

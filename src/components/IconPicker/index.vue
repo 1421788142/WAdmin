@@ -1,7 +1,7 @@
 <template>
-    <a-input v-model:value="icon" allow-clear>
+    <a-input v-model:value="icon" allow-clear :disabled="disabled">
         <template #addonAfter>
-            <a-popover placement="bottom" trigger="click">
+            <a-popover placement="bottom" trigger="click" v-if="!disabled">
                 <div class="flex items-center justify-center cursor-pointer">
                     <component :is="iconValue"></component>
                 </div>
@@ -38,19 +38,25 @@
 <script setup lang="ts">
 import { ref, computed, unref } from "vue"
 import iconList from './icon'
+
 const currentPage = ref<number>(1)
 const pageSize = ref<number>(48)
 const getTotal = computed(():number => unref(iconList).length)
+
 const props = defineProps({
-    icon:String
+    icon:String,
+    disabled:Boolean
 })
+
 const iconValue = computed(():string=>{
     let icon = iconList.filter(item=>props.icon === item)
     return icon.length > 0 ? icon[0] : iconList[0]
 })
+
 const getPaginationList = computed(():string[] => { //数据
     return pagination<string>(unref(iconList), unref(currentPage), unref(pageSize));
 });
+
 function pagination<T = any>(list: T[] = [], pageNo: number = 1, pageSize: number = 50): T[] {
   const offset = (pageNo - 1) * Number(pageSize);
   const ret =
@@ -59,11 +65,13 @@ function pagination<T = any>(list: T[] = [], pageNo: number = 1, pageSize: numbe
       : list.slice(offset, offset + Number(pageSize));
   return ret;
 }
+
 //点击图标
 const emit = defineEmits(['update:icon'])
 const fontClick = (value:string)=>{
     emit('update:icon',value)
 }
+
 //切换页
 const handlePageChange = (page: number)=>{
     currentPage.value = page
