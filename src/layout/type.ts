@@ -9,6 +9,12 @@ export namespace Layout {
         isDev:boolean,
         darkContent:any,
         selectedKeys:string[],
+        modalMinList:{
+            title:string,
+            path:string,
+            uid:string,
+        }[],
+        modalMinUid:string
     }
     export interface menuStatePrpos {
         menuList:menuListType[],

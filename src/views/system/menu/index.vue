@@ -20,7 +20,7 @@
 			</template>
 		</useTable>
 		<!-- 新增编辑 -->
-		<useModal :title="title" width="1000px" v-model:visible="visible" @btnOk="btnOk">
+		<useModal :destroyOnClose="false" :title="title" width="1000px" v-model:visible="visible" @btnOk="btnOk">
 			<useForm :labelCol="{
 				span: 6
 			}" :submitApi="submitApi" :columns="formColumns" ref="form" :initFormParam="initFormQuery"></useForm>

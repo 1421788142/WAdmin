@@ -16,6 +16,7 @@ export default defineStore('config', {
             sysMode:'web',//系统模式
             isHasFull:false,//是否全屏
             isHasSystem:false,//是否第一次进入系统
+            modalMinNum:2,//历史对话框数量
         }
     },
     actions:{
@@ -41,6 +42,7 @@ export default defineStore('config', {
             this.isHasGrey = false
             this.isHasColorblind = false
             this.isHasFull = false
+            this.modalMinNum = 2
         }
     },
     persist: {

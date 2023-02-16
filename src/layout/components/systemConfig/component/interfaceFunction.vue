@@ -1,5 +1,5 @@
 <template>
-    <a-divider orientation="center">页面功能</a-divider>
+    <a-divider orientation="center">🚀项目功能</a-divider>
     <div>
         <div class="flex items-center justify-between">
             <span>Table 高度</span>
@@ -11,6 +11,12 @@
                     <span class="text-[14px]">none</span>
                 </template>    
             </a-switch>
+        </div>
+        <div class="flex items-center justify-between my-4">
+            <span>历史对话框数量</span>
+            <a-input-number @change="()=>{
+                change(modalMinNum,'modalMinNum')
+            }" v-model:value="modalMinNum" :min="0" :max="10" />
         </div>
         <div class="flex items-center justify-between my-4">
             <span>历史菜单</span>
@@ -59,6 +65,7 @@ const isHasLogo = ref<boolean>()
 const isHasCollapsed = ref<boolean>()
 const isHasGrey = ref<boolean>()
 const isHasColorblind = ref<boolean>()
+const modalMinNum = ref<number>(0)
 
 watch(()=>getConfigState('isHasCollapsed'),(newVal)=>{
     isHasCollapsed.value = newVal
@@ -71,11 +78,12 @@ const setDefaultVal = ()=>{
     isHasCollapsed.value = getConfigState('isHasCollapsed')
     isHasGrey.value = getConfigState('isHasGrey')
     isHasColorblind.value = getConfigState('isHasColorblind')
+    modalMinNum.value = getConfigState('modalMinNum')
 }
 
 setDefaultVal()
 
-const change = (value:boolean,type:string)=>{
+const change = (value:boolean | number,type:string)=>{
     setConfigState(type,value)
 }
 

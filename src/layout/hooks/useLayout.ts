@@ -1,10 +1,11 @@
 import { reactive, computed, toRefs, watch } from 'vue'
 import { Layout } from "../type"
-import { RouteLocationNormalizedLoaded } from 'vue-router';
+import { RouteLocationNormalizedLoaded, Router } from 'vue-router';
 import { storeToRefs } from "pinia"
 import config from '@/store/config';
 import user from '@/store/user';
 import { setBreadCrumbs } from '../index'
+import emitter from '@/plugins/mitt'
 
 const configStore = config()
 const { getConfigState, setConfigState, resetConfig  } = configStore
@@ -17,7 +18,8 @@ let { userRouterList } = storeToRefs(userStore)
  * @param {String} route 当前路由
  * */
 export const useLayout = (
-    route?:RouteLocationNormalizedLoaded
+    route?:RouteLocationNormalizedLoaded,
+    router?:Router
 )=>{
     const state = reactive<Layout.LayoutStatePrpos>({
         menuMixList:userRouterList.value,// 混合模式菜单
@@ -25,7 +27,9 @@ export const useLayout = (
         darkId:'theme-dark',//暗黑模式Id
         isDev:import.meta.env.DEV,//当前环境
         darkContent:null,
-        selectedKeys:[]
+        selectedKeys:[],
+        modalMinList:[],
+        modalMinUid:''
     })
     
     // 头部面包屑
@@ -93,6 +97,38 @@ export const useLayout = (
     setupGrey(getConfigState('isHasGrey'))
     setupColorblind(getConfigState('isHasColorblind'))
     
+    // 监听弹窗小化
+    emitter.on('setModalMin',(event:any)=>{
+        let isHas = state.modalMinList.some(x=>x.uid === event.uid)
+        if(isHas || getConfigState('modalMinNum') < state.modalMinList.length + 1) return
+        state.modalMinList.push({
+            title:`${route.meta.title} [${event.title}]`,
+            path:route.path,
+            uid:event.uid,
+        })
+    })
+    emitter.on('delModalMin',(uid:string)=>delModalMin(uid))
+    emitter.on('setRoute',(historyMenu:menuItem[])=>{
+        state.modalMinList.forEach(min=>{
+            let has = historyMenu.some(menu=>menu.path === min.path)
+            if(!has) state.modalMinList = state.modalMinList.filter(x=>x.uid !== min.uid)
+        })
+    })
+    const delModalMin = (uid:string)=>{
+        state.modalMinUid = uid
+        setTimeout(()=>{
+            state.modalMinList = state.modalMinList.filter(x=>x.uid !== uid)
+            state.modalMinUid = ''
+        },500)
+    }
+
+    const openModalMin = (modal:any)=>{
+        delModalMin(modal.uid)
+        router.push({ path:modal.path }).then(res=>{
+            emitter.emit('openModalMin',modal.uid)
+        })
+    }
+
     return {
         crumbsList,
         ...toRefs(state),
@@ -102,5 +138,7 @@ export const useLayout = (
         switchDark,
         setupColorblind,
         setupGrey,
+        delModalMin,
+        openModalMin
     }
 }

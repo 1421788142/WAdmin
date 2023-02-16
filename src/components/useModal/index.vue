@@ -1,24 +1,25 @@
 <template>
-  <div>
+  <div id="modalBox">
     <a-modal
+      :closable="false"
       :width="isFull ? '100%' : width"
       :wrap-class-name="isFull ? 'full-modal' : ''"
       ref="modalRef"
       @cancel="cancel"
       v-model:visible="modalVisibled"
-      :destroyOnClose="destroyOnClose"
       :maskClosable="maskClosable"
+      :getContainer="getContainer"
       :wrap-style="{ overflow: 'hidden' }"
+      :destroyOnClose="destroyOnClose"
     >
-      <template #closeIcon>
-        <modalClose @cancel="cancel" />
-      </template>
       <template #title v-if="headShow">
         <div style="cursor: move">
           <modalHeader
             :title="title"
             :isFull="isFull"
             @change="setupFull"
+            @cancel="cancel"
+            @modalMin="modalMin"
           />
         </div>
       </template>
@@ -42,23 +43,26 @@
   </div>
 </template>
 <script lang="ts" setup>
-import modalClose from './components/modalClose.vue';
-import modalHeader from './components/modalHeader.vue';
-import modalFooter from './components/modalFooter.vue';
-
+import { ref, watch } from "vue";
+import { sysModeEnum } from '@/enums/sys';
+import { basicProps } from './index';
 import { useModalDragMove } from '@/hooks/useModal';
 
-import { sysModeEnum } from '@/enums/sys';
-import { ref, watch } from "vue";
-
-import { basicProps } from './index';
+import modalHeader from './components/modalHeader.vue';
+import modalFooter from './components/modalFooter.vue';
+import emitter from '@/plugins/mitt'
+import { getUid } from '@/utils/util'
 
 import config from '@/store/config';
 const configStore = config()
 const { sysMode } = configStore
-
 const props = defineProps(basicProps)
 const isFull = ref<boolean>(false)// 是否全屏
+const modalRef = ref<ComponentRef>()// 是否全屏
+
+const getContainer = () => {
+  return document.getElementById("modalBox");
+};
 
 watch(()=>sysMode,(newVal,oldVal)=>{
     isFull.value = newVal === sysModeEnum.phone
@@ -79,6 +83,7 @@ const cancel = ()=>{
   emit('btnCancel')
 }
 
+const uid = getUid() //弹窗绑定唯一id
 //挂载拖动modal hook 
 watch(()=>props.visible,(newVal,oldVal)=>{
   modalVisibled.value = newVal
@@ -87,7 +92,22 @@ watch(()=>props.visible,(newVal,oldVal)=>{
     destroyOnClose:props.destroyOnClose,
     draggable:props.draggable,
   })
+  props.visible && emitter.emit('delModalMin',uid)
 },{immediate: true})
+
+// 小化
+const modalMin = ()=>{
+  emit('update:visible',false)
+  if(props.destroyOnClose) return
+  let refObj = {
+    title:props.title,
+    uid:uid
+  }
+  emitter.emit('setModalMin',refObj)
+}
+emitter.on('openModalMin',(uId)=>{
+  if(uId === uid) emit('update:visible',true)
+})
 
 </script>
 <style lang="scss">

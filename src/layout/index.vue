@@ -82,6 +82,19 @@
             </a-button>
         </div>
         <systemConfig ref="systemDrawer"/>
+
+        <!-- 缓存的model小化 -->
+        <div class="modal-min-box" v-if="modalMinList.length">
+            <div 
+                class="flex justify-between py-2 pl-4 pr-2 mb-2 text-center cursor-pointer modal-min-item"
+                :class="{'active':modalMinUid === modal.uid}"
+                v-for="modal in modalMinList" :key="modal.uid"
+                @click="openModalMin(modal)"
+            >
+                <span class="truncate text-md">{{ `${modal.title}` }}</span>
+                <CloseOutlined @click.stop="delModalMin(modal.uid)" :style="{fontSize:'18px'}" />
+            </div>
+        </div>
     </div>
 </template>
 
@@ -112,13 +125,17 @@ const {
     crumbsList,
     menuMixList,
     selectedKeys,
+    modalMinList,
+    modalMinUid,
     switchDark,
     setupColorblind,
     setupGrey,
     getConfigState,
     setConfigState,
-    resetConfig
-} = useLayout(route)
+    resetConfig,
+    delModalMin,
+    openModalMin
+} = useLayout(route,router)
 let sysConfig = {
     crumbsList,
     switchDark,
@@ -201,5 +218,26 @@ const openSet = ()=>{
 }
 .set-up:hover{
     right: 0;
+}
+.modal-min-box{
+    z-index: 99;
+    position: fixed;
+    width: 250px;
+    padding: 10px;
+    height: 140px;
+    overflow: auto;
+    right: 20px;
+    bottom: 20px;
+}
+.modal-min-item{
+    background-color: #fff;
+    box-shadow: 0 0 15px var(--ant-primary-color);
+    border-radius: 5px;
+    width: 100%;
+    transition: all .3s;
+    font-weight: bold;
+}
+.modal-min-item.active{
+    margin-left: -320px;
 }
 </style>

@@ -5,6 +5,7 @@ import { login, getRouter, userInterface, loginOut, loginInterface } from '@/api
 
 import router from "@/router";
 import getRoutes from "@/router/autoload";//自动注册路由
+import emitter from '@/plugins/mitt'
 
 import { notification, message } from 'ant-design-vue';
 import { CheckCircleTwoTone } from '@ant-design/icons-vue';
@@ -30,6 +31,7 @@ export default defineStore('user',{
             this.userInfo = info ?? null;
         },
         async setHistoryMenu(menu: menuItem[]) {
+            emitter.emit('setRoute',menu)
             this.historyMenuTag = menu ?? [];
         },
         async getHistoryMenu(){

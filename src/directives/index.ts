@@ -10,7 +10,7 @@ const directivesList: any = {
 	debounce,
     throttle,
     longpress,
-    permission
+    permission,
 };
 const setDirectives = (app:App)=>{
     const directives = {

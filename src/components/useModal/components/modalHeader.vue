@@ -1,24 +1,24 @@
 <template>
-    <div class="flex items-center justify-between pr-10">
+    <div class="flex items-center justify-between">
         <div class="flex items-center justify-center flex-1">
             <span>{{title}}</span>
         </div>
-        <a-tooltip v-if="sysMode === sysModeEnum.web" placement="bottom" :title="isFull ? '取消全屏' : '全屏'">
-            <fullscreen-exit-outlined v-if="isFull" :style="{fontSize:'20px'}" @click="setup(false)" />
-            <fullscreen-outlined v-else :style="{fontSize:'20px'}" @click="setup(true)" />
-        </a-tooltip>
+        <!-- 最小化 -->
+        <minus-outlined :style="{ fontSize: '20px' }" @click="emit('modalMin')" />
+        <!-- 全屏 -->
+        <div class="flex items-center mx-4">
+            <compress-outlined v-if="isFull" :style="{fontSize:'17px'}" @click="setup(false)" />
+            <expand-outlined v-else :style="{fontSize:'17px'}" @click="setup(true)" />
+        </div>
+        <!-- 关闭 -->
+        <CloseOutlined :style="{ fontSize: '20px' }" @click="()=>emit('cancel')" />
     </div>
 </template>
-
 <script setup lang="ts">
 import { basicProps } from '../index'
-import { sysModeEnum } from '@/enums/sys'
-import config from '@/store/config';
-const configStore = config()
-const { sysMode } = configStore
 
 const props = defineProps(basicProps)
-const emit = defineEmits(['change'])
+const emit = defineEmits(['change','cancel','modalMin'])
 const setup = (bol:boolean)=>{
     emit('change',bol)
 }

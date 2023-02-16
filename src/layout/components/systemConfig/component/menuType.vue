@@ -1,5 +1,5 @@
 <template>
-    <a-divider orientation="center">导航模式</a-divider>
+    <a-divider orientation="center">⚒导航模式</a-divider>
     <div class="flex flex-wrap justify-between mt-2">
         <template v-for="item in menuTypeList" :key="item.mode">
             <a-tooltip placement="bottom" :class="{'!cursor-not-allowed':(getConfigState('sysMode')==='phone')}">

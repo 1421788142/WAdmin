@@ -253,3 +253,18 @@ export function debounce(fn:any,delay:number) {
         timerId = setTimeout(()=>fn(),delay)
     }
 }
+
+/**
+ * @description 获取uid
+ * @return string
+ */
+export function getUid() {
+	const time = new Date().getTime().toString()
+	const timeArr = time.split('')
+	const arr = 'abcdefghijklmnopqrstuvwxyz'.split('')
+	timeArr.forEach((item, index) => {
+	  const random = arr[Math.floor(Math.random() * arr.length)]
+	  timeArr.splice(index * 2, 0, random)
+	})
+	return timeArr.join('')
+}

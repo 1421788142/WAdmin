@@ -39,10 +39,9 @@
 import { useUpload } from './index'
 import type { uploadType, listType } from './index'
 import { ref, watch, computed} from 'vue';
-import { Result } from '@/types/axios'
 import { fileInterface } from '@/apis/common'
 
-import { message, UploadChangeParam, UploadFile } from 'ant-design-vue';
+import { message } from 'ant-design-vue';
 import type { UploadProps } from 'ant-design-vue';
 
 interface uploadInterface {

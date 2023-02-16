@@ -19,7 +19,7 @@ const starsList = [
 // 自定义(使用tsx语法)
 const renderAge = ({ row, value }) => {
 	return (
-		<a-input-number step={1} min={1} max={100} v-model:value={row!['age'].age}></a-input-number>
+		<a-input-number step={1} min={1} max={100} v-model:value={row!['age']}></a-input-number>
 	);
 };
 

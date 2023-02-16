@@ -1,5 +1,5 @@
 <template>
-  <a-divider orientation="center">系统主题</a-divider>
+  <a-divider orientation="center">🎨系统主题</a-divider>
   <div class="flex justify-center py-4">
     <input
         class="w-[120px] h-[40px]"

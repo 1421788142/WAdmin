@@ -33,7 +33,7 @@
 		</useTable>
 
 		<!-- 新增编辑框 -->
-		<useModal :title="title" width="1000px" v-model:visible="visible" @btnOk="btnOk">
+		<useModal :destroyOnClose="false" :title="title" width="1000px" v-model:visible="visible" @btnOk="btnOk">
 			<useForm :submitApi="submitApi" :columns="formColumns" ref="form" :initFormParam="initFormParam">
 				<template #avatarFormItem="{ row }">
 					<upload v-model:value="imgList" uploadType="image" actionUrl="/upload/image" :total="1" @change="(value)=>{
