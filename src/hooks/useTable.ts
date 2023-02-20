@@ -7,10 +7,17 @@ import { reactive, computed, onMounted, toRefs } from "vue";
  * @param {Object} initParam 获取数据初始化参数(不必传，默认为{})
  * @param {Boolean} isPageable 是否有分页(不必传，默认为true)
  * */
-export const useTable = (api: (params: any) => Promise<any>, initParam: object = {}, isPageable: boolean = true, setTableList: (data: any) => any) => {
+
+export const useTable = (
+	api: (params: any) => Promise<any>, 
+	initParam: object = {}, 
+	isPageable: boolean = true, 
+	setTableList: (data: any) => any, 
+) => {
 	const state = reactive<Table.TableStateProps>({
 		// 表格数据
 		tableData: [],
+		// 展开的行
 		// 表格大小
 		tableSize:'middle',
 		// 加载动画
@@ -84,7 +91,7 @@ export const useTable = (api: (params: any) => Promise<any>, initParam: object =
 		// 防止手动清空输入框携带参数（可以自定义查询参数前缀）
 		for (let key in state.searchParam) {
 			// * 某些情况下参数为 false/0 也应该携带参数
-			if (state.searchParam[key] || state.searchParam[key] === false || state.searchParam[key] === 0) {
+			if ([false,0].includes(state.searchParam[key]) || state.searchParam[key]) {
 				nowSearchParam[key] = state.searchParam[key];
 			}
 		}
@@ -133,7 +140,8 @@ export const useTable = (api: (params: any) => Promise<any>, initParam: object =
 
 	/**
 	 * @description 每页条数改变
-	 * @param {Number} val 当前条数
+	 * @param {Number} pageNum 当前页数
+	 * @param {Number} pageSize 当前条数
 	 * @return void
 	 * */
 	const setupPagination = (pageNum:number, pageSize:number) => {

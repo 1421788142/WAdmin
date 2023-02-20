@@ -1,5 +1,8 @@
 <template>
-    <div class="justify-between mb-2 md:flex table-search" v-if="columns.length">
+    <div 
+        class="justify-between p-2 md:flex table-search bg-white dark:bg-[#141414]"
+        v-if="columns.length"
+    >
         <a-form class="flex-1" :model="searchParam" name="formRef">
             <a-row :gutter="16">
                 <template v-for="item in getSearchList" :key="item.prop">
@@ -10,15 +13,11 @@
             </a-row>
         </a-form>
         <div class="flex justify-end h-max">
-            <div class="mx-5">
-                <a-button type="primary" @click="search">
-                    <div class="flex items-center"><SearchOutlined class="mr-2" />查询</div>
-                </a-button>
-                <a-button @click="reset" class="ml-1">
-                    <div class="flex items-center"><redo-outlined class="mr-2" />重置</div>
-                </a-button>
+            <div class="flex items-center ml-5">
+                <a-button type="primary" @click="search" :loading="loading">查询</a-button>
+                <a-button @click="reset" class="ml-1">重置</a-button>
             </div>
-            <div class="flex pt-1 cursor-pointer" v-if="columns.length > maxLength">
+            <div class="flex pt-1 ml-1 cursor-pointer" v-if="columns.length > maxLength">
                 <div class="flex items-center" @click="searchShow=!searchShow">
                     <span class="mr-1">{{ searchShow ? "收起" : "展开" }}</span>
                     <component :is="searchShow ? UpOutlined : DownOutlined"></component>
@@ -38,6 +37,7 @@ import searchFormItem from './components/searchFormItem.vue'
 interface UseTableProps {
 	columns: useTableColumn[]; // 搜索配置列
 	searchParam: any; // 搜索参数
+    loading: boolean, //请求loading
 	search: (params: any) => void; // 搜索方法
 	reset: (params: any) => void; // 重置方法
 }
@@ -59,6 +59,5 @@ const getSearchList = computed((): useTableColumn[] => {
 });
 </script>
 
-<style scoped>
-
+<style scoped lang="scss">
 </style>

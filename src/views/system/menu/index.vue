@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<useTable ref="table" :selection="false" :setTableList="setTableList" :pagination="false" :requestApi="getRouter" :columns="tableColumns">
+		<useTable :expandedRowKeys="expandedRowKeys" ref="table" :selection="false" :setTableList="setTableList" :pagination="false" :requestApi="getRouter" :columns="tableColumns">
 			<template #tableHeader>
 				<permission-button btnType="primary" @click="update()" />
 			</template>
@@ -35,8 +35,11 @@ import { usePageData } from './index'
 import { arrayToTree, deepCopy } from '@/utils/util'
 import { message, Modal } from 'ant-design-vue'
 import PermissionButton from '@/components/global/permissionButton.vue';
-
-const setTableList = (value:any)=>arrayToTree(value.dataList)
+const expandedRowKeys = ref<any[]>([])
+	const setTableList = (value:any)=>{
+	expandedRowKeys.value = Array.from(new Set(value.dataList.map(x=>x.id)))
+	return arrayToTree(value.dataList)
+}
 const table = ref<ComponentRef>()
 const refresh = ()=>{
 	table.value.refresh()

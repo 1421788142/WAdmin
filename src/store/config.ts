@@ -5,7 +5,6 @@ export default defineStore('config', {
             menuType:'verticalDark',//菜单主题
             themeColor:'#1890FF',//系统颜色
             componentSize:'middle',//控件大小
-            tableHeight:'auto',//table表格高度
             language:'zh_CN',//多语言
             isHasDark:false,//是否暗黑主题
             isHasHistory:true,//是否历史菜单
@@ -33,7 +32,6 @@ export default defineStore('config', {
             this.menuType = 'verticalDark'
             this.themeColor = '#1890FF'
             this.componentSize = 'middle'
-            this.tableHeight = 'auto'
             this.language = 'zh_CN'
             this.isHasDark = false
             this.isHasHistory = true

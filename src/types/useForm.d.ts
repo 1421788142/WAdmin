@@ -1,6 +1,7 @@
 // 搜索控件类型
 type formItemType =
 	| "a-input" //文本
+	| "a-textarea" //文本域
 	| "a-input-number" //数字输入框
 	| "a-select" //下拉选择器
 	| "a-switch" //switch开关

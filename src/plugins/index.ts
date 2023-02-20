@@ -31,6 +31,7 @@ function RegisterManuallyComponent(app:App){
     const useModal = import.meta.globEager('../components/useModal/index.vue')
     const IconPicker = import.meta.globEager('../components/IconPicker/index.vue')
     const useTable = import.meta.globEager('../components/useTable/index.vue')
+    const useTreeFilter = import.meta.globEager('../components/useTreeFilter/index.vue')
     const useForm = import.meta.globEager('../components/useForm/index.vue')
     const searchForm = import.meta.globEager('../components/searchForm/index.vue')
     const usePagination = import.meta.globEager('../components/usePagination/index.vue')
@@ -41,6 +42,7 @@ function RegisterManuallyComponent(app:App){
         { name:'useModal', component:useModal },
         { name:'iconPicker', component:IconPicker },
         { name:'useTable', component:useTable },
+        { name:'useTreeFilter', component:useTreeFilter },
         { name:'useForm', component:useForm },
         { name:'searchForm', component:searchForm },
         { name:'usePagination', component:usePagination },

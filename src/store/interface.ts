@@ -3,7 +3,6 @@ export interface configStoreInterface {
     menuType:Layout.menuType,//菜单风格类型
     themeColor:string,//系统颜色
     componentSize:string,//控件大小
-    tableHeight:string,//table表格高度
     language:string,//多语言
     isHasDark:boolean,//是否暗黑主题
     isHasHistory:boolean,//是否历史菜单

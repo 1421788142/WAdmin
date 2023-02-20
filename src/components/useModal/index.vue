@@ -11,6 +11,7 @@
       :getContainer="getContainer"
       :wrap-style="{ overflow: 'hidden' }"
       :destroyOnClose="destroyOnClose"
+      :style="{top:top,left:'0px'}"
     >
       <template #title v-if="headShow">
         <div style="cursor: move">
@@ -59,6 +60,7 @@ const { sysMode } = configStore
 const props = defineProps(basicProps)
 const isFull = ref<boolean>(false)// 是否全屏
 const modalRef = ref<ComponentRef>()// 是否全屏
+const top = ref<string>(null)
 
 const getContainer = () => {
   return document.getElementById("modalBox");
@@ -70,6 +72,7 @@ watch(()=>sysMode,(newVal,oldVal)=>{
 
 const setupFull = (bol:boolean)=>{
   isFull.value = bol
+  top.value = bol ? '0px' : null
 }
 const emit = defineEmits(['btnOk','btnCancel','update:visible'])
 const modalVisibled = ref<boolean>(false)

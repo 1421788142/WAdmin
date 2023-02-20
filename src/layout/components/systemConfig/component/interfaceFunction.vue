@@ -1,17 +1,6 @@
 <template>
     <a-divider orientation="center">🚀项目功能</a-divider>
     <div>
-        <div class="flex items-center justify-between">
-            <span>Table 高度</span>
-            <a-switch v-model:checked="tableHeight" @change="setConfigState('tableHeight',tableHeight)" checkedValue="auto" unCheckedValue="none">
-                <template #checkedChildren>
-                    <span class="text-[14px]">auto</span>
-                </template>
-                <template #unCheckedChildren>
-                    <span class="text-[14px]">none</span>
-                </template>    
-            </a-switch>
-        </div>
         <div class="flex items-center justify-between my-4">
             <span>历史对话框数量</span>
             <a-input-number @change="()=>{
@@ -60,7 +49,6 @@ const {
 } = inject<layoutInterface>('sysConfig')
 
 const isHasHistory = ref<boolean>()
-const tableHeight = ref<boolean>()
 const isHasLogo = ref<boolean>()
 const isHasCollapsed = ref<boolean>()
 const isHasGrey = ref<boolean>()
@@ -73,7 +61,6 @@ watch(()=>getConfigState('isHasCollapsed'),(newVal)=>{
 
 const setDefaultVal = ()=>{
     isHasHistory.value = getConfigState('isHasHistory')
-    tableHeight.value = getConfigState('tableHeight')
     isHasLogo.value = getConfigState('isHasLogo')
     isHasCollapsed.value = getConfigState('isHasCollapsed')
     isHasGrey.value = getConfigState('isHasGrey')

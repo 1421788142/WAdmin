@@ -1,5 +1,5 @@
 import { Http } from "@/plugins/axios";
-import { tableResultData } from '@/apis/interface'
+import { tableResultData, queryTableInterface } from '@/apis/interface'
 
 export interface loginInterface {
     userName:string,
@@ -15,6 +15,15 @@ export interface userInterface {
     createdTime :string,
 }
 
+export interface roleInterafce {
+    id: number,
+    roleName: string,
+    memo: string,
+    createdTime: string,
+    order: number,
+    menuId: string,
+}
+
 export const codeImg = () => {
     return Http.get<any>({ url:`/phcent-api/seller/code`},{
         apiUrl:'https://proapi.phcent.com',//修改请求地址
@@ -27,6 +36,10 @@ export const login = (data:loginInterface) => {
 
 export const getRouter = () => {
     return Http.get<tableResultData<menuListType>>({ url:`user/router`})
+}
+
+export const getRole = (data:queryTableInterface) => {
+    return Http.get<tableResultData<roleInterafce>>({ url:`user/role`,data})
 }
 
 export const loginExpired = () => {
