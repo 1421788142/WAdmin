@@ -1,5 +1,5 @@
 {
-  "name": "xiaowuadmin",
+  "name": "WAdmin",
   "private": true,
   "version": "0.0.0",
   "scripts": {
@@ -28,6 +28,7 @@
     "screenfull": "^6.0.2",
     "sortablejs": "^1.15.0",
     "vite-plugin-html": "^3.2.0",
+    "vite-plugin-svg-icons": "^2.0.1",
     "vite-plugin-vue-setup-extend": "^0.4.0",
     "vue": "^3.2.25",
     "vue-i18n": "^9.1.10",

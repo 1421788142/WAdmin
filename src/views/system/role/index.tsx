@@ -82,9 +82,6 @@ export const usePageData = ()=>{
 			{
 				title:'状态',
 				dataIndex: "status",
-				tag:true,
-				enum:starsList,
-				showEnum:true,
 				search:true,
 				searchType:'a-select',
 				componentOption:{

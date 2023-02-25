@@ -2,7 +2,7 @@ import { App } from 'vue'
 import { createI18n } from 'vue-i18n'
 import zh_CN from './lang/zh'
 import en_US from './lang/en'
-let config = localStorage.getItem('XiaoWuAdminConfig')
+let config = localStorage.getItem('WAdminConfig')
 let language = config ? JSON.parse(config).language : 'zh_CN'
 let i18n = createI18n({
     legacy: false,

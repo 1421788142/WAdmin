@@ -5,6 +5,9 @@
 				<permission-button btnType="primary" @click="add" />
 				<a-button type="dashed" danger :disabled="!scope.isSelected" class="mx-2">批量删除</a-button>
 			</template>
+			<template #status="{ row }">
+				<a-switch v-model:checked="row.record.status" @click="change(row.record)" :checkedValue="1" checked-children="正常" un-checked-children="禁用" />
+			</template>
 			<template #operation="{ row }">
 				<div class="w-table-btn">
 					<a-button type="text" @click="update(row.record)" class="!flex !items-center">
@@ -70,6 +73,11 @@ const submitApi = async (params:roleInterafce) => {
 	}
 	visible.value = false
 	table.value.refresh()
+}
+
+const change = (params:roleInterafce)=>{
+	params.status = params.status === 1 ? 1 : 2
+	// table.value.refresh()
 }
 
 </script>

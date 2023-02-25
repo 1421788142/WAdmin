@@ -23,8 +23,6 @@ import { topInfoVue } from './index';
 import { leftContent } from './index';
 import { leftMessage } from './index';
 import { navItem } from './index';
-const route = useRoute()
-const loading = ref<boolean>(false)
 </script>
 
 <style scoped>

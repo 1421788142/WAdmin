@@ -20,6 +20,7 @@ export interface roleInterafce {
     roleName: string,
     memo: string,
     createdTime: string,
+    status: number,
     order: number,
     menuId: string,
 }

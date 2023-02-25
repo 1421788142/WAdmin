@@ -46,7 +46,7 @@ export default defineStore('config', {
     persist: {
         enabled: true,
         strategies: [{
-            key: 'XiaoWuAdminConfig',
+            key: 'WAdminConfig',
             storage:localStorage
         }]
     }

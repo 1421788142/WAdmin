@@ -2,7 +2,7 @@
 
 ### 前言 📖
 
-XiaoWuAdmin，基于 Vue3.2、TypeScript、Vite2、Pinia、antDesign 开源的一套后台管理模板，目前利用空余时间开发。项目中很多样式都是借鉴其它的管理系统，但是代码都是自己敲的，整个项目还有很多地方不完善，后期会持续更新，希望大家能多提意见。(声明一下，我的v3和ts使用的并不是很熟练，我开发这个项目真的是为了学习v3和ts，希望大家多提提issuse，我会努力修改的)
+WAdmin，基于 Vue3.2、TypeScript、Vite2、Pinia、antDesign 开源的一套后台管理模板，目前利用空余时间开发。项目中很多样式都是借鉴其它的管理系统，但是代码都是自己敲的，整个项目还有很多地方不完善，后期会持续更新，希望大家能多提意见。(声明一下，我的v3和ts使用的并不是很熟练，我开发这个项目真的是为了学习v3和ts，希望大家多提提issuse，我会努力修改的)
 
 ### ？为什么开发这个管理系统 🤷‍♂️
 
@@ -22,7 +22,7 @@ XiaoWuAdmin，基于 Vue3.2、TypeScript、Vite2、Pinia、antDesign 开源的�
 
 ### 三、Git 仓库地址 (欢迎 Star⭐)
 
-- GitHub：https://github.com/1421788142/XiaoWuAdmin
+- GitHub：https://github.com/1421788142/WAdmin
 
 ### 四、🔨🔨🔨 项目功能
 
@@ -44,7 +44,7 @@ XiaoWuAdmin，基于 Vue3.2、TypeScript、Vite2、Pinia、antDesign 开源的�
 
 ```
 # GitHub
-git clone https://github.com/1421788142/XiaoWuAdmin.git
+git clone https://github.com/1421788142/WAdmin.git
 ```
 
 - **Install**

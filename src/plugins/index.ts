@@ -6,6 +6,7 @@ import { setupAntDesign } from "./antDesign";
 import { setupPinia } from "./pinia";
 
 import "driver.js/dist/driver.min.css";//引导
+import 'virtual:svg-icons-register' //本地icon
 
 export async function setupPlugins(app:App){
     setupPinia(app)

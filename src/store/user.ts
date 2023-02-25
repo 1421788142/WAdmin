@@ -133,7 +133,7 @@ export default defineStore('user',{
     persist: {
         enabled: true,
         strategies: [{
-            key: 'XiaoWuAdminUser'
+            key: 'WAdminUser'
         }]
     }
 })
