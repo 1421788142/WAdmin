@@ -10,10 +10,10 @@ interface stateInterface {
 	formColumns:useFormProps[]
 }
 
-const starsList = [
+const starsList = ref<any[]>([
 	{ label:'禁用', tagType: "red", value: 1 },
 	{ label:'正常', tagType: "green", value: 2 },
-]
+])
 
 // 自定义(使用tsx语法)
 const renderAge = ({ row, value }) => {
@@ -82,11 +82,10 @@ export const usePageData = ()=>{
 			{
 				title:'状态',
 				dataIndex: "status",
-				search:true,
 				searchType:'a-select',
 				componentOption:{
 					options:starsList,
-				}
+				},
 			},
 			{
 				title:'备注',

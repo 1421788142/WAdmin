@@ -41,6 +41,7 @@ export const usePageData = (refresh:Function)=>{
 				width: 50,
 				title:'图标',
 				dataIndex: "icon",
+				hide:true,
 			},
 			{
 				width: 400,
