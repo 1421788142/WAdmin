@@ -23,17 +23,20 @@ interface useTableColumn {
 	title: string; // 单元格标题（非特殊类型必填）
 	width?: number | string; // 列宽
 	height?: string; // 列宽
-	isShow?: boolean; // 是否显示
+	isShow?: boolean; // 可通过表格设置是否线上
+	hide?:boolean, // 是否渲染(不会添加到表格设置)
 	clearable? :boolean, //是否可清空
 	tag?: boolean; // 是否是标签展示
 	ellipsis?: boolean; // 文字是否超出隐藏
 	align?: alignProp; //表格内容对齐方向
 	image?: boolean; // 是否是图片展示
-	search?: boolean; // 是否为搜索项
 	showEnum?: boolean; // 表格有枚举时是否显示枚举内容
 	resizable?: boolean; // 是否改变表头宽度
+	search?: boolean; // 是否为搜索项(有searchType默认为搜索)
 	searchType?: searchType; // 搜索项类型
-	sorter?: Object; // 表头排序
+	tableSort?: number,//表格排序
+	searchSort?: number,//搜索模块排序
+	sorter?: Object; // 表头排序方法
 	initSearchParam?: string | number | boolean | any[]; // 搜索项初始值
 	enum?: enumProps[]; // 枚举类型（渲染值的字典）
 	fixed?: fixedProp //表格固定
