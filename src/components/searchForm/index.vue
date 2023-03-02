@@ -34,8 +34,8 @@ import { DownOutlined, UpOutlined } from '@ant-design/icons-vue';
 import searchFormItem from './components/searchFormItem.vue'
 
 
-interface UseTableProps {
-	columns: useTableColumn[]; // 搜索配置列
+interface useTableProps {
+	columns: useSearchForm[]; // 搜索配置列
 	searchParam: any; // 搜索参数
     loading: boolean, //请求loading
 	search: (params: any) => void; // 搜索方法
@@ -43,7 +43,7 @@ interface UseTableProps {
 }
 
 // 默认值
-const props = withDefaults(defineProps<UseTableProps>(), {
+const props = withDefaults(defineProps<useTableProps>(), {
 	columns: () => [],
 	searchParam: {}
 });
@@ -53,7 +53,7 @@ const searchShow = ref(false);
 const maxLength = ref<number>(4)//搜索最大展示数量
 
 // 根据是否展开配置搜索项长度
-const getSearchList = computed((): useTableColumn[] => {
+const getSearchList = computed((): useSearchForm[] => {
 	if (searchShow.value) return props.columns;
 	return props.columns.slice(0, maxLength.value);
 });

@@ -1,11 +1,11 @@
 <template>
-	<a-form-item :name="item.dataIndex" :label="item.label || item.title">
+	<a-form-item v-bind="item">
 		<slot>
 			<component
 				v-if="!item.renderForm"
-				:is="item.searchType || 'a-input'" 
+				:is="item.formItemType" 
 				v-bind="item.componentOption"
-				v-model:value="searchParam[item.dataIndex!]"
+				v-model:value="searchParam[item.name!]"
 				:row="searchParam"
 			></component>
 			<component v-else :is="item.renderForm" :row="searchParam"></component>
@@ -14,7 +14,7 @@
 </template>
 <script setup lang="ts">
 const props = defineProps<{
-	item: useTableColumn; // 具体每一个搜索项的配置
+	item: useSearchForm; // 具体每一个搜索项的配置
 	searchParam: any; // 搜索参数
 }>()
 </script>
