@@ -144,17 +144,6 @@ const props = withDefaults(defineProps<useTableProps>(), {
 	selection: true,
 	borderShow: true,
 });
-// 表格列配置项处理（添加 isShow 属性，控制显示/隐藏）
-const tableColumns = ref<useTableColumn[]>();
-tableColumns.value = props.columns.map(item => {
-	return {
-		...item,
-		isShow: item?.isShow ?? true,
-		resizable: item?.resizable ?? true,
-	};
-});
-// 修改表格排序
-const setColumns = (data:useTableColumn[]) => tableColumns.value = data;
 // 表格多选 Hooks
 const { 
 	selectionChange,
@@ -180,16 +169,38 @@ const {
 	props.pagination, 
 	props.setTableList, 
 );
+const getSort = (sort:number)=> sort ?? 10
+// 过滤需要搜索的配置项
+const searchColumns = ref<useSearchForm[]>([])
+searchColumns.value = props.columns.filter(x=>x.search || x.searchType).map<useSearchForm>(column=>{
+	initSearchParam.value[column.dataIndex!] = column?.initSearchParam || ''
+	return {
+		label:column.title,
+		name:column.dataIndex || column.newSearch,
+		formItemType:column.searchType || 'a-input',
+		componentOption:column.componentOption,
+		renderForm:column.renderForm,
+		searchSort:column.searchSort
+	}
+}).sort((a,b)=>{
+	return getSort(a.searchSort) - getSort(b.searchSort)
+})
+
+// 表格列配置项处理（添加 isShow 属性，控制显示/隐藏）
+const tableColumns = ref<useTableColumn[]>();
+tableColumns.value = props.columns.map(item => {
+	return {
+		...item,
+		isShow: item?.isShow ?? true,
+		resizable: item?.resizable ?? true,
+	};
+}).filter(x=>!x.hide).sort((a,b)=>{
+	return getSort(a.tableSort) - getSort(b.tableSort)
+});
+// 修改表格排序
+const setColumns = (data:useTableColumn[]) => tableColumns.value = data;
 // 重置表格已选的值
 watch(loading,()=>selectionChange([]))
-// 过滤需要搜索的配置项
-const searchColumns = props.columns.filter(item => item.search);
-// 设置搜索表单的默认值
-searchColumns.forEach(column => {
-	if (![undefined,null].includes(column.initSearchParam)) {
-		initSearchParam.value[column.dataIndex!] = column.initSearchParam;
-	}
-});
 // 	修改表头宽度
 const handleResizeColumn = (w:number, col:useTableColumn) => {
 	let columns = tableColumns.value.filter(x=>x.dataIndex === col.dataIndex)

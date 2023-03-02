@@ -85,7 +85,7 @@ const reset = (type: 'reset' | 'clear')=>{
     }
 }
 
-defineExpose({ formParam, submitForm, reset })
+defineExpose({ formParam, submitForm, reset, setupFormData })
 
 </script>
 
