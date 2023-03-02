@@ -1,10 +1,21 @@
 {
-  "name": "WAdmin",
+  "name": "w-admin",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "w-admin后台管理模板",
+  "author": {
+    "name": "xiaowu",
+    "email": "1421788142@qq.com",
+    "url": "https://github.com/1421788142"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "github",
+    "url": "https://github.com/1421788142/WAdmin.git"
+  },
   "scripts": {
-    "dev": "vite",
-    "build": "vue-tsc --noEmit && vite build",
+    "dev": "vite --open",
+    "build": "vue-tsc --noEmit && vite build --open",
     "preview": "vite preview"
   },
   "dependencies": {
