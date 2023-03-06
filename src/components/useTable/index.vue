@@ -175,8 +175,8 @@ const searchColumns = ref<useSearchForm[]>([])
 searchColumns.value = props.columns.filter(x=>x.search || x.searchType).map<useSearchForm>(column=>{
 	initSearchParam.value[column.dataIndex!] = column?.initSearchParam || ''
 	return {
-		label:column.title,
-		name:column.dataIndex || column.newSearch,
+		label:column.searchTitle || column.title,
+		name:column.searchKey || column.dataIndex,
 		formItemType:column.searchType || 'a-input',
 		componentOption:column.componentOption,
 		renderForm:column.renderForm,

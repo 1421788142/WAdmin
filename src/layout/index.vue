@@ -224,7 +224,7 @@ const openSet = ()=>{
     position: fixed;
     width: 250px;
     padding: 10px;
-    height: 140px;
+    max-height: 140px;
     overflow: auto;
     right: 20px;
     bottom: 20px;

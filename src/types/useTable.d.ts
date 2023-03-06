@@ -19,8 +19,9 @@ type fixedProp = 'left' | 'right' //固定列表
 type alignProp = 'left' | 'center' | 'right' //固定列表
 interface useTableColumn {
 	dataIndex: string; // 单元格数据（非特殊类型必填）
-	newSearch?: string; // 搜索条件 有则取 newSearch 无则取dataIndex 
+	searchKey?: string; // 搜索条件 有则取 searchKey 无则取dataIndex 
 	title: string; // 单元格标题（非特殊类型必填）
+	searchTitle?: string; // 单元格搜索表单lable
 	width?: number | string; // 列宽
 	height?: string; // 列宽
 	isShow?: boolean; // 可通过表格设置是否线上
