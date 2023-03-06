@@ -104,7 +104,7 @@ export const usePageData = ()=>{
 					label: '用户年龄',
 					rules: [{ required: true, trigger: ['change', 'blur'] }],
 				},
-				renderForm:renderAge
+				renderForm:renderAge,
 			},
 			{
 				name: 'url',

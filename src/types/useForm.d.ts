@@ -24,6 +24,7 @@ declare interface useFormProps {
 	componentOption?: any, //表单组件api组合
 	formItemOption: any, //form-item的api
 	name: string, //form对应的键名
+	sort?: number, //form对应的键名
 	tooltip?: string, //label 提示语
 	tooltipPlacement?: string, //label 提示语位置
 	label?: string, // 使用tooltip时需要label(并且formItemOption里面不能有label,否则冲突)

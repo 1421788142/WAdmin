@@ -44,6 +44,7 @@ const props = withDefaults(defineProps<useForm>(),{
     span:12
 })
 
+const getSort = (sort:number)=> sort ?? 10
 // 设置form表单数据
 const formParam = ref<any>({})
 // 重置数据
@@ -61,6 +62,8 @@ const formColumns = props.columns.map((item):useFormProps=>{
     return {
         ...item
     }
+}).sort((a,b)=>{
+    return getSort(a.sort) - getSort(b.sort)
 })
 
 // 表单
