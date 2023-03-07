@@ -9,10 +9,11 @@ import { reactive, computed, onMounted, toRefs } from "vue";
  * */
 
 export const useTable = (
-	api: (params: any) => Promise<any>, 
-	initParam: object = {}, 
-	isPageable: boolean = true, 
-	setTableList: (data: any) => any, 
+	api: (params: any) => Promise<any>,
+	initParam: object = {},
+	isPageable: boolean = true,
+	setTableList: (data: any) => any,
+	setParams: (data: any) => any
 ) => {
 	const state = reactive<Table.TableStateProps>({
 		// 表格数据
@@ -68,7 +69,7 @@ export const useTable = (
 			// 先更新查询参数
 			updatedTotalParam();
 			Object.assign(state.totalParam, initParam);
-			const { data } = await api(state.totalParam);
+			const { data } = await api(setParams ? setParams(state.totalParam) : state.totalParam);
 			state.tableData = setTableList ? setTableList(data) : (() => (isPageable ? data.dataList : data))()
 			// 解构后台返回的分页数据(如果有分页更新分页信息)
 			const { pageNum, pageSize, total } = data;

@@ -124,6 +124,7 @@ interface useTableProps {
 	columns: useTableColumn[]; // 列配置项
 	requestApi: (params: any) => Promise<any>; // 请求表格数据的api ==> 必传
 	setTableList?: (data: any) => any // 重新处理table数据 ==>非必填
+	setParams?: (data: any) => any // 处理请求前的参数 例如下拉多选value值为数组,但是后台只接受字符串,此时需要join
 	pagination?: boolean; // 是否需要分页组件 ==> 非必传（默认为true）
 	initParam?: any; // 初始化请求参数 ==> 非必传（默认为{}）
 	toolButton?: boolean; // 是否显示表格功能按钮 ==> 非必传（默认为true）
@@ -164,16 +165,17 @@ const {
 	setupPagination,
 	loading
 } = useTable(
-	props.requestApi, 
-	props.initParam, 
-	props.pagination, 
-	props.setTableList, 
+	props.requestApi,
+	props.initParam,
+	props.pagination,
+	props.setTableList,
+	props.setParams,
 );
 const getSort = (sort:number)=> sort ?? 10
 // 过滤需要搜索的配置项
 const searchColumns = ref<useSearchForm[]>([])
 searchColumns.value = props.columns.filter(x=>x.search || x.searchType).map<useSearchForm>(column=>{
-	initSearchParam.value[column.dataIndex!] = column?.initSearchParam || ''
+	initSearchParam.value[column.searchKey || column.dataIndex] = column?.initSearchParam || ''
 	return {
 		label:column.searchTitle || column.title,
 		name:column.searchKey || column.dataIndex,
