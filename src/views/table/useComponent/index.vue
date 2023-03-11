@@ -1,8 +1,8 @@
 <template>
 	<div class="h-full">
-		<useTable ref="table" :requestApi="userList" :columns="tableColumns">
+		<w-table ref="table" :requestApi="userList" :columns="tableColumns">
 			<template #tableHeader="scope">
-				<import-data class="inline-block" xlsxTitle="用户表格模板" :xlsxData="[]" :columns="xlsxHeader" />
+				<!-- <import-data class="inline-block" xlsxTitle="用户表格模板" :xlsxData="[]" :columns="xlsxHeader" /> -->
 				<a-button type="primary" class="mx-2" @click="downloadTemplate">
 					<template #icon><DownloadOutlined /></template>导出表格
 				</a-button>
@@ -30,18 +30,18 @@
 					</a-button>
 				</div>
 			</template>
-		</useTable>
+		</w-table>
 
 		<!-- 新增编辑框 -->
-		<useModal :destroyOnClose="false" :title="title" width="1000px" v-model:visible="visible" @btnOk="btnOk">
-			<useForm :submitApi="submitApi" :columns="formColumns" ref="form" :initFormParam="initFormParam">
+		<w-modal :destroyOnClose="false" :title="title" width="1000px" v-model:visible="visible" @btnOk="btnOk">
+			<w-form :submitApi="submitApi" :columns="formColumns" ref="form" :initFormParam="initFormParam">
 				<template #avatarFormItem="{ row }">
-					<upload v-model:value="imgList" uploadType="image" actionUrl="/upload/image" :total="1" @change="(value)=>{
+					<w-upload v-model:value="imgList" uploadType="image" actionUrl="/upload/image" :total="1" @change="(value)=>{
 						row.avatar = value[0]?.url ?? ''
 					}" />
 				</template>
-			</useForm>
-		</useModal>
+			</w-form>
+		</w-modal>
 	</div>
 </template>
 

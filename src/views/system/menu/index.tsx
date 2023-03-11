@@ -117,7 +117,7 @@ export const usePageData = (refresh:Function)=>{
 				formItemOption:{ label: '图标' },
 				renderForm:({ row, value })=>{
 					return (
-						<iconPicker v-model:icon={row['icon']} />
+						<w-icon-picker v-model:icon={row['icon']} />
 					);
 				},
 				isHide:(row:any)=> row.menuType !== 'F'

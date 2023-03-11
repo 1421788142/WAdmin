@@ -17,6 +17,7 @@
         <div style="cursor: move">
           <modalHeader
             :title="title"
+            :destroyOnClose="destroyOnClose"
             :isFull="isFull"
             @change="setupFull"
             @cancel="cancel"

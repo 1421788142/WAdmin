@@ -9,7 +9,7 @@
             <div class="w-full md:w-[29%] mt-2 md:mt-0">
                 <navItem class="bg-white dark:bg-[#1F1F1F]"/>
                 <a-card title="GitHub信息" bordered class="!mt-3">
-                    
+                    <w-svg-icon name="binggun" />
                 </a-card>
             </div>
         </div>
@@ -17,8 +17,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useRoute } from 'vue-router';
 import { topInfoVue } from './index';
 import { leftContent } from './index';
 import { leftMessage } from './index';

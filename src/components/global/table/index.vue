@@ -3,14 +3,14 @@
 		class="flex flex-col h-full px-2 pt-2 border border-gray-200 dark:border-gray-700 rounded shadow-sm overflow-auto bg-white dark:bg-[#141414]"
 	 	:class="{'pb-2':!pagination}">
 		<!-- 表格搜索 -->
-        <searchForm
+        <w-search-form
             :search="search"
 			:reset="reset"
 			:loading="loading"
 			:searchParam="searchParam"
 			:columns="searchColumns"
 			v-show="isShowSearch"    
-        ></searchForm>
+        />
 		<!-- 表格头部 -->
 		<div class="flex justify-between mb-2">
 			<div class="flex items-center max-w-[25%]">
@@ -105,7 +105,7 @@
 				</a-table-column>
 			</template>
 		</a-table>
-		<usePagination
+		<w-pagination
 			v-if="pagination && pageable.total"
 			:pageable="pageable"
 			:setupPagination="setupPagination"

@@ -8,20 +8,20 @@
         <a-row :gutter="gutter">
             <template v-for="item in formColumns" :key="item.prop">
                 <a-col :span="span" v-if="item.isHide ? item.isHide(formParam) : true">
-                    <useFormItem :formParam="formParam" :item="item">
+                    <formItemVue :formParam="formParam" :item="item">
                         <slot :name="`${item['name']}FormItem`" :row="formParam"></slot>
-                    </useFormItem>
+                    </formItemVue>
                 </a-col>
             </template>
         </a-row>
         <!-- 自定义插入内容 -->
-        <slot name="content"></slot>
+        <slot name="content" :scoped="formParam"></slot>
     </a-form>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import useFormItem from './components/useFormItem.vue';
+import formItemVue from './components/formItem.vue';
 import { FormInstance } from 'ant-design-vue';
 
 interface useForm {
@@ -75,7 +75,7 @@ const submitForm = async ()=>{
 }
 
 // 重置
-const reset = (type: 'reset' | 'clear')=>{
+const reset = (type?: 'reset' | 'clear')=>{
     if(!formRef.value) return
     if(!type){
         formRef.value.clearValidate()

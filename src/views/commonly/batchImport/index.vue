@@ -1,10 +1,10 @@
 <template>
     <a-card title="导入数据" :bordered="false">
         <template #extra>
-            <import-data xlsxTitle="用户表格模板" :xlsxData="xlsxData" :columns="xlsxHeader" />
+            <w-import-data xlsxTitle="用户表格模板" :xlsxData="xlsxData" :columns="xlsxHeader" />
         </template>
          <div>
-        <div class="flex justify-end my-2">
+            <div class="flex justify-end my-2">
                 <a-button type="primary" @click="downloadTemplate">
                     <template #icon><DownloadOutlined /></template>导出表格
                 </a-button>

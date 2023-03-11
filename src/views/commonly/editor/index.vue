@@ -5,16 +5,16 @@
                 <span class="mr-4 text-2xl font-bold">编辑器组件</span>
                 <a-button type="primary" @click="dialogVisible = true">内容预览</a-button>
             </div>
-            <wangEditor height="400px" v-model:value="content" />
+            <w-wang-editor height="400px" v-model:value="content" />
         </a-card>
-        <useModal
+        <w-modal
             title="富文本内容预览"
             width="1000px"
             @check-validate="checkValidate"
             v-model:visible="dialogVisible"
         >
             <div class="view" v-html="content"></div>
-        </useModal>
+        </w-modal>
     </div>
 </template>
 

@@ -30,7 +30,7 @@ import { ref } from 'vue';
 import aoaToSheetXlsx from '@/utils/aoaToSheetXlsx';
 import uploadXlsxVue from './uploadXlsx.vue';
 import { message } from 'ant-design-vue';
-const visible = ref<Boolean>(false)
+const visible = ref<boolean>(false)
 interface columnProps {
     title:string,
     valueKey:string,
@@ -39,7 +39,7 @@ interface importProps {
     title?:string,
     xlsxTitle?:string,
     xlsxData:any[],
-    columns:columnProps[]
+    columns:string[]
 }
 const props = withDefaults(defineProps<importProps>(),{
     title:"批量导入",

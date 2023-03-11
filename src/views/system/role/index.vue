@@ -1,8 +1,8 @@
 <template>
 	<div class="h-full">
-		<useTable ref="table" :selection="false" :requestApi="getRole" :columns="tableColumns">
+		<w-table ref="table" :selection="false" :requestApi="getRole" :columns="tableColumns">
 			<template #tableHeader="scope">
-				<permission-button btnType="primary" @click="add" />
+				<w-button btnType="primary" @click="add" />
 				<a-button type="dashed" danger :disabled="!scope.isSelected" class="mx-2">批量删除</a-button>
 			</template>
 			<template #status="{ row }">
@@ -20,11 +20,11 @@
 					</a-button>
 				</div>
 			</template>
-		</useTable>
+		</w-table>
 		<!-- 新增编辑框 -->
-		<useModal :destroyOnClose="false" :title="title" width="1000px" v-model:visible="visible" @btnOk="btnOk">
-			<useForm :submitApi="submitApi" :initFormParam="initFormParam" :columns="formColumns" ref="form"></useForm>
-		</useModal>
+		<w-modal :destroyOnClose="false" :title="title" width="1000px" v-model:visible="visible" @btnOk="btnOk">
+			<w-form :submitApi="submitApi" :initFormParam="initFormParam" :columns="formColumns" ref="form" />
+		</w-modal>
 	</div>
 </template>
 

@@ -3,9 +3,18 @@
         <a-tooltip placement="bottom" title="搜索">
             <search-outlined class="mr-4" @click="openModal" :style="{fontSize:'20px'}" />
         </a-tooltip>
-        <useModal :title="'查找菜单'" width="50%" :footer="false" v-model:visible="visible">
-            <a-input autocomplete="off" id="searchInput" @change="getMenu(value)" v-model:value="value" size="large" allowClear />
-            <div class="max-h-[500px] overflow-y-auto">
+        <w-modal :title="'查找菜单'" width="50%" :footer="false" v-model:visible="visible">
+            <div class="px-1">
+                <a-input 
+                    autocomplete="off"
+                    id="searchInput" 
+                    @change="getMenu(value)" 
+                    v-model:value="value" 
+                    size="large"
+                    allowClear
+                />
+            </div>
+            <div class="max-h-[500px] overflow-y-auto px-1">
                 <div
                     v-for="(item,index) in menuList" :key="index" @mouseenter="setHighlight(item)" @click="toPage(item)"
                     class="flex items-center justify-between p-4 my-2 bg-white rounded-md shadow-md cursor-pointer dark:bg-[#1f1f1f] dark:text-white dark:border"
@@ -21,25 +30,26 @@
                     </div>
                     <enter-outlined />
                 </div>
-                <div class="my-4" v-if="menuList.length === 0">
-                    <a-empty />
+                <div class="my-4" v-if="!menuList.length">
+                    <a-empty description="暂无菜单" />
                 </div>
             </div>
-            <div class="flex items-center mt-4">
+            <div class="flex items-center px-1 mt-4">
                 <div class="flex items-center">
-                    <enter-outlined class="mr-2" />
+                    <enter-outlined class="mr-2 btn" />
                     <span>确认</span>
                 </div>
                 <div class="flex items-center mx-4">
-                    <arrow-up-outlined />
-                    <arrow-down-outlined class="mx-2" />
+                    <arrow-up-outlined class="btn" />
+                    <arrow-down-outlined class="mx-2 btn" />
                     <span>切换</span>
                 </div>
                 <div class="flex items-center">
-                    <span>esc 关闭</span>
+                    <div class="px-1 btn">esc</div>
+                    <span>关闭</span>
                 </div>
             </div>
-        </useModal>
+        </w-modal>
     </div>
 </template>
 
@@ -102,7 +112,6 @@ const onKeyDown = (e:KeyboardEvent)=>{
     if(isHasKey && menuList.value.length && menuActive.value && visible.value){
         let index:number = menuList.value.findIndex(x=>x[x.length -1].path === menuActive.value.path) //下标
         let menuLength = menuList.value.length
-
         let firstItem = menuList.value[0][menuList.value[0].length-1] //第一个菜单
         let lastItem = menuList.value[menuLength-1][menuList.value[menuLength-1].length -1] //最后一个菜单
 
@@ -158,4 +167,15 @@ const openModal = async ()=>{
     }
 }
 
+.btn{
+    display: flex;
+    width: 24px;
+    height: 22px;
+    padding-bottom: 2px;
+    margin-right: .4em;
+    border-radius: 2px;
+    box-shadow: inset 0 -2.5px #cdcde6, inset 0 0 1px 1px #fff, 0 1px 2px 1px #1e235a66;
+    align-items: center;
+    justify-content: center;
+}
 </style>

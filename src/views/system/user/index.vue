@@ -1,9 +1,9 @@
 <template>
 	<div class="flex w-full h-full">
-		<useTreeFilter v-model:value="initParam.deptId" @change="table.refresh()" title="部门列表" />
-		<useTable ref="table" :requestApi="userList" :initParam="initParam" :columns="tableColumns">
+		<w-tree-filter v-model:value="initParam.deptId" @change="table.refresh()" title="部门列表" />
+		<w-table ref="table" :requestApi="userList" :initParam="initParam" :columns="tableColumns">
 			<template #tableHeader="scope">
-				<permission-button btnType="primary" @click="add" />
+				<w-button btnType="primary" @click="add" />
 				<a-button type="dashed" danger :disabled="!scope.isSelected" class="mx-2">批量删除</a-button>
 			</template>
 			<template #url="scope">
@@ -21,17 +21,17 @@
 					</a-button>
 				</div>
 			</template>
-		</useTable>
+		</w-table>
 		<!-- 新增编辑框 -->
-		<useModal :destroyOnClose="false" :title="title" width="1000px" v-model:visible="visible" @btnOk="btnOk">
-			<useForm :submitApi="submitApi" :initFormParam="initFormParam" :columns="formColumns" ref="form">
+		<w-modal :destroyOnClose="false" :title="title" width="1000px" v-model:visible="visible" @btnOk="btnOk">
+			<w-form :submitApi="submitApi" :initFormParam="initFormParam" :columns="formColumns" ref="form">
 				<template #avatarFormItem="{ row }">
-					<upload v-model:value="imgList" uploadType="image" actionUrl="/upload/image" :total="1" @change="(value)=>{
+					<w-upload v-model:value="imgList" uploadType="image" actionUrl="/upload/image" :total="1" @change="(value)=>{
 						row.avatar = value[0]?.url ?? ''
 					}" />
 				</template>
-			</useForm>
-		</useModal>
+			</w-form>
+		</w-modal>
 	</div>
 </template>
 

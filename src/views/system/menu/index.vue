@@ -1,8 +1,8 @@
 <template>
 	<div>
-		<useTable :expandedRowKeys="expandedRowKeys" ref="table" :selection="false" :setTableList="setTableList" :pagination="false" :requestApi="getRouter" :columns="tableColumns">
+		<w-table :expandedRowKeys="expandedRowKeys" ref="table" :selection="false" :setTableList="setTableList" :pagination="false" :requestApi="getRouter" :columns="tableColumns">
 			<template #tableHeader>
-				<permission-button btnType="primary" @click="update()" />
+				<w-button btnType="primary" @click="update()" />
 			</template>
 			<template #icon="{ row }">
 				<component v-if="row.record.icon" :is="row.record.icon"></component>
@@ -13,18 +13,18 @@
 			</template>
 			<template #operation="{ row }">
 				<div class="w-table-btn">
-					<permission-button v-if="row.record.menuType != 'F'" @click="update('add',row.record)" />
-					<permission-button @click="update('edit',row.record)" title="编辑" icon="form-outlined" type="update" />
-					<permission-button @click="update('delete',row.record)" color="red" title="删除" icon="delete-outlined" type="delete" />
+					<w-button v-if="row.record.menuType != 'F'" @click="update('add',row.record)" />
+					<w-button @click="update('edit',row.record)" title="编辑" icon="form-outlined" type="update" />
+					<w-button @click="update('delete',row.record)" color="red" title="删除" icon="delete-outlined" type="delete" />
 				</div>
 			</template>
-		</useTable>
+		</w-table>
 		<!-- 新增编辑 -->
-		<useModal :destroyOnClose="false" :title="title" width="1000px" v-model:visible="visible" @btnOk="btnOk">
-			<useForm :labelCol="{
+		<w-modal :destroyOnClose="false" :title="title" width="1000px" v-model:visible="visible" @btnOk="btnOk">
+			<w-form :labelCol="{
 				span: 6
-			}" :submitApi="submitApi" :columns="formColumns" ref="form" :initFormParam="initFormQuery"></useForm>
-		</useModal>
+			}" :submitApi="submitApi" :columns="formColumns" ref="form" :initFormParam="initFormQuery" />
+		</w-modal>
 	</div>
 </template>
 
@@ -34,7 +34,6 @@ import { getRouter } from '@/apis/user/index'
 import { usePageData } from './index'
 import { arrayToTree, deepCopy } from '@/utils/util'
 import { message, Modal } from 'ant-design-vue'
-import PermissionButton from '@/components/global/permissionButton.vue';
 const expandedRowKeys = ref<any[]>([])
 	const setTableList = (value:any)=>{
 	expandedRowKeys.value = Array.from(new Set(value.dataList.map(x=>x.id)))
