@@ -26,7 +26,7 @@ interface propInterface {
     placeholder?:string,
     defaultExpandAll?:boolean,
 }
-const props = withDefaults(defineProps<propInterface>(),{
+withDefaults(defineProps<propInterface>(),{
     title:'部门列表',
     fieldNames:{ children:'children', title:'title', key: 'key'},
     multiple:false,

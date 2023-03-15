@@ -9,6 +9,7 @@ export const basicProps = {
     isFull:{ type: Boolean, default: false },//是否全屏
     title:{ type: String, default: '弹框' },
     visible: { type: Boolean, default:false },
+    loading: { type: Boolean, default:false },//按钮loading
     footer: { type: Boolean, default:true },//是否显示底部按钮
     headShow: { type: Boolean, default:true },//是否显示头部
     destroyOnClose: { type: Boolean, default:true },//是否关闭销毁dom

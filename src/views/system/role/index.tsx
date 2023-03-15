@@ -1,19 +1,21 @@
-import { reactive, toRefs, ref, onMounted } from "vue";
+import { reactive, toRefs, ref } from "vue";
 import { getRouter } from '@/apis/user/index'
 import { arrayToTree } from '@/utils/util'
+import { SelectProps } from 'ant-design-vue'
 
 interface stateInterface {
 	title:string, //modal 标题
 	visible:boolean, //modal是否显示
+	loading:boolean,
 	initFormParam:any,
-	tableColumns:useTableColumn[],
-	formColumns:useFormProps[]
+	tableColumns:wTableProps,
+	formColumns:wFormProps
 }
 
-const starsList = ref<any[]>([
-	{ label:'禁用', tagType: "red", value: 1 },
-	{ label:'正常', tagType: "green", value: 2 },
-])
+const starsList:wTableEnumProps = [
+	{ label:'禁用', value: 1 },
+	{ label:'正常', value: 2 },
+]
 
 // 自定义(使用tsx语法)
 const renderAge = ({ row, value }) => {
@@ -55,17 +57,14 @@ export const usePageData = ()=>{
 	const state = reactive<stateInterface>({
 		title:'新增数据',
 		visible:false,
+		loading:false,
 		initFormParam:{
 			order:0,
 			status:2,
 			menuId:[]
 		},
 		tableColumns:[
-			{
-				title:'角色名称',
-				dataIndex: "roleName",
-				search: true,
-			},
+			{ title:'角色名称', dataIndex: "roleName", search: true },
 			{
 				title:'创建时间',
 				dataIndex: "createdTime",
@@ -75,22 +74,13 @@ export const usePageData = ()=>{
 					return t1 - t2
 				},
 			},
-			{
-				title:'排序',
-				dataIndex: "order",
-			},
+			{ title:'排序', dataIndex: "order" },
 			{
 				title:'状态',
 				dataIndex: "status",
-				searchType:'a-select',
-				componentOption:{
-					options:starsList,
-				},
+				searchOption:{ type:'a-select', options:starsList },
 			},
-			{
-				title:'备注',
-				dataIndex: "memo",
-			},
+			{ title:'备注', dataIndex: "memo" },
 			{
 				dataIndex: "operation",
 				title: "操作",
@@ -121,9 +111,7 @@ export const usePageData = ()=>{
 					label: '状态',
 					rules: [{ required: true, trigger: ['change', 'blur'] }],
 				},
-				componentOption:{
-					options:starsList,
-				}
+				componentOption:{ options:starsList }
 			},
 			{
 				name: 'memo',

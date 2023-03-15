@@ -5,16 +5,7 @@ export namespace Layout {
     export interface LayoutStatePrpos {
         menuMixList:menuListType[],
         wapMenuVisible:boolean,
-        darkId:string,
-        isDev:boolean,
-        darkContent:any,
         selectedKeys:string[],
-        modalMinList:{
-            title:string,
-            path:string,
-            uid:string,
-        }[],
-        modalMinUid:string
     }
     export interface menuStatePrpos {
         menuList:menuListType[],

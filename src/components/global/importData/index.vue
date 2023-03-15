@@ -3,7 +3,7 @@
         <a-button type="primary" @click="visible = true">
             <template #icon><DownloadOutlined /></template> {{ title }}
         </a-button>
-        <useModal
+        <w-modal
             :title="title"
             width="1000px"
             v-model:visible="visible"
@@ -21,7 +21,7 @@
                     <a-table :dataSource="item.dataList" :columns="item.columns" />
                 </div>
             </div>
-        </useModal>
+        </w-modal>
     </div>
 </template>
 

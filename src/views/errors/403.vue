@@ -3,7 +3,7 @@
     <div>
       <a-image
         :preview="false"
-        src="https://geeker-admin.vercel.app/assets/png/403-6dc0b7a9.png"
+        :src="getAssetsImage('image/403.png')"
       ></a-image>
     </div>
     <div class="ml-[5vw]">
@@ -15,6 +15,7 @@
 </template>
 
 <script setup lang="ts">
+import { getAssetsImage } from '@/utils/util'
 import { useRouter } from "vue-router";
 const router = useRouter();
 

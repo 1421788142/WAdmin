@@ -1,4 +1,7 @@
 /// <reference types="vite/client" />
+// types interface/type
+/// <reference types="./types/table/index.d.ts" />
+/// <reference types="./types/form/index.d.ts" />
 
 declare module '*.vue' {
   import type { DefineComponent } from 'vue'

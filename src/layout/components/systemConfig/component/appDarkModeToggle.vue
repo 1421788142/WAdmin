@@ -1,16 +1,12 @@
 <template>
     <a-divider orientation="center">主题</a-divider>
     <div class="flex justify-center">
-        <a-switch v-model:checked="checked"  @change="chnageDark">
+        <a-switch v-model:checked="checked" @change="chnageDark">
             <template #checkedChildren>
-                <div class="flex items-center justify-center">
-                    <a-image :preview="false" :width="20" :height="20" src="/svg/sun.svg"></a-image>
-                </div>
+                <w-svg-icon name="sun" :iconStyle="iconStyle" />
             </template>
             <template #unCheckedChildren>
-                <div class="flex items-center justify-center">
-                    <a-image :preview="false" :width="20" :height="20" src="/svg/moon.svg"></a-image>
-                </div>
+                <w-svg-icon name="moon" :iconStyle="iconStyle" />
             </template>
         </a-switch>
     </div>
@@ -24,7 +20,9 @@ const {
     switchDark,
     getConfigState
 } = inject<layoutInterface>('sysConfig')
+
 const checked = ref<boolean>(false)
+const iconStyle = { width:20, height:20 }
 watchEffect(()=>{
     checked.value = getConfigState('isHasDark')
 })

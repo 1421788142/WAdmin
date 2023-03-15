@@ -22,7 +22,7 @@ export const routes = [
     }
 ] as RouteRecordRaw[]
 
-// layout路由
+// 详情菜单路由  meta parentPath 必选参数
 export const layoutRoute = [
     {
         component:'feat/infoPage/detail/index',

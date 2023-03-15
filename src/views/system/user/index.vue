@@ -1,29 +1,24 @@
 <template>
-	<div class="flex w-full h-full">
+	<div class="flex w-full">
 		<w-tree-filter v-model:value="initParam.deptId" @change="table.refresh()" title="部门列表" />
 		<w-table ref="table" :requestApi="userList" :initParam="initParam" :columns="tableColumns">
 			<template #tableHeader="scope">
-				<w-button btnType="primary" @click="add" />
-				<a-button type="dashed" danger :disabled="!scope.isSelected" class="mx-2">批量删除</a-button>
+				<div class="flex flex-row grid-flow-row gap-1">
+					<w-button btnType="primary" @click="add" />
+				</div>
 			</template>
-			<template #url="scope">
-				<a href="">{{scope.row.value}}</a>
+			<template #url="{ row }">
+				<a :href="row.text">{{row.text}}</a>
 			</template>
 			<template #operation="{ row }">
 				<div class="w-table-btn">
-					<a-button type="text" @click="update(row.record)" class="!flex !items-center">
-						<template #icon><form-outlined /></template>
-						<span>编辑</span>
-					</a-button>
-					<a-button danger type="text" class="!flex !items-center">
-						<template #icon><delete-outlined /></template>
-						<span>删除</span>
-					</a-button>
+					<w-button type="update" @click="update(row.record)"/>
+					<w-button color="red" type="delete" @click="update(row.record)"/>
 				</div>
 			</template>
 		</w-table>
 		<!-- 新增编辑框 -->
-		<w-modal :destroyOnClose="false" :title="title" width="1000px" v-model:visible="visible" @btnOk="btnOk">
+		<w-modal :destroyOnClose="false" :loading="loading" :title="title" width="1000px" v-model:visible="visible" @btnOk="btnOk">
 			<w-form :submitApi="submitApi" :initFormParam="initFormParam" :columns="formColumns" ref="form">
 				<template #avatarFormItem="{ row }">
 					<w-upload v-model:value="imgList" uploadType="image" actionUrl="/upload/image" :total="1" @change="(value)=>{
@@ -40,7 +35,8 @@ import { ref, nextTick } from 'vue'
 import { usePageData } from './index'
 import { userList, userListInterface } from '@/apis/table/useTable'
 import { message } from 'ant-design-vue'
-import { deepCopy } from '@/utils/util'
+import formVue from '@/components/global/form/index.vue'
+import tableVue from '@/components/global/table/index.vue'
 
 const {
 	tableColumns,
@@ -48,12 +44,19 @@ const {
 	initFormParam,
 	visible,
 	title,
-	initParam
+	initParam,
+	imgList,
+	loading
 } = usePageData()
 
-const imgList = ref<any[]>([])
+const [
+	form,
+	table
+] = [
+	ref<RefComponent<typeof formVue>>(),
+	ref<RefComponent<typeof tableVue>>()
+]
 
-const form = ref<ComponentRef>()
 const add = ()=>{
 	visible.value = true
 	nextTick(()=>{
@@ -64,15 +67,20 @@ const update = (value:userListInterface)=>{
 	visible.value = true
 	title.value = '编辑数据'
 	nextTick(()=>{
-		form.value.formParam = deepCopy<userListInterface>(value)
-		form.value.reset('clear')
+		form.value.reset(value,'clear')
 	})
 }
-const btnOk = ()=>{
-	form.value.submitForm()
+const btnOk = async ()=>{
+	try {
+		loading.value = true
+		let { code, data } = await form.value.submitForm<userListInterface>()
+		if(code === 201) return
+		submitApi(data)
+	} finally {
+		loading.value = false
+	}
 }
 
-const table = ref<ComponentRef>()
 const submitApi = async (params:userListInterface) => {
 	if(params.id){
 		message.warn('修改失败,演示模式不允许操作')

@@ -15,7 +15,7 @@
 </template>
 
 <script setup lang="ts">
-import { useMenu } from '@/layout/hooks/useMenu';
+import { useMenu } from '@/hooks/useMenu';
 import menuItemVue from './menuItem.vue';
 import { useRoute } from 'vue-router';
 const route = useRoute()

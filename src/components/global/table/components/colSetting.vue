@@ -42,31 +42,31 @@ import Sortablejs from 'sortablejs';
 import type Sortable from 'sortablejs';
 import { isNullAndUnDef } from '@/utils/is';
 import { deepCopy } from '@/utils/util'
-interface TableProps {
-    columns: useTableColumn[]; // 搜索配置列
+interface propsInterface {
+    columns: wTableProps; // 搜索配置列
 }
-const props = defineProps<TableProps>()
+const props = defineProps<propsInterface>()
 const emit = defineEmits(['change'])
 
 // 显示的列表项
 let checkedList = ref<string[]>([])
 watch(()=>props.columns,(newVal)=>{
-    checkedList.value = newVal.filter(f=>f.isShow).map(m=>m.dataIndex)
+    checkedList.value = newVal.filter(f=>f.show).map(m=>m.dataIndex)
 },{ deep:true, immediate:true })
 
 // 修改列表是否显示
 const setChecked = (checkedValue:string[])=>{
-    let columnList = deepCopy<useTableColumn[]>(props.columns)
-    columnList.forEach(item=>item.isShow = checkedValue.some(x=>item.dataIndex === x))
+    let columnList = deepCopy<wTableProps>(props.columns)
+    columnList.forEach(item=>item.show = checkedValue.some(x=>item.dataIndex === x))
     emit('change', columnList);
 }
 
 // 修改列表是否固定
 const setupFixed = (dataIndex:string,type:any) =>{
-    let columnList = deepCopy<useTableColumn[]>(props.columns)
+    let columnList = deepCopy<wTableProps>(props.columns)
     let num = 0
-    columnList.forEach((item:useTableColumn,index)=>{
-        if(item.dataIndex === dataIndex && item.isShow){
+    columnList.forEach((item:wTableProp,index)=>{
+        if(item.dataIndex === dataIndex && item.show){
             num ++
             if(num === 1){
                 item.fixed = item.fixed ? '' :  type
@@ -101,7 +101,7 @@ const handleVisibleChange = ()=>{
         onEnd: (evt:Sortable) => {
             const { oldIndex, newIndex } = evt;
             if (isNullAndUnDef(oldIndex) || isNullAndUnDef(newIndex) || oldIndex === newIndex) return
-            let columnList = deepCopy<useTableColumn[]>(props.columns)
+            let columnList = deepCopy<wTableProps>(props.columns)
             // 发现有固定则退出拖拽
             if(columnList[oldIndex]?.fixed || columnList[newIndex]?.fixed) return
             if (oldIndex > newIndex) {
@@ -120,8 +120,8 @@ const handleVisibleChange = ()=>{
     });
 }
 // 左侧箭头css
-const arrowClass = (item:useTableColumn,type:string)=>{
-    return !item.isShow ? '!text-gray-200 cursor-not-allowed' : item.fixed === type ? '!text-sky-700' : (item.isShow ? '!text-gray-400' : '!text-gray-200')
+const arrowClass = (item:wTableProp,type:string)=>{
+    return !item.show ? '!text-gray-200 cursor-not-allowed' : item.fixed === type ? '!text-sky-700' : (item.show ? '!text-gray-400' : '!text-gray-200')
 }
 </script>
 

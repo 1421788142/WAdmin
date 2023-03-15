@@ -5,9 +5,20 @@
     >
         <a-form class="flex-1" :model="searchParam" name="formRef">
             <a-row :gutter="16">
-                <template v-for="item in getSearchList" :key="item.prop">
+                <template v-for="item in searchColumns" :key="item.prop">
                     <a-col :xs="24" :sm="12" :lg="6" :order="1">
-                        <search-form-item :item="item" :searchParam="searchParam" />
+                        <a-form-item v-bind="item">
+                            <slot>
+                                <component
+                                    v-if="!item.renderForm"
+                                    :is="item.type" 
+                                    v-bind="item.searchOption"
+                                    v-model:value="searchParam[item.name!]"
+                                    :row="searchParam"
+                                ></component>
+                                <component v-else :is="item.renderForm" :row="searchParam"></component>
+                            </slot>
+                        </a-form-item>
                     </a-col>
                 </template>
             </a-row>
@@ -18,9 +29,9 @@
                 <a-button @click="reset" class="ml-1">重置</a-button>
             </div>
             <div class="flex pt-1 ml-1 cursor-pointer" v-if="columns.length > maxLength">
-                <div class="flex items-center" @click="searchShow=!searchShow">
-                    <span class="mr-1">{{ searchShow ? "收起" : "展开" }}</span>
-                    <component :is="searchShow ? UpOutlined : DownOutlined"></component>
+                <div class="flex items-center" @click="isShowMax = !isShowMax">
+                    <span class="mr-1">{{ isShowMax ? "收起" : "展开" }}</span>
+                    <component :is="isShowMax ? UpOutlined : DownOutlined"></component>
                 </div>
             </div>
         </div>
@@ -28,14 +39,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-
+import { ref, watch } from 'vue'
 import { DownOutlined, UpOutlined } from '@ant-design/icons-vue';
-import searchFormItem from './components/searchFormItem.vue'
+import { searchProps } from '@/types/table/interface';
 
-
-interface useTableProps {
-	columns: useSearchForm[]; // 搜索配置列
+interface propsInterface {
+	columns: searchProps[]; // 搜索配置列
 	searchParam: any; // 搜索参数
     loading: boolean, //请求loading
 	search: (params: any) => void; // 搜索方法
@@ -43,20 +52,20 @@ interface useTableProps {
 }
 
 // 默认值
-const props = withDefaults(defineProps<useTableProps>(), {
+const props = withDefaults(defineProps<propsInterface>(), {
 	columns: () => [],
 	searchParam: {}
 });
 
 // 是否展开搜索项
-const searchShow = ref(false);
+const isShowMax = ref(false);
 const maxLength = ref<number>(4)//搜索最大展示数量
 
 // 根据是否展开配置搜索项长度
-const getSearchList = computed((): useSearchForm[] => {
-	if (searchShow.value) return props.columns;
-	return props.columns.slice(0, maxLength.value);
-});
+const searchColumns = ref<searchProps[]>([])
+watch(()=>isShowMax.value,(newV)=>{
+    searchColumns.value = newV ? props.columns : props.columns.slice(0, maxLength.value)
+},{immediate: true})
 </script>
 
 <style scoped lang="scss">

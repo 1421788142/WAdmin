@@ -2,8 +2,11 @@
 import { computed, reactive } from "vue";
 import { ConfigProvider } from 'ant-design-vue';
 
-import enUS from 'ant-design-vue/es/locale/en_US'
-import zhCN from 'ant-design-vue/es/locale/zh_CN'
+import enUS from 'ant-design-vue/es/locale/en_US';
+import zhCN from 'ant-design-vue/es/locale/zh_CN';
+import 'ant-design-vue/es/date-picker/locale/zh_CN'
+import dayjs from 'dayjs';
+import 'dayjs/locale/zh-cn';
 
 import config from '@/store/config';
 const { getConfigState } = config()
@@ -17,12 +20,14 @@ ConfigProvider.config({
     theme: colorState,
 });
 // Ant 语言配置
-const i18nLocale = computed((): any => {
-	if (getConfigState('language') && getConfigState('language') == "zh_CN") return zhCN;
-	if (getConfigState('language') == "en_US") return enUS;
-	return "";
-});
+let lan = {
+  zh_CN:zhCN,
+  en_US:enUS,
+}
 
+let lanType = getConfigState('language') === 'zh_CN' ? enUS.locale : zhCN.locale
+dayjs.locale(lanType);
+let i18nLocale = lan[getConfigState('language')]
 </script>
 
 <template>

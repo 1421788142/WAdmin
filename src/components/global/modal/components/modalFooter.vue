@@ -1,7 +1,7 @@
 <template>
     <div>
-        <a-button @click="cancel" v-if="showCancelBtn">{{ cancelText }}</a-button>
-        <a-button @click="confirm" :type="okType" v-if="showOkBtn">{{ okText }}</a-button>
+        <a-button @click="cancel" :disabled="loading" v-if="showCancelBtn">{{ cancelText }}</a-button>
+        <a-button @click="confirm" :loading="loading" :type="okType" v-if="showOkBtn">{{ okText }}</a-button>
     </div>
 </template>
 

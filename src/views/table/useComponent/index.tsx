@@ -3,17 +3,24 @@ import { reactive, toRefs } from 'vue'
 interface stateInterface {
 	title:string, //modal 标题
 	visible:boolean, //modal是否显示
+	loading:boolean, 
 	initFormParam:any,
-	tableColumns:useTableColumn[],
-	formColumns:useFormProps[]
+	tableColumns:wTableProps,
+	formColumns:wFormProps,
+	imgList:any[]
 }
 
-const starsList = [
-	{ label:'一级', tagType: "blue", value: 1 },
-	{ label:'二级', tagType: "#FF9800", value: 2 },
-	{ label:'三级', tagType: "red", value: 3 },
-	{ label:'四级', tagType: "yellow", value: 4 },
-	{ label:'五级', tagType: "#9C27B0", value: 5 },
+const starsList:wTableEnumProps = [
+	{ label:'一级', color: "blue", value: 1 },
+	{ label:'二级', color: "#FF9800", value: 2 },
+	{ label:'三级', color: "red", value: 3 },
+	{ label:'四级', color: "yellow", value: 4 },
+	{ label:'五级', color: "#9C27B0", value: 5 },
+]
+
+const userType:wTableEnumProps = [
+	{ label:'管理员', value: 1 },
+	{ label:'普通用户', value: 2 }
 ]
 
 // 自定义(使用tsx语法)
@@ -27,6 +34,8 @@ export const usePageData = ()=>{
 	const state = reactive<stateInterface>({
 		title:'新增数据',
 		visible:false,
+		loading:false,
+		imgList:[],
 		initFormParam:{
 			stars:1,
 			userType:1,
@@ -35,66 +44,48 @@ export const usePageData = ()=>{
 		tableColumns:[
 			{
 				title:'用户姓名',
-				label:'用户姓名',
 				dataIndex: "nickname",
-				search: true
+				search: true,
+			},
+			{ 
+				title:'用户年龄',
+				dataIndex: "age",
+				search: true,
+				summary:true,
+				sorter: (a: any, b: any) => a.age - b.age,
+				renderSummary:(pageData)=>{
+					let ageAll:number[] = pageData.map(x=>x.age)
+					return `年龄总数: ${ageAll.reduce(((a,b)=> a+ b),0)} !!!`
+				}
 			},
 			{
 				title:'创建时间',
 				dataIndex: "createdTime",
-				search: true,
-				searchType:'a-date-picker',
+				searchOption:{ type:'a-date-picker' },
 				sorter: (a: any, b: any) =>{
 					const t1 = new Date(a.createdTime).getTime();
 					const t2 = new Date(b.createdTime).getTime();
 					return t1 - t2
 				},
 			},
-			{
-				title:'用户年龄',
-				dataIndex: "age",
-				search: true, 
-			},
-			{
-				title:'门户地址',
-				dataIndex: "url",
-				ellipsis: true,
-			},
-			{
-				title:'用户头像',
-				dataIndex: "avatar",
-				image:true,
-			},
+			{ title:'门户地址', dataIndex: "url", ellipsis: true },
+			{ title:'用户头像', dataIndex: "avatar", image:true },
 			{
 				title:'会员等级',
 				dataIndex: "stars",
-				tag:true,
-				search: true,
-				searchType:'a-select',
+				searchOption:{ type:'a-select', options:starsList },		
 				sorter: (a: any, b: any) => a.stars - b.stars,
-				showEnum:true,
-				componentOption:{
-					options:starsList
-				},
-				enum:starsList
+				tag:true
 			},
 			{
 				title:'用户类型',
 				dataIndex: "userType",
-				search: true,
-				searchType:'a-select',
-				componentOption:{
-					options:[
-						{ label:'管理员', tagType: "red", value: 1 },
-						{ label:'普通用户', tagType: "blue", value: 2 }
-					]
-				}
+				searchOption:{ 
+					type:'a-select', 
+					options:userType
+				},		
 			},
-			{
-				dataIndex: "operation",
-				title: "操作",
-				fixed: "right"
-			}
+			{ dataIndex: "operation", title: "操作", fixed: "right" }
 		],
 		formColumns:[
 			{
@@ -150,10 +141,7 @@ export const usePageData = ()=>{
 					rules: [{ required: true, trigger: ['change', 'blur'] }],
 				},
 				componentOption:{
-					options:[
-						{ label:'普通用户', value:1 },
-						{ label:'管理员', value:2 },
-					]
+					options:userType
 				}
 			}
 		]

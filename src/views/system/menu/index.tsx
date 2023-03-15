@@ -5,15 +5,20 @@ import { message } from "ant-design-vue";
 interface stateInterface {
 	title:string, //modal 标题
 	visible:boolean, //modal是否显示
+	loading:boolean,
 	initFormParam:any,
-	tableColumns:useTableColumn[],
-	formColumns:useFormProps[]
+	tableColumns:wTableProps,
+	formColumns:wFormProps,
 }
-
-export const usePageData = (refresh:Function)=>{
+const statusList:wTableEnumProps = [
+	{ label:'正常', color:'green', value: 1},
+	{ label:'停用', color:'red', value: 2 },
+]
+export const usePageData = ()=>{
 	const state = reactive<stateInterface>({
 		title:'新增数据',
 		visible:false,
+		loading:false,
 		initFormParam:{
 			menuType: "M",
 			title: '',
@@ -30,36 +35,15 @@ export const usePageData = (refresh:Function)=>{
 			isFrame:0
 		},
 		tableColumns:[
-			{
-				width: 100,
-				title:'菜单名称',
-				dataIndex: 'title',
-				search: true, 
-				resizable: true,
-			},
-			{
-				width: 50,
-				title:'图标',
-				dataIndex: "icon",
-				hide:true,
-			},
-			{
-				width: 400,
-				title:'组件',
-				dataIndex: "component",
-			},
+			{ width: 100, title:'菜单名称', dataIndex: 'title', search: true, resizable: true },
+			{ width: 50, title:'图标', dataIndex: "icon" },
+			{ width: 400, title:'组件', dataIndex: "component" },
 			{
 				width: 50,
 				title:'状态',
 				dataIndex: "status",
-				search: true,
-				searchType:'a-select',
-				componentOption:{
-					options:[
-						{ label:'正常', value: 1},
-						{ label:'停用', value: 2 },
-					]
-				}
+				tag:true,
+				searchOption:{ type:'a-select', options:statusList }
 			},
 			{
 				dataIndex: "operation",
@@ -236,20 +220,8 @@ export const usePageData = (refresh:Function)=>{
 		code === 200 && state.formColumns.forEach(x=>x.name === 'pId' && (x.componentOption.treeData = treeData))
 	};
 
-	const submitApi = async (params:any) => {
-		params['children'] && delete params['children']
-		if(params.id){
-			message.warn('修改失败,演示模式不允许操作')
-		} else {
-			message.warn('新增失败,演示模式不允许操作')
-		}
-		state.visible = false
-		refresh()
-	}
-
 	return {
 		...toRefs(state),
-		submitApi,
 		getMenu
 	}
 }

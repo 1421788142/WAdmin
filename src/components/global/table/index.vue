@@ -1,7 +1,9 @@
 <template>
     <div 
-		class="flex flex-col h-full px-2 pt-2 border border-gray-200 dark:border-gray-700 rounded shadow-sm overflow-auto bg-white dark:bg-[#141414]"
-	 	:class="{'pb-2':!pagination}">
+		class="flex flex-col px-2 pt-2
+		border border-gray-200 dark:border-gray-700 rounded shadow-sm 
+		overflow-auto bg-white dark:bg-[#141414]"
+	 	:class="{'pb-2':!pagination,wrapClass}">
 		<!-- 表格搜索 -->
         <w-search-form
             :search="search"
@@ -9,7 +11,7 @@
 			:loading="loading"
 			:searchParam="searchParam"
 			:columns="searchColumns"
-			v-show="isShowSearch"    
+			v-show="showSearch"
         />
 		<!-- 表格头部 -->
 		<div class="flex justify-between mb-2">
@@ -24,14 +26,14 @@
 			</div>
 			<div class="flex items-center max-w-[70%] overflow-auto">
 				<div class="flex min-w-min"> 
-					<!-- 按钮插槽 isSelected 是否已选择, selectedListIds选择的id集合 -->
-					<slot name="tableHeader" :ids="selectedListIds" :isSelected="isSelected"></slot>
+					<!-- 按钮插槽 isSelected 是否已选择, selectedList根据key所取的data数据集合 -->
+					<slot name="tableHeader" :selectedList="selectedList" :isSelected="isSelected"></slot>
 				</div>
 				<!-- 表格操作模块 -->
 				<div class="!text-xl flex items-center ml-3" v-if="toolButton">
 					<a-tooltip placement="top" v-if="searchColumns.length > 0">
 						<template #title>数据筛选</template>
-						<search-outlined @click="isShowSearch = !isShowSearch" class="mr-3 cursor-pointer" />
+						<search-outlined @click="showSearch = !showSearch" class="mr-3 cursor-pointer" />
 					</a-tooltip>
 					<a-tooltip placement="top">
 						<template #title>刷新</template>
@@ -42,7 +44,7 @@
 						<a-dropdown :trigger="['click']" placement="bottom">
 							<column-width-outlined class="mx-3 cursor-pointer" />
 							<template #overlay>
-								<a-menu v-model:selectedKeys="selectedKeys" @click="setTableSize">
+								<a-menu v-model:selectedKeys="size" @click="setTableSize">
 									<a-menu-item key="default">默认</a-menu-item>
 									<a-menu-item key="middle">中等</a-menu-item>
 									<a-menu-item key="small">紧凑</a-menu-item>
@@ -51,170 +53,155 @@
 						</a-dropdown>
 					</a-tooltip>
 					<!-- 操作表头排序和显示隐藏 -->
-					<colSetting :columns="tableColumns" @change="setColumns"/>
+					<colSetting :columns="tableColumns" @change="settingChange"/>
 				</div>
 			</div>
 		</div>
+		<!-- 表格 -->
 		<a-table
-			:sticky="true"
-			class="overflow-auto"
-			:bordered="borderShow"
-			:scroll="{ x: 1000 }"
-			:size="tableSize"
-			:loading="loading"
+			:columns="tableColumns.filter(x=>x.show)"
+			:data-source="dataList"
+			:size="size[0]"
+			:scroll="scroll"
+			v-bind="$attrs"
 			:pagination="false"
-			:data-source="tableData"
-			:filterSearch="true"
+			:loading="loading"
+			v-model:expandedRowKeys="expandedKeys"
+			bordered
+			@resizeColumn="handleResizeColumn"
 			:row-key="record => rowKey === 'allKey' ? record : record[rowKey]"
-			:expandedRowKeys="expandedRowKeys"
-			 @resizeColumn="handleResizeColumn"
-			:row-selection="selection ? { rowSelection: selectedListIds, onChange: selectionChange } : null"
+			:row-selection="selection ? { 
+				rowSelection: selectedList,
+				onChange: selectionChange,
+				...selectionOption
+			} : null"
 		>
-			<!-- 自定义表头 data-index值拼接TableHeader -->
 			<template #headerCell="{ column }">
 				<slot :name="`${column['dataIndex']}TableHeader`" :row="column"></slot>
 			</template>
-			<!-- 内容 -->
-			<template v-for="item in tableColumns" :key="item">
-				<a-table-column
-					:align="item?.align ? item.align : 'center'"
-					v-if="item.isShow"
-					:data-index="item.dataIndex"
-					:title="item.title"
-					:fixed="item?.fixed || ''"
-					:sorter="item?.sorter || null"
-					:width="item?.width || 150"
-					:resizable="item?.resizable || false"
-					:ellipsis="item?.ellipsis || true"
-				>
-				<template #default="scope">
-					<slot :name="item.dataIndex" :row="scope">
-						<a-image
-							v-if="item.image"
-							:width="item.width || '120px'"
-							:height="item?.height || '60px'"
-							:src="scope.value"
-						/>
-						<a-tag v-else-if="item.tag" :color="filterEnum(scope.value,item.enum,'tag')">
-							{{ item.enum?.length ? filterEnum(scope.value,item.enum): defaultFormat(0,0,scope.value) }}
-						</a-tag>
-						<!-- 文字（自带格式化内容） -->
-						<span v-else>{{ (item.enum?.length && item.showEnum) ? filterEnum(scope.value,item.enum): defaultFormat(0,0,scope.value) }}</span>
-					</slot>
-				</template>
-				</a-table-column>
+			<template #bodyCell="{ text, record, index, column }">
+				<slot :name="column.dataIndex" :row="{text, record, index, column}">
+					<bodyCell :row="{ text, record, index, column }"/>
+				</slot>
+			</template>
+			<template #summary="{ pageData }">
+				<slot name="summaryCell">
+					<summaryCell v-if="summary" :row="{ pageData, fixed:summaryFixed, tableColumns, selection}"/>
+				</slot>
 			</template>
 		</a-table>
-		<w-pagination
-			v-if="pagination && pageable.total"
-			:pageable="pageable"
-			:setupPagination="setupPagination"
-		/>
+		<!-- 分页 -->
+		<w-pagination v-if="pagination" :pageable="pageable" :change="change"/>
     </div>
 </template>
-<script setup lang="ts">
-import { ref, watch, computed } from "vue";
-import { filterEnum, defaultFormat } from "@/utils/util";
-import { useTable } from "@/hooks/useTable";
-import { useSelection } from "@/hooks/useSelection";
-import colSetting from './components/colSetting.vue'
-// 是否显示搜索模块
-const isShowSearch = ref<boolean>(true);
-interface useTableProps {
-	columns: useTableColumn[]; // 列配置项
-	requestApi: (params: any) => Promise<any>; // 请求表格数据的api ==> 必传
-	setTableList?: (data: any) => any // 重新处理table数据 ==>非必填
-	setParams?: (data: any) => any // 处理请求前的参数 例如下拉多选value值为数组,但是后台只接受字符串,此时需要join
-	pagination?: boolean; // 是否需要分页组件 ==> 非必传（默认为true）
-	initParam?: any; // 初始化请求参数 ==> 非必传（默认为{}）
-	toolButton?: boolean; // 是否显示表格功能按钮 ==> 非必传（默认为true）
-	subTitle?: string; //副标题
-	rowKey?: string //选择框所选键值 allKey代表选择行数据
-	selection?: boolean //是否显示表格选择框
-	borderShow?: boolean //是否显示边框
-	expandedRowKeys?: any[], //展开的行
+
+<script lang="ts">
+// 禁止透传
+export default {
+  inheritAttrs: false
 }
-// 接受父组件参数，配置默认值
-const props = withDefaults(defineProps<useTableProps>(), {
-	columns: () => [],
+</script>
+
+<script setup lang="ts">
+import { watch } from "vue";
+import { TableProps } from 'ant-design-vue'
+import { pick } from "@/utils/util";
+import { useTable } from "./index";
+import { Table } from "./interface";
+import colSetting from './components/colSetting.vue'
+import bodyCell from './components/bodyCell.vue'
+import summaryCell from './components/summaryCell.vue'
+import { Result } from '@/types/axios'
+
+interface tablePorps {
+	columns: wTableProps, //列配置项
+	dataSource?: object[], //数据源 如果使用那么requestApi则失效
+	requestApi: (params: any) => Promise<Result<any[]>>, //请求表格数据的api ==> 必传
+	beforeLoad?: (params: any) => boolean | object | void, //请求前触发入参为searchParams,返回值为false时取消请求,否则将返回值searchParams合并
+  	afterLoad?: (records: Result<any[]>,state:Table.stateProps) => any, //请求完成后渲染数据前触发,可处理数据
+	selection?: boolean, //是否显示表格选择框
+	selectionOption?: TableProps['rowSelection'], //表格左侧选择框属性
+	pagination?: boolean, //是否需要分页组件 ==> 非必传（默认为true）
+	initParam?: any, //初始化请求参数 ==>非必传（默认为{}）
+	toolButton?: boolean, //是否显示表格功能按钮 ==>非必传（默认为true）
+	summary?: boolean, //是否显示汇总
+	summaryFixed?: boolean, //汇总是否固定
+	subTitle?: string, //副标题
+	rowKey?: string, //选择框所选键值 allKey代表选择行数据
+	searchShowTotal?: number,//搜索条件显示数量
+	scroll?: TableProps['scroll'], // 滚动配置项
+	wrapClass?:string,//外层盒子的css类名
+}
+
+// 接受父组件prop，配置默认值
+const props = withDefaults(defineProps<tablePorps>(), {
+	columns:()=>[],
+	dataSource: () => [],
 	pagination: true,
+	selectable: false,
 	initParam: {},
 	toolButton: true,
-	subTitle:'温馨提醒',
+	subTitle:null,
+	selection: false,
 	rowKey: 'id',
-	selection: true,
-	borderShow: true,
-});
-// 表格多选 Hooks
+	scroll: () => {
+		return {
+			x: 'max-content',
+			y: 500
+		}
+	},
+	selectionOption:()=>({})
+})
 const { 
-	selectionChange,
-	selectedListIds,
-	isSelected
-} = useSelection(props.rowKey);
-// 表格操作 Hooks
-const { 
-    tableData,
+    dataList,
     pageable,
     searchParam, 
-    initSearchParam,
-	tableSize,
+	tableColumns,
+	searchColumns,
+	loading,
+	size,
+	selectedList,
+	isSelected,
+	showSearch,
+	expandedKeys,
 	setTableSize,
-    getTableList, 
     search, 
     reset,
-	setupPagination,
-	loading
-} = useTable(
-	props.requestApi,
-	props.initParam,
-	props.pagination,
-	props.setTableList,
-	props.setParams,
-);
-const getSort = (sort:number)=> sort ?? 10
-// 过滤需要搜索的配置项
-const searchColumns = ref<useSearchForm[]>([])
-searchColumns.value = props.columns.filter(x=>x.search || x.searchType).map<useSearchForm>(column=>{
-	initSearchParam.value[column.searchKey || column.dataIndex] = column?.initSearchParam || ''
-	return {
-		label:column.searchTitle || column.title,
-		name:column.searchKey || column.dataIndex,
-		formItemType:column.searchType || 'a-input',
-		componentOption:column.componentOption,
-		renderForm:column.renderForm,
-		searchSort:column.searchSort
-	}
-}).sort((a,b)=>{
-	return getSort(a.searchSort) - getSort(b.searchSort)
-})
-
-// 表格列配置项处理（添加 isShow 属性，控制显示/隐藏）
-const tableColumns = ref<useTableColumn[]>();
-tableColumns.value = props.columns.map(item => {
-	return {
-		...item,
-		isShow: item?.isShow ?? true,
-		resizable: item?.resizable ?? true,
-	};
-}).filter(x=>!x.hide).sort((a,b)=>{
-	return getSort(a.tableSort) - getSort(b.tableSort)
+	change,
+	selectionChange,
+	setColumns
+} = useTable({
+	...pick(props,[
+		'columns',
+		'initParam',
+		'pagination',
+		'requestApi',
+		'beforeLoad',
+		'afterLoad',
+	])
 });
-// 修改表格排序
-const setColumns = (data:useTableColumn[]) => tableColumns.value = data;
+// 根据配置定义搜索模块和表格数据源
+setColumns()
 // 重置表格已选的值
 watch(loading,()=>selectionChange([]))
 // 	修改表头宽度
-const handleResizeColumn = (w:number, col:useTableColumn) => {
+const handleResizeColumn = (w:number, col:wTableProp) => {
 	let columns = tableColumns.value.filter(x=>x.dataIndex === col.dataIndex)
 	columns[0].width = w
 }
-// 修改table表格尺寸
-const selectedKeys = computed(() => [tableSize.value])
+const settingChange = (columns:wTableProps)=>{
+	loading.value = true
+	tableColumns.value = columns
+	setTimeout(()=>loading.value = false,300)
+}
 // 暴露给父组件的参数和方法
-defineExpose({ searchParam, refresh: getTableList });
+defineExpose({ searchParam, refresh: reset });
 </script>
-<style>
-.ant-table-sticky-scroll{
-	display: none !important;
+
+<style lang="scss">
+.table-img-box{
+	img{
+		height: 100%;
+	}
 }
 </style>

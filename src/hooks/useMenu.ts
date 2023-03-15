@@ -1,8 +1,8 @@
 import { reactive, computed, watch, toRefs, onMounted } from 'vue'
-import { Layout } from "../type"
+import { Layout } from "./interface/layout"
 import { RouteLocationNormalizedLoaded } from 'vue-router';
 
-import { selected, openKey, setBreadCrumbs } from '../index'
+import { selected, openKey, setBreadCrumbs } from '@/layout/index'
 import { menuTypeEnum, menuThemeEnum } from '@/enums/menu'
 
 import { storeToRefs } from "pinia"

@@ -4,6 +4,7 @@ import debounce from './modules/debounce'
 import throttle from './modules/throttle'
 import longpress from './modules/longpress'
 import permission from './modules/permission'
+import waterMarker from './modules/waterMarker'
 // 所以指令集合
 const directivesList: any = {
 	copy,
@@ -11,6 +12,7 @@ const directivesList: any = {
     throttle,
     longpress,
     permission,
+    waterMarker
 };
 const setDirectives = (app:App)=>{
     const directives = {

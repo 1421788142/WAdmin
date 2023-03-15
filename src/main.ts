@@ -3,7 +3,7 @@ import App from './App.vue'
 
 // 引入路由
 import router,{ setupRouter } from './router'
-
+import configStore from '@/store/config'
 // 引入插件管理
 import { setupPlugins } from './plugins'
 
@@ -20,13 +20,18 @@ async function bootstrap() {
     setupRouter(app)
     setDirectives(app)
     await setupPlugins(app)
-
     // 先进行主题切换，否则会有卡屏现象
-    // let { useLayout } = await import('@/layout/hooks/useLayout')
-    // const { getConfigState, switchDark } = useLayout()
-    // let isDark = getConfigState('isHasDark')
-    // switchDark(isDark)
-
+    import('@/hooks/useTheme').then(({useTheme})=>{
+        let { 
+            switchDark,
+            setupGrey,
+            setupColorblind,
+            getConfigState
+        } = useTheme()
+        switchDark(getConfigState('isHasDark'))
+        setupGrey(getConfigState('isHasGrey'))
+        setupColorblind(getConfigState('isHasColorblind'))
+    })
     // 当路由注册完成 && 主题已切换 再挂载app
     await router.isReady()
     app.mount('#app')

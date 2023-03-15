@@ -1,39 +1,41 @@
 <template>
 	<div class="h-full">
-		<w-table ref="table" :requestApi="userList" :columns="tableColumns">
+		<w-table 
+			summary 
+			summaryFixed 
+			ref="table" 
+			selection 
+			:requestApi="userList" 
+			:columns="tableColumns"
+			:selectionOption="{ fixed:true }"
+		>
 			<template #tableHeader="scope">
-				<!-- <import-data class="inline-block" xlsxTitle="用户表格模板" :xlsxData="[]" :columns="xlsxHeader" /> -->
-				<a-button type="primary" class="mx-2" @click="downloadTemplate">
-					<template #icon><DownloadOutlined /></template>导出表格
-				</a-button>
-				<a-button type="primary" @click="add">新增</a-button>
-				<a-button type="dashed" danger :disabled="!scope.isSelected" class="mx-2">批量删除</a-button>
+				<div class="flex flex-row grid-flow-row gap-1">
+					<w-import-data  v-permission="['export',$route.meta.permission]" class="inline-block" xlsxTitle="用户表格模板" :xlsxData="[]" :columns="xlsxHeader" />
+					<w-button btnType="primary" type="export" @click="downloadTemplate" />
+					<w-button btnType="primary" @click="add"/>
+					<w-button ghost btnType="primary" :icon="false" :disabled="!scope.isSelected" type="delete" danger title="批量删除" />
+				</div>
 			</template>
 			<template #nicknameTableHeader="scope">
-				<a-button type="primary" @click="message.success('我是自定义表头')">用户名称</a-button>
+				<a-button type="primary" @click="message.success(JSON.stringify(scope))">用户名称</a-button>
 			</template>
-			<template #urlTableHeader="scope">
+			<template #urlTableHeader>
 				<a-tag color="#55acee">门户地址</a-tag>
 			</template>
 			<template #url="{ row }">
-				<a href="">{{row.value}}</a>
+				<a :href="row.text">{{row.text}}</a>
 			</template>
 			<template #operation="{ row }">
 				<div class="w-table-btn">
-					<a-button type="text" @click="update(row.record)" class="!flex !items-center">
-						<template #icon><form-outlined /></template>
-						<span>编辑</span>
-					</a-button>
-					<a-button danger type="text" class="!flex !items-center">
-						<template #icon><delete-outlined /></template>
-						<span>删除</span>
-					</a-button>
+					<w-button type="update" @click="update(row.record)"/>
+					<w-button type="delete" color="red" @click="update(row.record)"/>
 				</div>
 			</template>
 		</w-table>
 
 		<!-- 新增编辑框 -->
-		<w-modal :destroyOnClose="false" :title="title" width="1000px" v-model:visible="visible" @btnOk="btnOk">
+		<w-modal :destroyOnClose="false" :loading="loading" :title="title" width="1000px" v-model:visible="visible" @btnOk="btnOk">
 			<w-form :submitApi="submitApi" :columns="formColumns" ref="form" :initFormParam="initFormParam">
 				<template #avatarFormItem="{ row }">
 					<w-upload v-model:value="imgList" uploadType="image" actionUrl="/upload/image" :total="1" @change="(value)=>{
@@ -50,16 +52,19 @@ import { nextTick, ref } from 'vue'
 import { usePageData } from './index'
 import { userList, userListInterface } from '@/apis/table/useTable'
 import aoaToSheetXlsx from '@/utils/aoaToSheetXlsx';
-import { deepCopy, setTableExportData } from '@/utils/util'
+import { setTableExportData } from '@/utils/util'
 import { message } from 'ant-design-vue';
-
+import formVue from '@/components/global/form/index.vue'
+import tableVue from '@/components/global/table/index.vue'
 const {
 	tableColumns,
 	formColumns,
 	xlsxHeader,
 	initFormParam,
 	title,
-	visible
+	visible,
+	loading,
+	imgList
 } = usePageData()
 
 
@@ -84,9 +89,14 @@ const downloadTemplate = async ()=>{
     });
 }
 
-const imgList = ref<any[]>([])
+const [
+	form,
+	table
+] = [
+	ref<RefComponent<typeof formVue>>(),
+	ref<RefComponent<typeof tableVue>>()
+]
 
-const form = ref<ComponentRef>()
 const add = ()=>{
 	visible.value = true
 	nextTick(()=>{
@@ -97,15 +107,20 @@ const update = (value:userListInterface)=>{
 	visible.value = true
 	title.value = '编辑数据'
 	nextTick(()=>{
-		form.value.formParam = deepCopy<userListInterface>(value)
-		form.value.reset('clear')
+		form.value.reset(value,'clear')
 	})
 }
-const btnOk = ()=>{
-	form.value.submitForm()
+const btnOk = async ()=>{
+	try {
+		loading.value = true
+		let { code, data } = await form.value.submitForm<userListInterface>()
+		if(code === 201) return
+		submitApi(data)
+	} finally {
+		loading.value = false
+	}
 }
 
-const table = ref<ComponentRef>()
 const submitApi = async (params:userListInterface) => {
 	if(params.id){
 		message.warn('修改失败,演示模式不允许操作')

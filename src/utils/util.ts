@@ -1,4 +1,6 @@
 import { isArray } from "@/utils/is";
+import { enumProp } from '@/types/table/interface'
+
 /**
  * @description 清除所有localStorage
  * @return void
@@ -73,10 +75,10 @@ export function getFlatArr(arr: any) {
  * @param {String} callValue 当前单元格值
  * @return string
  * */
-export function defaultFormat(row: number, col: number, callValue: any) {
+export function defaultFormat(callValue: any, joinStr:string = ',') {
 	// 如果当前值为数组,使用 / 拼接（根据需求自定义）
 	if (isArray(callValue))
-		return callValue.length ? callValue.join(" / ") : "--";
+		return callValue.length ? callValue.join(joinStr) : "--";
 	return callValue ?? "--";
 }
 
@@ -89,11 +91,11 @@ export function defaultFormat(row: number, col: number, callValue: any) {
  * */
 export function filterEnum(
 	callValue: any,
-	enumData: any[] = [],
+	enumData: enumProp[] = [],
 	type?: string
 ): string {
 	let filterData = enumData.find((item) => item.value === callValue);
-	if (type == "tag") return filterData?.tagType ? filterData.tagType : "";
+	if (type == "tag") return filterData?.color ? filterData.color : "";
 	return filterData ? filterData.label : "--";
 }
 
@@ -156,7 +158,7 @@ export function getEnumLable(
  * @return Array
  * */
 export function setTableExportData<T>(
-	columns: useTableColumn[],
+	columns: wTableProps,
 	listData: T[] = []
 ): T[] {
 	let xlsxData = [] as T[]; //最终返回出去的xlsx可导出数据
@@ -267,4 +269,40 @@ export function getUid() {
 	  timeArr.splice(index * 2, 0, random)
 	})
 	return timeArr.join('')
+}
+
+/**
+ * 选择某个对象中一个或多个key的value
+ *```
+ * const obj = {a:1}
+ * pick(obj,'a') | pick(obj,['a'])=>{a:obj.a}
+ * ```
+ * @param {object} target 需要获取对应key-value的源数据 可以是一个JSON对象
+ * @param {string | string[]} keys 字符串或数组 值为需要获取的key
+ * @param {boolean} [clearNull=false] 是否需要过滤值为空的数据 默认为false
+ * @return {object} object
+ **/
+
+export const pick = <T, K extends keyof T>(
+target: (object | string) & T,
+keys: (string & K) | K[],
+clearNull: boolean = false
+): {[props in K]: T[K]} =>{
+	const newVlaue = typeof target === 'string' && target.startsWith('{') ? JSON.parse(target) : ({} as T)
+	if(!Array.isArray(keys)) keys = [keys]
+	for(let key of new Set(keys)){
+		let value = target[key]
+		if(!value && clearNull) continue
+		newVlaue[key] = value
+	}
+	return newVlaue 
+}
+
+/**
+ * @param {string} name 文件名称：test.png
+ * @returns {*|string}
+ */
+
+export const getAssetsImage = (name:string): any | string=>{
+	return new URL(`/src/assets/${name}`, import.meta.url).href;
 }

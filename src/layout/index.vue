@@ -102,6 +102,7 @@
 import { ref, nextTick, onMounted, provide, computed } from 'vue';
 import { guide, getFirstMenu } from './index'
 import { debounce } from '@/utils/util'
+import { useEmitter } from '@/hooks/useEmitter';
 
 import menuVue from '@/layout/components/sidebar/menu.vue'
 import layoutPage from '@/layout/components/page/index.vue'
@@ -111,7 +112,7 @@ import userInfo from './components/user/index.vue'
 import systemConfig from './components/systemConfig/index.vue'
 import logo from './components/logo/index.vue'
 
-import { useLayout } from './hooks/useLayout';
+import { useLayout } from '@/hooks/useLayout';
 import { sysModeEnum } from '@/enums/sys'
 
 import { useRoute, useRouter } from 'vue-router';
@@ -120,21 +121,25 @@ const router = useRouter()
 
 const isHasCollapsed = computed(()=>getConfigState('isHasCollapsed'))
 const menuType = computed(()=>getConfigState('menuType'))
+
+const { 
+    delModalMin,
+    openModalMin,
+    modalMinList,
+    modalMinUid
+} = useEmitter(route,router)
+
 const {  
     wapMenuVisible,
     crumbsList,
     menuMixList,
     selectedKeys,
-    modalMinList,
-    modalMinUid,
     switchDark,
     setupColorblind,
     setupGrey,
     getConfigState,
     setConfigState,
     resetConfig,
-    delModalMin,
-    openModalMin
 } = useLayout(route,router)
 let sysConfig = {
     crumbsList,

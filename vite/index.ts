@@ -11,7 +11,7 @@ export default function setupPlugins(env:any,isBuild:boolean){
         createHtmlPlugin({
             inject: {
                 data: {
-                    title: env.VITE_PROJECT_NAME
+                    title: env.VITE_PROJECT_NAME,
                 }
             }
         }),

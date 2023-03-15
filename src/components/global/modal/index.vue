@@ -29,17 +29,19 @@
         <slot></slot>
       </div>
       <template #footer>
-        <modalFooter
-          v-if="footer"
-          :okText="okText"
-          :cancelText="cancelText"
-          :showCancelBtn="showCancelBtn"
-          :showOkBtn="showOkBtn"
-          @confirm="ok"
-          @cancel="cancel"
-        />
-        <!-- 按需插槽底部按钮  -->
-        <slot name="btnSlot"></slot> 
+        <slot name="btnSlot">
+          <!-- 按需插槽底部按钮  -->
+          <modalFooter
+            v-if="footer"
+            :okText="okText"
+            :loading="loading"
+            :cancelText="cancelText"
+            :showCancelBtn="showCancelBtn"
+            :showOkBtn="showOkBtn"
+            @confirm="ok"
+            @cancel="cancel"
+          />
+        </slot> 
       </template>
     </a-modal>
   </div>
