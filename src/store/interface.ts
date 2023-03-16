@@ -1,4 +1,4 @@
-import { Layout } from '@/layout/type'
+import { Layout } from '@/hooks/interface/layout'
 export interface configStoreInterface {
     menuType:Layout.menuType,//菜单风格类型
     themeColor:string,//系统颜色

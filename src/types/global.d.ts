@@ -9,3 +9,4 @@ declare global {
     parse<T>(text: JSONString<T>): T
   }
 }
+declare type IntervalHandle = ReturnType<typeof setInterval>;

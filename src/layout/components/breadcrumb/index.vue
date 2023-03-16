@@ -21,7 +21,7 @@
 <script setup lang="ts">
 import { inject } from "vue";
 import { useRouter } from 'vue-router';
-import { layoutInterface } from '@/layout/type'
+import { layoutInterface } from '@/hooks/interface/layout'
 const router = useRouter()
 const {
     crumbsList,

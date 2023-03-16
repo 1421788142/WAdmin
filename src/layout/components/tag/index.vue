@@ -36,7 +36,7 @@ import tabOptions from './tabOptions.vue'
 import { useTagData } from './index'
 
 import { useRoute, useRouter } from 'vue-router';
-import { layoutInterface } from '@/layout/type'
+import { layoutInterface } from '@/hooks/interface/layout'
 
 const {
     getConfigState,

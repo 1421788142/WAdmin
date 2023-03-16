@@ -95,6 +95,9 @@
                 <CloseOutlined @click.stop="delModalMin(modal.uid)" :style="{fontSize:'18px'}" />
             </div>
         </div>
+
+        <!-- 锁屏 -->
+    <LockScreen />
     </div>
 </template>
 
@@ -111,6 +114,7 @@ import breadcrumb from './components/breadcrumb/index.vue'
 import userInfo from './components/user/index.vue'
 import systemConfig from './components/systemConfig/index.vue'
 import logo from './components/logo/index.vue'
+import LockScreen from '@/components/lockScreen/index.vue'
 
 import { useLayout } from '@/hooks/useLayout';
 import { sysModeEnum } from '@/enums/sys'

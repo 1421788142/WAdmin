@@ -91,3 +91,45 @@ html.dark {
       color: #fff;
     }
 }
+
+// 锁屏
+.w-lock-screen{
+	width:100vw;
+	height:100vh;
+	top: 0;
+	left: 0;
+	position: fixed;
+	z-index:999999999999;
+	background-color:#7D7D7D;
+	&-top{
+		text-align: center;
+		padding: 20px 0;
+		color: #fff;
+		font-size: 20px;
+		width: max-content;
+		margin:0 auto;
+		.icon{
+			font-size: 26px!important;
+		}
+		.title{
+			font-size: 20px;
+			margin-top: 10px;
+		}
+	}
+
+	/* fade-slide */
+	.fade-slide-leave-active,
+	.fade-slide-enter-active {
+		transition: all 0.5s;
+	}
+
+	.fade-slide-enter-from {
+		opacity: 0;
+		transform: translateX(-30px);
+	}
+
+	.fade-slide-leave-to {
+		opacity: 0;
+		transform: translateX(30px);
+	}
+}

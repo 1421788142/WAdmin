@@ -27,7 +27,7 @@
 import { ref, inject } from 'vue'
 import { menuTypeEnum } from '@/enums/menu';
 import { message } from 'ant-design-vue';
-import { layoutInterface } from '@/layout/type'
+import { layoutInterface } from '@/hooks/interface/layout'
 
 const {
     getConfigState,

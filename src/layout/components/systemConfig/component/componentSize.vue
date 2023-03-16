@@ -11,7 +11,7 @@
 
 <script setup lang="ts">
 import { inject, ref } from "vue";
-import { layoutInterface } from '@/layout/type'
+import { layoutInterface } from '@/hooks/interface/layout'
 const {
     getConfigState,
     setConfigState

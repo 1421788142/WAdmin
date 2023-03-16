@@ -16,6 +16,8 @@ export default defineStore('config', {
             isHasFull:false,//是否全屏
             isHasSystem:false,//是否第一次进入系统
             modalMinNum:2,//历史对话框数量
+            isHasLock:false,//是否锁定屏幕
+            lockPassword:'',//锁屏密码
         }
     },
     actions:{
@@ -41,6 +43,8 @@ export default defineStore('config', {
             this.isHasColorblind = false
             this.isHasFull = false
             this.modalMinNum = 2
+            this.isHasLock = false
+            this.lockPassword = ''
         }
     },
     persist: {

@@ -16,7 +16,7 @@ export default defineStore('user',{
         return {
             userRouterList:[],
             userInfo: null,
-            requestRecord:[],//把正在请求的接口保存
+            requestRecord:[],//保存请求的接口
             historyMenuTag:[],
             token:''
         }

@@ -14,7 +14,7 @@
 
 <script setup lang="ts">
 import { ref, watchEffect, inject } from 'vue';
-import { layoutInterface } from '@/layout/type'
+import { layoutInterface } from '@/hooks/interface/layout'
 
 const {
     switchDark,
