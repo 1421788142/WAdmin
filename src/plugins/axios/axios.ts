@@ -47,6 +47,7 @@ export default class VAxios {
                 return;
             }).catch((e: Error | AxiosError)=>{
                 console.log(e)
+                reject(e)
             })
         }) as Promise<Result<T>>
     }
@@ -59,7 +60,8 @@ export default class VAxios {
      */
     private handleStopRepeatRequest = (reqList: string[], url: string, cancel: Function, errorMessage:string = ''):void => {
         for (let i = 0; i < reqList.length; i++) {
-          if (reqList[i] == url && !this.option.preventDuplication) {
+          if (reqList[i] === url && !this.option.preventDuplication) {
+            message.destroy()
             message.error('正在请求中，请不要重复请求！')
             cancel(errorMessage)
             return
@@ -72,15 +74,20 @@ export default class VAxios {
      * @param {array} reqList 全部请求列表
      * @param {string} url 请求地址
      */
-     private handleAllowRequest = (reqList: string[], url: string):void => {
+    private handleAllowRequest = (reqList: string[], url: string):void => {
+        const { setupRequestRecord } = userStore()
         for (let i = 0; i < reqList.length; i++) {
             if (reqList[i] === url) {
                 // 删除当前请求
                 reqList.splice(i, 1)
+                setupRequestRecord(null,url,'remove')
                 break
             }
         }
     }
+
+    W
+
     private interceptors() {
         //挂载拦截器
         this.interceptorsRequest()
@@ -95,7 +102,7 @@ export default class VAxios {
             config.cancelToken = new axios.CancelToken(c => {
                 cancel = c
                 //将请求记录存起来
-                setupRequestRecord(cancel,'add')
+                setupRequestRecord(cancel,config.url,'add')
             })
             // 阻止重复请求
             this.handleStopRepeatRequest(this.reqList, config.url, cancel, `${config.url} 正在请求中，请不要重复请求！`)

@@ -14,7 +14,7 @@ class Guard {
 
             //跳转前清空所有正在请求的接口
             const { setupRequestRecord, getUserInfo } = userStore()
-            setupRequestRecord(null,'cancel') 
+            setupRequestRecord(null,null,'cancel') 
 
             let userInfo = getUserInfo//获取token
             if(this.isLogin(to, userInfo)) return { name:'login' }//判断是否登录

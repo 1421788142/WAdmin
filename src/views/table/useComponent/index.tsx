@@ -75,7 +75,8 @@ export const usePageData = ()=>{
 				dataIndex: "stars",
 				searchOption:{ type:'a-select', options:starsList },		
 				sorter: (a: any, b: any) => a.stars - b.stars,
-				tag:true
+				tag:true,
+				showEnum:true
 			},
 			{
 				title:'用户类型',

@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper-box h-[-webkit-fill-available] p-1 my-1 mb-1 dark:!bg-[#141414] overflow-y-auto overflow-x-hidden">
+  <div id="wrapper-box" class="wrapper-box h-[-webkit-fill-available] p-1 my-1 mb-1 dark:!bg-[#141414] overflow-y-auto overflow-x-hidden">
     <router-view #default="{ Component, route }">
       <transition appear name="fade-transform">
         <keep-alive :include="includeList">

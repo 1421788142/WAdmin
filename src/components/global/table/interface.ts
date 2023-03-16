@@ -21,6 +21,7 @@ export namespace Table {
 		pageable: pageableProps,
 		isSelected: boolean,
 		showSearch: boolean,
+		errorReset: number,
 		selectedList: string[] | number[] | any[],
 		size: string[],
 		loading: boolean,

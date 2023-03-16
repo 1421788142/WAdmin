@@ -41,15 +41,17 @@ export default defineStore('user',{
             this.userRouterList = menu
             router.addRoute(getRoutes(this.userRouterList || []))
         },
-        setupRequestRecord(cancel:Function | null, type:string = 'add'){
+        setupRequestRecord(cancel:Function | null, url:string, type:string = 'add'){
             if(type === 'add'){
-                this.requestRecord.unshift({cancel})
+                this.requestRecord.unshift({url:url,fn:cancel})
                 if(this.requestRecord.length > 15) this.requestRecord.pop()
             } else if(type === 'cancel'){
                 this.requestRecord.forEach((item)=>{
                     item.cancel && item.cancel()
                 })
                 this.requestRecord = []
+            } else {
+                this.requestRecord = this.requestRecord.filter(x=>x.url !== url)
             }
         },
         // 登录

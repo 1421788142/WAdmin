@@ -17,7 +17,7 @@
                             </a-tooltip>
                             <span class="mx-2">{{item.label}}</span>
                         </template>
-                        <slot>
+                        <slot :name="`${item.name}FormItem`" :row="formParam">
                             <component
                                 v-if="!item.renderForm"
                                 :is="item.formItemType || 'a-input'" 

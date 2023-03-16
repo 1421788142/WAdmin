@@ -9,7 +9,7 @@
         ]" 
         @click="toHome"
     >
-        <a-avatar :size="35" :src="VITE_PROJECT_LOGO" />
+        <a-avatar :size="35" :src="getAssetsImage(VITE_PROJECT_LOGO)" />
         <span class="ml-4 font-bold text-black text-[20px] dark:!text-white"
             :class="{'text-white':['mix','verticalDark'].includes(getConfigState('menuType'))}"
         v-if="!getConfigState('isHasCollapsed')">{{VITE_PROJECT_NAME}}</span>
@@ -20,6 +20,8 @@
 import { inject } from 'vue';
 import { useRouter } from 'vue-router';
 import { layoutInterface } from '@/hooks/interface/layout'
+import { getAssetsImage } from '@/utils/util';
+
 const {
     getConfigState
 } = inject<layoutInterface>('sysConfig')

@@ -166,9 +166,9 @@ export function setTableExportData<T>(
 		let column = {} as T;
 		columns.forEach((item) => {
 			const listDataVlaue = value[item.dataIndex];
-			const isHasEnum = item.showEnum && item.enum.length > 0;
+			const isHasEnum = item.showEnum && item?.searchOption?.options?.length || item?.enum?.length > 0; //是否从数组取label
 			column[item.dataIndex] = isHasEnum
-				? getEnumLable("value", listDataVlaue, "label", item.enum)
+				? getEnumLable("value", listDataVlaue, "label", item?.searchOption?.options || item?.enum)
 				: listDataVlaue;
 		});
 		let columnCopy = deepCopy(column) as T;

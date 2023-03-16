@@ -2,6 +2,7 @@ import { Table } from "./interface";
 import { reactive, computed, onMounted, toRefs } from "vue";
 import { searchProps } from '@/types/table/interface'
 import { isBoolean } from '@/utils/is'
+import { message } from "ant-design-vue";
 
 export const useTable = ({
 	columns,
@@ -21,6 +22,7 @@ export const useTable = ({
 		selectedList:[],// 选择的数据
 		searchColumns:[],// 查询组件集合
 		tableColumns:[],// 查询组件集合
+		errorReset:0,//是否查询失败重启 0没有重启任务 1正在重启,重启成功恢复到0
 		pageable: {
 			// 当前页数
 			pageNum: 1,
@@ -109,11 +111,18 @@ export const useTable = ({
 			Object.assign(state.totalParam, initParam);
 			const { data } = await requestApi(beforeLoad ? beforeLoad(state.totalParam) : state.totalParam);
 			state.dataList = afterLoad ? afterLoad(data,state) : (() => (pagination ? data.dataList : data))()
+			state.errorReset = 0
 			// 解构后台返回的分页数据(如果有分页更新分页信息)
 			const { pageNum, pageSize, total } = data;
 			pagination && updatePageable({ pageNum, pageSize, total });
 		} catch (error) {
-			console.log(error);
+			// 失败重启查询一次  bug:前一次请求和当前请求一样则会情况当前请求,所以导致拿不到数据  所以这里定义一下重启
+			state.errorReset += 1
+			if(state.errorReset !== 1) return
+			message.warn('查询失败,2秒后重启查询')
+			setTimeout(()=>{
+				getTableList()
+			},2000)
 		} finally {
 			state.loading = false
 		}

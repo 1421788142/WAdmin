@@ -103,7 +103,7 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { watch } from "vue";
+import { watch, ref } from "vue";
 import { TableProps } from 'ant-design-vue'
 import { pick } from "@/utils/util";
 import { useTable } from "./index";
@@ -152,6 +152,7 @@ const props = withDefaults(defineProps<tablePorps>(), {
 	},
 	selectionOption:()=>({})
 })
+
 const { 
     dataList,
     pageable,
