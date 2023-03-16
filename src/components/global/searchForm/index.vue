@@ -8,7 +8,7 @@
                 <template v-for="item in searchColumns" :key="item.prop">
                     <a-col :xs="24" :sm="12" :lg="6" :order="1">
                         <a-form-item v-bind="item">
-                            <slot>
+                            <slot name="formItemAll" :formItem="item" :searchParam="searchParam">
                                 <component
                                     v-if="!item.renderForm"
                                     :is="item.type" 

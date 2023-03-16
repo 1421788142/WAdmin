@@ -38,9 +38,10 @@
 		<w-modal :destroyOnClose="false" :loading="loading" :title="title" width="1000px" v-model:visible="visible" @btnOk="btnOk">
 			<w-form :submitApi="submitApi" :columns="formColumns" ref="form" :initFormParam="initFormParam">
 				<template #avatarFormItem="{ row }">
-					<w-upload v-model:value="imgList" uploadType="image" actionUrl="/upload/image" :total="1" @change="(value)=>{
+					<uploadImg />
+					<!-- <w-upload v-model:value="imgList" uploadType="image" actionUrl="/upload/image" :total="1" @change="(value)=>{
 						row.avatar = value[0]?.url ?? ''
-					}" />
+					}" /> -->
 				</template>
 			</w-form>
 		</w-modal>
@@ -56,6 +57,8 @@ import { setTableExportData } from '@/utils/util'
 import { message } from 'ant-design-vue';
 import formVue from '@/components/global/form/index.vue'
 import tableVue from '@/components/global/table/index.vue'
+import uploadImg from '@/components/global/upload/components/uploadImg.vue';
+
 const {
 	tableColumns,
 	formColumns,

@@ -12,7 +12,12 @@
 			:searchParam="searchParam"
 			:columns="searchColumns"
 			v-show="showSearch"
-        />
+        >
+		<!-- 搜索条件插槽 -->
+		<template #formItemAll="{formItem,searchParam}">
+			<slot :name="`${formItem.name}FormItem`" :formItem="formItem" :searchParam="searchParam"></slot>
+			</template>
+		</w-search-form>
 		<!-- 表格头部 -->
 		<div class="flex justify-between mb-2">
 			<div class="flex items-center max-w-[25%]">
