@@ -13,8 +13,7 @@ const {
     setupColorblind,
 } = useTheme()
 
-const configStore = config()
-const { getConfigState, setConfigState, resetConfig  } = configStore
+const { getConfigState, setConfigState, resetConfig } = config()
 
 const userStore = user()
 let { userRouterList } = storeToRefs(userStore)

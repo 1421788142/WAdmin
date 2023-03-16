@@ -3,7 +3,6 @@ import App from './App.vue'
 
 // 引入路由
 import router,{ setupRouter } from './router'
-import configStore from '@/store/config'
 // 引入插件管理
 import { setupPlugins } from './plugins'
 

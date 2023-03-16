@@ -8,6 +8,18 @@
             }" v-model:value="modalMinNum" :min="0" :max="10" />
         </div>
         <div class="flex items-center justify-between my-4">
+            <span>自动锁屏时间</span>
+            <a-input-number
+                class="!w-[150px] h-[50px]"
+                v-model:value="lockNum"
+                :min="0"
+                :max="10000"
+                :formatter="value => `${value}${value === '0' ? '(不自动锁屏)' : '分钟'}`"
+                :parser="value => value.replace('分钟', '')"
+                @change="lockNumChange"
+            />
+        </div>
+        <div class="flex items-center justify-between my-4">
             <span>历史菜单</span>
             <a-switch v-model:checked="isHasHistory" @change="setConfigState('isHasHistory',isHasHistory)" checked-children="开" un-checked-children="关" />
         </div>
@@ -38,6 +50,8 @@
 import { message, ConfigProvider } from 'ant-design-vue';
 import { inject, ref, watch } from "vue";
 import { layoutInterface } from '@/hooks/interface/layout'
+import emitter from '@/plugins/mitt';
+
 
 import userStore from '@/store/user'
 const { loginOut  } = userStore()
@@ -54,6 +68,7 @@ const isHasCollapsed = ref<boolean>()
 const isHasGrey = ref<boolean>()
 const isHasColorblind = ref<boolean>()
 const modalMinNum = ref<number>(0)
+const lockNum = ref<number>(0)
 
 watch(()=>getConfigState('isHasCollapsed'),(newVal)=>{
     isHasCollapsed.value = newVal
@@ -66,6 +81,17 @@ const setDefaultVal = ()=>{
     isHasGrey.value = getConfigState('isHasGrey')
     isHasColorblind.value = getConfigState('isHasColorblind')
     modalMinNum.value = getConfigState('modalMinNum')
+    lockNum.value = getConfigState('lockNum')
+}
+
+const lockNumChange = (value:number)=>{
+    if(!value){
+        change(0,'lockNum')
+        change(0,'lockExpireNum')
+        return
+    }
+    change(value,'lockNum')
+    emitter.emit('setExpire')
 }
 
 setDefaultVal()

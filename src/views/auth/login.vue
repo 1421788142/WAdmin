@@ -1,11 +1,27 @@
 <script setup lang="ts">
-import { shallowRef } from 'vue'
+import { shallowRef, ref, watchEffect } from 'vue'
 import loginFormVue from './components/loginForm.vue';
 import phoneLogin from './components/phoneLogin.vue';
 import codeLogin from './components/codeLogin.vue';
 import registerForm from './components/registerForm.vue';
+import config from '@/store/config';
 
 const { VITE_PROJECT_NAME, VITE_PROJECT_LOGO } = import.meta.env
+
+const { getConfigState } = config()
+const checked = ref<boolean>(false)
+watchEffect(()=>{
+    checked.value = getConfigState('isHasDark')
+})
+const iconStyle = { width:20, height:20 }
+const chnageDark = (value:boolean)=>{
+  import('@/hooks/useTheme').then(({useTheme})=>{
+        let { 
+            switchDark,
+        } = useTheme()
+        switchDark(value)
+    })
+}
 
 let currentComp = shallowRef(loginFormVue)
 let loginForm = {
@@ -21,6 +37,16 @@ const compChange = (key: string) => {
 </script>
 <template>
   <div class="relative w-screen h-screen dark:bg-[#333]">
+    <div class="fixed z-50 md:top-10 top-5 md:right-16 right-5">
+      <a-switch v-model:checked="checked" @change="chnageDark">
+            <template #checkedChildren>
+                <w-svg-icon name="sun" :iconStyle="iconStyle" />
+            </template>
+            <template #unCheckedChildren>
+                <w-svg-icon name="moon" :iconStyle="iconStyle" />
+            </template>
+        </a-switch>
+    </div>
     <div class="absolute top-0 left-0 flex items-center justify-center w-screen h-screen">
       <div class="w-[95%] rounded-xl h-[95%] shadow-2xl bg-gradient-to-r from-green-400 to-blue-500 dark:from-[#464646] dark:to-[#232323] flex justify-between items-center">
         <div class="w-[60%] h-[100%] p-20 items-center hidden xl:flex justify-center">

@@ -105,9 +105,10 @@ const menuList = [
 
 const lockVisible = ref<boolean>(false) //锁屏弹窗
 const lockNum = ref<string>('') //锁屏密码
+lockNum.value = getConfigState('lockPassword')
 const menuClick = (key:number) => {
     if(key === 0) return lockVisible.value = true
-    // if(key === 1) return 
+    if(key === 1) return 
     Modal.confirm({
     title: '温馨提示',
     content: '是否确认退出系统?',
