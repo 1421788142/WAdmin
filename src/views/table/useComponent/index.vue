@@ -38,10 +38,15 @@
 		<w-modal :destroyOnClose="false" :loading="loading" :title="title" width="1000px" v-model:visible="visible" @btnOk="btnOk">
 			<w-form :submitApi="submitApi" :columns="formColumns" ref="form" :initFormParam="initFormParam">
 				<template #avatarFormItem="{ row }">
-					<uploadImg />
-					<!-- <w-upload v-model:value="imgList" uploadType="image" actionUrl="/upload/image" :total="1" @change="(value)=>{
-						row.avatar = value[0]?.url ?? ''
-					}" /> -->
+					<uploadImgVue
+						autoUpload
+						ref="uploadImgRef"
+						:total="1"
+						accept="image/*"
+						:fileList="fileList"
+						@autoUpload="(state)=>afterFn(state,row)"
+						@change="(state)=>row.avatar = state.fileListData.map(x=>x.url).join(',')"
+					/>
 				</template>
 			</w-form>
 		</w-modal>
@@ -49,7 +54,7 @@
 </template>
 
 <script lang="ts" setup>
-import { nextTick, ref } from 'vue'
+import { ref, nextTick } from 'vue'
 import { usePageData } from './index'
 import { userList, userListInterface } from '@/apis/table/useTable'
 import aoaToSheetXlsx from '@/utils/aoaToSheetXlsx';
@@ -57,7 +62,9 @@ import { setTableExportData } from '@/utils/util'
 import { message } from 'ant-design-vue';
 import formVue from '@/components/global/form/index.vue'
 import tableVue from '@/components/global/table/index.vue'
-import uploadImg from '@/components/global/upload/components/uploadImg.vue';
+import uploadImgVue from '@/components/global/upload/uploadImg.vue';
+import { uploadImg } from '@/apis/common'
+import { upload } from '@/hooks/interface/upload';
 
 const {
 	tableColumns,
@@ -67,9 +74,8 @@ const {
 	title,
 	visible,
 	loading,
-	imgList
+	fileList
 } = usePageData()
-
 
 const xlsxData = ref<any>([]) //导出的数据
 const getTableList = async ()=>{
@@ -94,24 +100,52 @@ const downloadTemplate = async ()=>{
 
 const [
 	form,
-	table
+	table,
+	uploadImgRef
 ] = [
 	ref<RefComponent<typeof formVue>>(),
-	ref<RefComponent<typeof tableVue>>()
+	ref<RefComponent<typeof tableVue>>(),
+	ref<RefComponent<typeof uploadImgVue>>(),
 ]
 
-const add = ()=>{
-	visible.value = true
-	nextTick(()=>{
-		form.value.reset()
-	})
+const afterFn = async (state:upload.stateProps,row:userListInterface)=>{
+	let imgList = state.fileListData.filter(x=>x.isHand)
+	for(let i=0; i<state.notFileList.length; i++){
+		let formData  = new FormData()
+		formData.append('file',(state.notFileList[i] as any))
+		let { data } = await uploadImg(formData)
+		imgList.push({
+			url:data.url,
+			isHand:true,//手动上传 以防数据混乱
+			status:'done',
+			uid:String(data.id),
+			name:data.name
+		})
+	}
+	state.fileListData = imgList
+	state.notFileList = []
+	row.avatar = imgList.map(x=>x.url).join(',')
+	form.value.reset(row,'none')
 }
-const update = (value:userListInterface)=>{
+
+const add = async ()=>{
 	visible.value = true
+	fileList.value = []
+	await nextTick()
+	form.value?.reset()
+}
+const update = async (value:userListInterface)=>{
+	visible.value = true
+	fileList.value = [{
+		url:value.avatar,
+		status:'done',
+		isHand:true,//手动上传 以防数据混乱
+		uid:String(value.userId),
+		name:'用户头像'
+	}]
 	title.value = '编辑数据'
-	nextTick(()=>{
-		form.value.reset(value,'clear')
-	})
+	await nextTick()
+	form.value?.reset(value,'clear')
 }
 const btnOk = async ()=>{
 	try {

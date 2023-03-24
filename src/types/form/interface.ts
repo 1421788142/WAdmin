@@ -1,4 +1,5 @@
 import type { SelectProps, FormItemProps  } from 'ant-design-vue'
+import { Ref } from 'vue'
 
 // 搜索控件类型
 export type formItemType =
@@ -32,8 +33,9 @@ export interface formProps {
 	label?: string, // 使用tooltip时需要label(并且formItemOption里面不能有label,否则冲突)
 	formItemOption?: FormItemProps, //form-item的api
     componentOption?: { //表单组件api组合
-        options?:SelectProps['options'],
+        options?:Ref<SelectProps['options']> | SelectProps['options'],
         [prop:string]: any
+        listeners?:{ [prop:string]:Function }
     },
 	renderForm?: (params: any) => any; //自定义表单tsx
 }

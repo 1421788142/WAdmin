@@ -108,7 +108,7 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { watch, ref } from "vue";
+import { watch } from "vue";
 import { TableProps } from 'ant-design-vue'
 import { pick } from "@/utils/util";
 import { useTable } from "./index";
@@ -117,13 +117,14 @@ import colSetting from './components/colSetting.vue'
 import bodyCell from './components/bodyCell.vue'
 import summaryCell from './components/summaryCell.vue'
 import { Result } from '@/types/axios'
+import { tableResultData } from '@/apis/interface'
 
 interface tablePorps {
 	columns: wTableProps, //列配置项
 	dataSource?: object[], //数据源 如果使用那么requestApi则失效
-	requestApi: (params: any) => Promise<Result<any[]>>, //请求表格数据的api ==> 必传
-	beforeLoad?: (params: any) => boolean | object | void, //请求前触发入参为searchParams,返回值为false时取消请求,否则将返回值searchParams合并
-  	afterLoad?: (records: Result<any[]>,state:Table.stateProps) => any, //请求完成后渲染数据前触发,可处理数据
+	requestApi: Table.hookProps['requestApi'], //请求表格数据的api ==> 必传
+	beforeLoad?:Table.hookProps['beforeLoad'], //请求前触发入参为searchParams,返回值为false时取消请求,否则将返回值searchParams合并
+  	afterLoad?:Table.hookProps['afterLoad'], //请求完成后渲染数据前触发,可处理数据
 	selection?: boolean, //是否显示表格选择框
 	selectionOption?: TableProps['rowSelection'], //表格左侧选择框属性
 	pagination?: boolean, //是否需要分页组件 ==> 非必传（默认为true）
@@ -152,7 +153,7 @@ const props = withDefaults(defineProps<tablePorps>(), {
 	scroll: () => {
 		return {
 			x: 'max-content',
-			y: 500
+			y: 600
 		}
 	},
 	selectionOption:()=>({})

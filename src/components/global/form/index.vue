@@ -22,6 +22,7 @@
                                 v-if="!item.renderForm"
                                 :is="item.formItemType || 'a-input'" 
                                 v-bind="item.componentOption"
+                                v-on="item.componentOption?.listeners || {}"
                                 v-model:value="formParam[item.name!]"
                                 :row="formParam"
                             ></component>
@@ -96,15 +97,16 @@ const submitForm = async <T>():Promise<{code:number,data:T}>=>{
     }
 }
 // 重置
-const reset = <T>(params?:T, type?: 'reset' | 'clear')=>{
+const reset = <T>(params?:T, type: 'reset' | 'clear' | 'none' = 'reset')=>{
     if(params) formParam.value = deepCopy<T>(params)
+    if(type === 'none') return
     if(!wFormRef.value) return
     if(!type){
         wFormRef.value.clearValidate()
         wFormRef.value.resetFields()
     } else if (type === 'reset') {
         wFormRef.value.resetFields()
-    } else {
+    } else if(type === 'clear') {
         wFormRef.value.clearValidate()
     }
 }

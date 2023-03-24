@@ -5,6 +5,7 @@ import treeFilter from '@/components/global/treeFilter/index.vue'
 import iconPicker from '@/components/global/iconPicker/index.vue'
 import importData from '@/components/global/importData/index.vue'
 import wangEditor from '@/components/global/wangEditor/index.vue'
+import uploadImg from '@/components/global/upload/uploadImg.vue'
 declare module 'vue' {
     interface GlobalComponents {
         modal: typeof modal,
@@ -14,5 +15,6 @@ declare module 'vue' {
         iconPicker: typeof iconPicker,
         importData: typeof importData,
         wangEditor: typeof wangEditor,
+        uploadImg: typeof uploadImg,
     }
 }

@@ -1,6 +1,7 @@
 import { Result } from '@/types/axios'
 import { tableResultData } from '@/apis/interface'
 import { searchProps } from '@/types/table/interface'
+
 export namespace Table {
     export interface hookProps {
 		columns:wTableProps,
@@ -34,9 +35,6 @@ export namespace Table {
 			[key: string]: any;
 		};
 		totalParam: {
-			[key: string]: any;
-		};
-		icon?: {
 			[key: string]: any;
 		};
 	}

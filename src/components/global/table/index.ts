@@ -48,6 +48,7 @@ export const useTable = ({
 				type:searchOption?.type || 'a-input',
 				searchOption:searchOption,
 				renderForm:searchOption?.renderForm,
+				listeners:searchOption?.listeners || {},
 				sort:searchOption?.sort || 0
 			}
 		}).sort((a,b)=>{

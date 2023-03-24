@@ -10,3 +10,16 @@ declare global {
   }
 }
 declare type IntervalHandle = ReturnType<typeof setInterval>;
+
+// * Vite
+declare type Recordable<T = any> = Record<string, T>;
+
+declare interface ViteEnv {
+	VITE_PROJECT_NAME: string;
+	VITE_PORT: number;
+	VITE_DEV_OPEN: boolean;
+	VITE_DROP_CONSOLE: boolean;
+	VITE_PROXY_URL: string;
+	VITE_PROJECT_LOGO: string;
+	VITE_API_URL: string;
+}

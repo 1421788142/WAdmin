@@ -21,9 +21,9 @@
 		<w-modal :destroyOnClose="false" :loading="loading" :title="title" width="1000px" v-model:visible="visible" @btnOk="btnOk">
 			<w-form :submitApi="submitApi" :initFormParam="initFormParam" :columns="formColumns" ref="form">
 				<template #avatarFormItem="{ row }">
-					<w-upload v-model:value="imgList" uploadType="image" actionUrl="/upload/image" :total="1" @change="(value)=>{
+					<!-- <w-upload v-model:value="imgList" uploadType="image" actionUrl="/upload/image" :total="1" @change="(value)=>{
 						row.avatar = value[0]?.url ?? ''
-					}" />
+					}" /> -->
 				</template>
 			</w-form>
 		</w-modal>

@@ -284,10 +284,10 @@ export function getUid() {
  **/
 
 export const pick = <T, K extends keyof T>(
-target: (object | string) & T,
-keys: (string & K) | K[],
-clearNull: boolean = false
-): {[props in K]: T[K]} =>{
+	target: (object | string) & T,
+	keys: (string & K) | K[],
+	clearNull: boolean = false
+): Pick<T,K> =>{
 	const newVlaue = typeof target === 'string' && target.startsWith('{') ? JSON.parse(target) : ({} as T)
 	if(!Array.isArray(keys)) keys = [keys]
 	for(let key of new Set(keys)){
@@ -295,7 +295,7 @@ clearNull: boolean = false
 		if(!value && clearNull) continue
 		newVlaue[key] = value
 	}
-	return newVlaue 
+	return newVlaue
 }
 
 /**

@@ -8,6 +8,7 @@ import { resolve } from 'path'
 export default defineConfig(({ mode, command }: ConfigEnv): UserConfig => {
   const env = loadEnv(mode, process.cwd());
   const isBuild = command === 'build' ? true : false
+  console.log(env)
   return {
     plugins: setupPlugins(env,isBuild),//挂载插件
     resolve: {

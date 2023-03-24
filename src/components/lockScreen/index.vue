@@ -62,13 +62,13 @@ const stop = ()=>{
 let timer:NodeJS.Timer = null
 const setAutoLock = ()=>{
     (timer || showData.value) && stop()
-    if(!getConfigState('lockNum')) return stop()
     timer = setInterval(()=>{
         timerFn()
     },getConfigState('lockNum') * 60000)
 }
 
 const timerFn = ()=>{
+    if(!getConfigState('lockNum')) return stop()
     if(getConfigState('lockExpireNum') < new Date().getTime()){
         let secondsToGo = 5;
         const modal = Modal.success({

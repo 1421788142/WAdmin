@@ -13,6 +13,7 @@
                                     v-if="!item.renderForm"
                                     :is="item.type" 
                                     v-bind="item.searchOption"
+                                    v-on="item?.listeners || {}"
                                     v-model:value="searchParam[item.name!]"
                                     :row="searchParam"
                                 ></component>

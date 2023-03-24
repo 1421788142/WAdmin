@@ -34,7 +34,7 @@ import tableVue from '@/components/global/table/index.vue'
 
 const expandedRowKeys = ref<any[]>([])
 const afterLoad = (value:any,state:Table.stateProps)=>{
-	state.expandedKeys = Array.from(new Set(value.dataList.map(x=>x.id)))
+	state.expandedKeys = Array.from(new Set(value.dataList.map(x=>x.menuType !=='C' && x.id)))
 	return arrayToTree(value.dataList)
 }
 

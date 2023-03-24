@@ -1,4 +1,5 @@
 import { reactive, toRefs } from 'vue'
+import { upload } from '@/hooks/interface/upload';
 
 interface stateInterface {
 	title:string, //modal 标题
@@ -7,7 +8,7 @@ interface stateInterface {
 	initFormParam:any,
 	tableColumns:wTableProps,
 	formColumns:wFormProps,
-	imgList:any[]
+	fileList:upload.stateProps['fileListData']
 }
 
 const starsList:wTableEnumProps = [
@@ -35,7 +36,7 @@ export const usePageData = ()=>{
 		title:'新增数据',
 		visible:false,
 		loading:false,
-		imgList:[],
+		fileList:[],
 		initFormParam:{
 			stars:1,
 			userType:1,

@@ -19,7 +19,6 @@ export interface enumProp {
     color?:string
 }
 
-
 export interface searchProps {
     type?:searchType, //组件类型,默认a-input
 	name?: string, //查询入参,默认取dataIndex
@@ -27,7 +26,8 @@ export interface searchProps {
     sort?: number, //排序
     defaultValue?: string | number | boolean | any[], // 搜索项初始值
 	renderForm?: (params: any) => any, //自定义表单tsx
-    options?: SelectProps['options'] & enumProp[],
+    options?: SelectProps['options'] | enumProp[],
+    listeners?:{ [prop:string]:Function }
     [prop: string]: any, //暂时为了适配其他配置项
 }
 
@@ -45,6 +45,6 @@ export interface tableProps extends TableColumnType {
     height?: string | number, //图片高度
     summary?: boolean, //是否汇总
     renderSummary?: (pageData: any, column:tableProps) => any, //自定义汇总内容
-    enum?: enumProp[], //tag标签 默认取 searchOption['options']
+    enum?: searchProps['options'], //tag标签 默认取 searchOption['options']
 	showEnum?: boolean; //表格有枚举时是否显示枚举内容,默认true
 }

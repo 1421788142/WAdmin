@@ -15,7 +15,7 @@
                   <div @click="setupCodeImg" class="w-[100%] h-[100%] opacity-0 hover:opacity-100 absolute backdrop-invert backdrop-opacity-30 flex justify-center items-center">
                     <span class="text-white text-md">点击刷新</span>
                   </div>
-                  <img class="w-[100%] h-[50px]" :src="codeImage"/>
+                  <img class="!w-[100%] h-[50px]" :src="codeImage"/>
                 </div>
               </a-spin>
           </div>

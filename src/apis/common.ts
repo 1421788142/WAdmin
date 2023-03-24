@@ -1,4 +1,16 @@
 import { Http } from "@/plugins/axios";
+
+export interface uploadFile {
+    code: number,
+    data:{
+        name: string,
+        url: string,
+        id: number
+    },
+    message: string
+}
+
+
 export interface fileInterface {
     name:string,
     url:string,
