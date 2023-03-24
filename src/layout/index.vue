@@ -17,7 +17,7 @@
         <!-- 页面菜单 -->
         <a-layout class="w-full h-full">
             <!-- 侧边栏 -->
-            <a-layout-sider 
+            <a-layout-sider
                 :collapsedWidth="50" 
                 v-if="getConfigState('sysMode') === sysModeEnum.web && !getConfigState('isHasFull') && menuType !== 'horizontal'" 
                 width="230px" 
@@ -102,8 +102,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, nextTick, onMounted, provide, computed } from 'vue';
-import { guide, getFirstMenu } from './index'
+import { ref, nextTick, onMounted, provide, computed, watch } from 'vue';
+import { guide, getFirstMenu, openKey } from './index'
 import { debounce } from '@/utils/util'
 import { useEmitter } from '@/hooks/useEmitter';
 
@@ -167,9 +167,13 @@ const toPage = (menuItem:menuListType)=>{
         leftMenu.value.setMenuList(menuItem.path)
         return
     } 
-    selectedKeys.value = [firstMenu.path,menuItem.path]
     router.push({ path: firstMenu.path || '/' })
 }
+
+watch(()=>route.path,(newV)=>{
+    let menuList = openKey(newV)
+    selectedKeys.value = menuList
+})
 
 // 防抖函数监听页面尺寸
 const newSize = ()=> {

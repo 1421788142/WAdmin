@@ -19,7 +19,7 @@ export function selected(fullPath:string){
  * @param {Function} filterKey  最终返回字符串的需要过滤的key
  * @param {Function} returnKey 最终返回字符串的过滤出的key
  * */
-function findFn<T>(key:Function,filterKey:Function,returnKey:Function){
+export function findFn<T>(key:Function,filterKey:Function,returnKey:Function){
     let stack:T[] = [];
     let going:boolean = true;
     let filter = (menuItem:menuListType[], keys:Function)=>{
@@ -122,7 +122,7 @@ export const filterKeepAlive = ()=>{
     let firstMenu:menuListType = null
     let filterFn = (item:menuListType[])=>{
         for(let i=0; i< item.length; i++){
-            item[i].component === 'Layout' && item[i].children && item[i].children.length > 0 ? filterFn(item[i].children) : firstMenu = item[i]
+            item[i].component === 'Layout' && item[i]?.children?.length > 0 ? filterFn(item[i].children) : firstMenu = item[i]
             break
         }
     }
