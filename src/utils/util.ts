@@ -303,6 +303,6 @@ export const pick = <T, K extends keyof T>(
  * @returns {*|string}
  */
 
-export const getAssetsImage = (name:string): any | string=>{
+export const getAssets = (name:string): any | string=>{
 	return new URL(`/src/assets/${name}`, import.meta.url).href;
 }

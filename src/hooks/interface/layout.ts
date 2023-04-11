@@ -11,6 +11,7 @@ export namespace Layout {
         menuList:menuListType[],
         selectedKeys:string[],
         openKeys:string[],
+        rootSubmenuKeys:string[],
         mode:mode,
         isHasLogo:boolean,
     }

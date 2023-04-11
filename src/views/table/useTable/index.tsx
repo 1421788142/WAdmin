@@ -1,16 +1,18 @@
 import { reactive, toRefs } from "vue";
+import { upload } from '@/hooks/interface/upload';
+import { userList, userInterface } from '@/apis/system/user'
 
 interface stateInterface {
 	title:string, //modal 标题
 	visible:boolean, //modal是否显示
 	loading:boolean,
-	initFormParam:any,
+	formParam:userInterface,
 	tableColumns:wTableProps,
 	formColumns:wFormProps,
-	imgList:any[]
+	fileList:upload.stateProps['fileListData']
 }
 
-const starsList:wTableEnumProps = [
+const gradeList:wTableEnumProps = [
 	{ label:'一级', color: "blue", value: 1 },
 	{ label:'二级', color: "#FF9800", value: 2 },
 	{ label:'三级', color: "red", value: 3 },
@@ -22,24 +24,19 @@ const userType:wTableEnumProps = [
 	{ label:'普通用户', value: 2 }
 ]
 
-// 自定义(使用tsx语法)
-const renderAge = ({ row, value }) => {
-	return (
-		<a-input-number step={1} min={1} max={100} v-model:value={row!['age']}></a-input-number>
-	);
-};
-
 export const usePageData = ()=>{
+	// 自定义(使用tsx语法)
+	const renderAge = ({ row, value }) => {
+		return (
+			<a-input-number step={1} min={1} max={100} v-model:value={row!['age']}></a-input-number>
+		);
+	};
 	const state = reactive<stateInterface>({
 		title:'新增数据',
 		visible:false,
 		loading:false,
-		imgList:[],
-		initFormParam:{
-			stars:1,
-			userType:1,
-			age:18
-		},
+		fileList:[],
+		formParam:null,
 		tableColumns:[
 			{
 				title:'用户姓名',
@@ -64,10 +61,10 @@ export const usePageData = ()=>{
 			{ title:'用户头像', dataIndex: "avatar", image:true, },
 			{
 				title:'会员等级',
-				dataIndex: "stars",
+				dataIndex: "grade",
 				searchOption:{
 					type:'a-select',
-					options:starsList
+					options:gradeList
 				},
 				tag:true,
 				sorter: (a: any, b: any) => a.stars - b.stars,
@@ -90,42 +87,32 @@ export const usePageData = ()=>{
 		formColumns:[
 			{
 				name: 'nickname',
-				formItemOption:{
-					label: '用户姓名',
-					rules: [{ required: true, trigger: ['change', 'blur'] }],
-				},
+				isRule:true,
+				formItemOption:{ label: '用户姓名' },
 			},
 			{
 				name: 'age',
-				formItemOption:{
-					label: '用户年龄',
-					rules: [{ required: true, trigger: ['change', 'blur'] }],
-				},
+				isRule:true,
+				formItemOption:{ label: '用户年龄' },
 				renderForm:renderAge,
 			},
 			{
 				name: 'url',
-				formItemOption:{
-					label: '门户地址',
-					rules: [{ required: true, trigger: ['change', 'blur'] }],
-				},
+				isRule:true,
+				formItemOption:{ label: '门户地址' },
 			},
 			{
 				name: 'avatar',
-				formItemOption:{
-					label: '用户头像',
-					rules: [{ required: true, trigger: ['blur'] }],
-				},
+				isRule:true,
+				formItemOption:{ label: '用户头像' },
 			},
 			{
-				name: 'stars',
+				name: 'grade',
 				formItemType:'a-select',
-				formItemOption:{
-					label: '会员等级',
-					rules: [{ required: true, trigger: ['change', 'blur'] }],
-				},
+				isRule:true,
+				formItemOption:{ label: '会员等级' },
 				componentOption:{
-					options:starsList,
+					options:gradeList,
 					showSearch:true,
 					allowClear:true,
 					filterOption:(input: string, option: any) => {
@@ -136,17 +123,34 @@ export const usePageData = ()=>{
 			{
 				name: 'userType',
 				formItemType:'a-select',
-				formItemOption:{
-					label: '用户类型',
-					rules: [{ required: true, trigger: ['change', 'blur'] }],
-				},
+				isRule:true,
+				formItemOption:{ label: '用户类型' },
 				componentOption:{
 					options:userType
 				}
 			}
 		]
 	})
+
+	const open = async (type:string,row?:userInterface)=>{
+		state.visible = true
+		state.title = type === 'add' ? '新增' : `编辑`
+		state.fileList = row ? [{
+			url: row.avatar,
+			status: 'done',
+			isHand: true,//手动上传 以防数据混乱
+			uid: String(row.userId),
+			name: '用户头像'
+		}] : []
+		state.formParam = row ? row : {
+			userType:1,
+			grade:1,
+		} as userInterface
+	}
+
 	return {
-		...toRefs(state)
+		...toRefs(state),
+		userList,
+		open
 	}
 }

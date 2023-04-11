@@ -11,54 +11,54 @@ import { notification, message } from 'ant-design-vue';
 import { CheckCircleTwoTone } from '@ant-design/icons-vue';
 import { h } from 'vue';
 
-export default defineStore('user',{
-    state:()=>{
+export default defineStore('user', {
+    state: () => {
         return {
-            userRouterList:[],
+            userRouterList: [],
             userInfo: null,
-            requestRecord:[],//保存请求的接口
-            historyMenuTag:[],
-            token:''
+            requestRecord: [],//保存请求的接口
+            historyMenuTag: [],
+            token: ''
         }
     },
-    getters:{
-        getMenus: (state)=> state.userRouterList,
-        getToken: (state)=> state.token,
-        getUserInfo: (state)=> state.userInfo,
+    getters: {
+        getMenus: (state) => state.userRouterList,
+        getToken: (state) => state.token,
+        getUserInfo: (state) => state.userInfo,
     },
-    actions:{
-        setUserInfo(info: userInterface) {
+    actions: {
+        async setUserInfo(info: userInterface) {
             this.userInfo = info ?? null;
         },
         async setHistoryMenu(menu: menuItem[]) {
-            emitter.emit('setRoute',menu)
+            emitter.emit('setRoute', menu)
             this.historyMenuTag = menu ?? [];
         },
-        async getHistoryMenu(){
+        async getHistoryMenu() {
             return this.historyMenuTag
         },
-        setupUserRouter(menu:menuListType[]){
+        async setupUserRouter(menu: menuListType[]) {
             this.userRouterList = menu
             router.addRoute(getRoutes(this.userRouterList || []))
         },
-        setupRequestRecord(cancel:Function | null, url:string, type:string = 'add'){
-            if(type === 'add'){
-                this.requestRecord.unshift({url:url,fn:cancel})
-                if(this.requestRecord.length > 15) this.requestRecord.pop()
-            } else if(type === 'cancel'){
-                this.requestRecord.forEach((item)=>{
+        setupRequestRecord(cancel: Function | null, url: string, type: string = 'add') {
+            if (type === 'add') {
+                this.requestRecord.unshift({ url: url, fn: cancel })
+                if (this.requestRecord.length > 15) this.requestRecord.pop()
+            } else if (type === 'cancel') {
+                this.requestRecord.forEach((item) => {
                     item.cancel && item.cancel()
                 })
                 this.requestRecord = []
             } else {
-                this.requestRecord = this.requestRecord.filter(x=>x.url !== url)
+                this.requestRecord = this.requestRecord.filter(x => x.url !== url)
             }
         },
         // 登录
-        async login(query:loginInterface){
+        async login(query: loginInterface) {
             try {
                 const { code, data } = await login(query)
-                if(code === 200){
+                if (code === 200) {
                     await this.setUserInfo(data)
                     await this.afterLoginAction()
                     return true
@@ -69,66 +69,78 @@ export default defineStore('user',{
                 return false
             }
         },
-        // 登录后的操作
-        async afterLoginAction(){
+        // 获取用户菜单 
+        async getUserRouter() {
+            if (!this.userInfo) return
             try {
-                //获取用户信息
                 const { code, data } = await getRouter() //获取用户菜单
-                if(code === 200){
+                if (code === 200) {
                     let menuTree = arrayToTree(data?.dataList ?? [])
                     await this.setMenuTree(menuTree)
                     await this.setupUserRouter(menuTree)
-                    router.push({path:'/'})
-                    notification.open({
-                        message: '登录成功',
-                        description:`${timeState()},${this.userInfo.userName}`,
-                        icon: () => h(CheckCircleTwoTone, { twoToneColor: '#09F175' }),
-                    });
-                    return
+                    return true
                 } else {
-                    this.setUserInfo(null)
                     message.error('获取菜单失败请重新登录')
+                    return false
                 }
-            } catch (error){
+            } catch {
+                message.error('获取菜单失败请重新登录')
+                return false
+            }
 
+        },
+        // 登录后的操作
+        async afterLoginAction() {
+            let res = await this.getUserRouter()
+            if (res) {
+                message.success('跳转中...')
+                router.push({ path: '/' })
+                notification.open({
+                    message: '登录成功',
+                    description: `${timeState()},${this.userInfo.userName}`,
+                    icon: () => h(CheckCircleTwoTone, { twoToneColor: '#09F175' }),
+                });
+                return
+            } else {
+                this.setUserInfo(null)
             }
         },
         // 退出登录
-        async loginOut(){
+        async loginOut() {
             try {
                 let res = await loginOut()
-                if(res.code === 200){
+                if (res.code === 200) {
                     this.setUserInfo(null)
                     this.setupUserRouter([])
                     this.setHistoryMenu([])
-                    router.push({path:'/login'})
+                    router.push({ path: '/login' })
                     message.success(res.message)
                 }
-            } catch (error){
-                
+            } catch (error) {
+
             }
         },
 
         // 取菜单下的按钮
-        async setMenuTree(menuTree:menuListType[]){
+        async setMenuTree(menuTree: menuListType[]) {
             // 取菜单下的权限
-            let getPermission = (data:menuListType)=>{
+            let getPermission = (data: menuListType) => {
                 let arr = []
-                data.children.forEach(item=>arr.push(item.perms))
+                data.children.forEach(item => arr.push(item.perms))
                 delete data['children']
                 return arrRemoval(arr)
             }
-            menuTree.forEach(item=>{
+            menuTree.forEach(item => {
                 let menuItem = {
-                    component:item.menuType === 'M' ? 'Layout' : (item.menuType === 'C' ? item.component : ''),
-                    name:item?.path.split('/').join(''),
-                    meta:{
-                        title:item.title,
-                        permission:(item?.children && item.menuType === 'C') ? getPermission(item) : [],
+                    component: item.menuType === 'M' ? 'Layout' : (item.menuType === 'C' ? item.component : ''),
+                    name: item?.path.split('/').join(''),
+                    meta: {
+                        title: item.title,
+                        permission: (item?.children && item.menuType === 'C') ? getPermission(item) : [],
                     }
                 }
-                Object.assign(item,menuItem)
-                item?.children && item?.children?.length > 0 ? this.setMenuTree(item.children) : '' 
+                Object.assign(item, menuItem)
+                item?.children && item?.children?.length > 0 ? this.setMenuTree(item.children) : ''
             })
         }
     },

@@ -2,25 +2,25 @@
 	<div class="h-full">
 		<w-table ref="table" :requestApi="userList" :columns="tableColumns">
 			<template #tableHeader>
-				<w-button btnType="primary" @click="add"/>
+				<w-button btnType="primary" @click="update" />
 			</template>
-			<template #url="{row}">
-				<a :href="row.text">{{row.text}}</a>
+			<template #url="{ row }">
+				<a :href="row.text">{{ row.text }}</a>
 			</template>
 			<template #operation="{ row }">
 				<div class="w-table-btn">
-					<w-button btnType="text" type="update" @click="update(row.record)"/>
-					<w-button btnType="text" color="red" type="delete"/>
+					<w-button @click="update('edit', row.record)" type="update" />
+					<w-button @click="update('delete', row.record)" color="red" type="delete" />
 				</div>
 			</template>
 		</w-table>
 		<!-- 新增编辑框 -->
-		<w-modal :destroyOnClose="false" :loading="loading" :title="title" width="1000px" v-model:visible="visible" @btnOk="btnOk">
-			<w-form :submitApi="submitApi" :initFormParam="initFormParam" :columns="formColumns" ref="form">
+		<w-modal :destroyOnClose="false" :loading="loading" :title="title" width="1000px" v-model:visible="visible"
+			@btnOk="btnOk">
+			<w-form :submitApi="submitApi" v-model:value="formParam" :columns="formColumns" ref="form">
 				<template #avatarFormItem="{ row }">
-					<!-- <w-upload v-model:value="imgList" uploadType="image" actionUrl="/upload/image" :total="1" @change="(value)=>{
-						row.avatar = value[0]?.url ?? ''
-					}" /> -->
+					<uploadImgVue ref="uploadImgRef" :total="1" accept="image/*" :fileList="fileList"
+						@change="(state) => row.avatar = state.fileListData.map(x => x.url).join(',')" />
 				</template>
 			</w-form>
 		</w-modal>
@@ -28,67 +28,65 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, nextTick } from 'vue'
+import { ref } from 'vue'
 import { usePageData } from './index'
-import { userList, userListInterface } from '@/apis/table/useTable'
-import { message } from 'ant-design-vue'
+import { userInterface } from '@/apis/system/user'
+import { message, Modal } from 'ant-design-vue'
 import formVue from '@/components/global/form/index.vue'
 import tableVue from '@/components/global/table/index.vue'
+import uploadImgVue from '@/components/global/upload/uploadImg.vue';
 
 const {
 	tableColumns,
 	formColumns,
-	initFormParam,
+	formParam,
 	visible,
 	title,
 	loading,
-	imgList
+	fileList,
+	userList,
+	open
 } = usePageData()
 
 const [
 	form,
 	table
 ] = [
-	ref<RefComponent<typeof formVue>>(),
-	ref<RefComponent<typeof tableVue>>()
-]
+		ref<RefComponent<typeof formVue>>(),
+		ref<RefComponent<typeof tableVue>>()
+	]
 
-const add = ()=>{
-	visible.value = true
-	nextTick(()=>{
-		form.value.reset()
-	})
-}
-const update = (value:userListInterface)=>{
-	visible.value = true
-	title.value = '编辑数据'
-	nextTick(()=>{
-		form.value.reset<userListInterface>(value,'clear')
-	})
-}
-const btnOk = async ()=>{
-	try {
-		loading.value = true
-		let { code, data } = await form.value.submitForm<userListInterface>()
-		if(code === 201) return
-		submitApi(data)
-	} finally {
-		loading.value = false
+const update = async (type: string = 'add', row: userInterface) => {
+	if (type === 'delete') {
+		Modal.confirm({
+			title: '是否确认删除',
+			onOk: async () => {
+				message.warn('演示模式,不能删除')
+			},
+		});
+	} else {
+		await open(type, row)
+		form.value?.reset()
 	}
 }
 
-const submitApi = async (params:userListInterface) => {
-	if(params.id){
+const btnOk = async () => {
+	let res = await form.value.submitForm()
+	if (res) submitApi()
+}
+
+const submitApi = async () => {
+	loading.value = true
+	if (formParam.value.id) {
 		message.warn('修改失败,演示模式不允许操作')
 	} else {
 		message.warn('提交失败,演示模式不允许操作')
 	}
+	loading.value = false
 	visible.value = false
 	table.value.refresh()
 }
 
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

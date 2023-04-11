@@ -26,6 +26,8 @@ export const useMenu = (
         selectedKeys:[],
         // 当前展开的 SubMenu 菜单项 key 数组
         openKeys:[],
+        // 默认只展开一个父级菜单 保存一级目录layouy
+        rootSubmenuKeys:userRouterList.value.map(x=>x.component === 'Layout' && x.path),
         // 菜单类型
         mode:'vertical',
         // 是否显示logo
@@ -78,11 +80,22 @@ export const useMenu = (
         ]
     })
 
+    // 默认展开一级父级菜单
+    const onOpenChange = (openKey: string[])=>{
+        const latestOpenKey = openKey.find(key => state.openKeys.indexOf(key) === -1);
+        if (state.rootSubmenuKeys.indexOf(latestOpenKey!) === -1) {
+            state.openKeys = openKey;
+        } else {
+            state.openKeys = latestOpenKey ? [latestOpenKey] : [];
+        }
+    }
+
     return {
 		...toRefs(state),
         menuClass,
         theme,
         getConfigState,
-        setMenuList
+        setMenuList,
+        onOpenChange
 	};
 }

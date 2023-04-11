@@ -6,7 +6,7 @@
         <a-form class="flex-1" :model="searchParam" name="formRef">
             <a-row :gutter="16">
                 <template v-for="item in searchColumns" :key="item.prop">
-                    <a-col :xs="24" :sm="12" :lg="6" :order="1">
+                    <a-col :xs="24" :sm="12" :lg="6" :order="1" :span="12">
                         <a-form-item v-bind="item">
                             <slot name="formItemAll" :formItem="item" :searchParam="searchParam">
                                 <component

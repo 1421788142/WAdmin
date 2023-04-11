@@ -14,31 +14,33 @@
 			v-show="showSearch"
         >
 		<!-- 搜索条件插槽 -->
-		<template #formItemAll="{formItem,searchParam}">
-			<slot :name="`${formItem.name}FormItem`" :formItem="formItem" :searchParam="searchParam"></slot>
+			<template #formItemAll="{formItem,searchParam}">
+				<slot :name="`${formItem.name}FormItem`" :formItem="formItem" :searchParam="searchParam"></slot>
 			</template>
 		</w-search-form>
 		<!-- 表格头部 -->
 		<div class="flex justify-between mb-2">
-			<div class="flex items-center max-w-[25%]">
-				<span class="mr-1 text-lg truncate">{{$route.meta.title}}</span>
-				<a-tooltip placement="right" v-if="subTitle">
-					<template #title>
-						<span>{{subTitle}}</span>
-					</template>
-					<info-circle-outlined class=" !text-zinc-500" />
-				</a-tooltip>
-			</div>
+			<slot name="tableTitle">
+				<div class="flex items-center max-w-[25%]">
+					<span class="mr-1 text-lg truncate">{{$route.meta.title}}</span>
+					<a-tooltip placement="right" v-if="subTitle">
+						<template #title>
+							<span>{{subTitle}}</span>
+						</template>
+						<info-circle-outlined class=" !text-zinc-500" />
+					</a-tooltip>
+				</div>
+			</slot>
 			<div class="flex items-center max-w-[70%] overflow-auto">
 				<div class="flex min-w-min"> 
 					<!-- 按钮插槽 isSelected 是否已选择, selectedList根据key所取的data数据集合 -->
 					<slot name="tableHeader" :selectedList="selectedList" :isSelected="isSelected"></slot>
 				</div>
 				<!-- 表格操作模块 -->
-				<div class="!text-xl flex items-center ml-3" v-if="toolButton">
+				<div class="grid grid-flow-col grid-rows-1 gap-2 ml-2 text-xl" v-if="toolButton">
 					<a-tooltip placement="top" v-if="searchColumns.length > 0">
 						<template #title>数据筛选</template>
-						<search-outlined @click="showSearch = !showSearch" class="mr-3 cursor-pointer" />
+						<search-outlined @click="showSearch = !showSearch" class="cursor-pointer" />
 					</a-tooltip>
 					<a-tooltip placement="top">
 						<template #title>刷新</template>
@@ -47,7 +49,7 @@
 					<a-tooltip placement="top">
 						<template #title>密度</template>
 						<a-dropdown :trigger="['click']" placement="bottom">
-							<column-width-outlined class="mx-3 cursor-pointer" />
+							<column-width-outlined class="cursor-pointer" />
 							<template #overlay>
 								<a-menu v-model:selectedKeys="size" @click="setTableSize">
 									<a-menu-item key="default">默认</a-menu-item>
@@ -89,6 +91,9 @@
 					<bodyCell :row="{ text, record, index, column }"/>
 				</slot>
 			</template>
+			<template #expandedRowRender="{ record }" v-if="expandedRowRender">
+				<slot name="expandedRender" :row="{ record }"></slot>
+			</template>
 			<template #summary="{ pageData }">
 				<slot name="summaryCell">
 					<summaryCell v-if="summary" :row="{ pageData, fixed:summaryFixed, tableColumns, selection}"/>
@@ -116,27 +121,26 @@ import { Table } from "./interface";
 import colSetting from './components/colSetting.vue'
 import bodyCell from './components/bodyCell.vue'
 import summaryCell from './components/summaryCell.vue'
-import { Result } from '@/types/axios'
-import { tableResultData } from '@/apis/interface'
 
 interface tablePorps {
 	columns: wTableProps, //列配置项
 	dataSource?: object[], //数据源 如果使用那么requestApi则失效
 	requestApi: Table.hookProps['requestApi'], //请求表格数据的api ==> 必传
-	beforeLoad?:Table.hookProps['beforeLoad'], //请求前触发入参为searchParams,返回值为false时取消请求,否则将返回值searchParams合并
-  	afterLoad?:Table.hookProps['afterLoad'], //请求完成后渲染数据前触发,可处理数据
+	beforeLoad?: Table.hookProps['beforeLoad'], //请求前触发入参为searchParams,返回值为false时取消请求,否则将返回值searchParams合并
+  	afterLoad?: Table.hookProps['afterLoad'], //请求完成后渲染数据前触发,可处理数据
 	selection?: boolean, //是否显示表格选择框
 	selectionOption?: TableProps['rowSelection'], //表格左侧选择框属性
 	pagination?: boolean, //是否需要分页组件 ==> 非必传（默认为true）
 	initParam?: any, //初始化请求参数 ==>非必传（默认为{}）
 	toolButton?: boolean, //是否显示表格功能按钮 ==>非必传（默认为true）
 	summary?: boolean, //是否显示汇总
-	summaryFixed?: boolean, //汇总是否固定
+	summaryFixed?: boolean | 'top' | 'bottom', //汇总是否固定
 	subTitle?: string, //副标题
 	rowKey?: string, //选择框所选键值 allKey代表选择行数据
 	searchShowTotal?: number,//搜索条件显示数量
 	scroll?: TableProps['scroll'], // 滚动配置项
-	wrapClass?:string,//外层盒子的css类名
+	wrapClass?: string,//外层盒子的css类名
+	expandedRowRender?: boolean,//是否自定义子级插槽
 }
 
 // 接受父组件prop，配置默认值
@@ -149,11 +153,12 @@ const props = withDefaults(defineProps<tablePorps>(), {
 	toolButton: true,
 	subTitle:null,
 	selection: false,
+	expandedRowRender: false,
 	rowKey: 'id',
 	scroll: () => {
 		return {
 			x: 'max-content',
-			y: 600
+			y: 550
 		}
 	},
 	selectionOption:()=>({})
@@ -187,6 +192,7 @@ const {
 		'afterLoad',
 	])
 });
+
 // 根据配置定义搜索模块和表格数据源
 setColumns()
 // 重置表格已选的值

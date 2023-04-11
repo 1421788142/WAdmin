@@ -16,7 +16,7 @@ const router = createRouter({
 })
 export async function setupRouter(app:App){
     // 先走守卫模式然后进行动态添加菜单
-    await guard(router)
+    guard(router)
     const appStore = userStore()
     let { userRouterList } = storeToRefs(appStore)
     // 动态添加菜单

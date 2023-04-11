@@ -9,7 +9,7 @@ export default {
     OutLogin:'Sign Out',//退出登录,
     ModifyInfo:'Modify info.',//修改信息
     errMsg401: '用户没有权限（令牌、用户名、密码错误）!',
-    errMsg403: '用户得到授权，但是访问是被禁止的。!',
+    errMsg403: '用户得到授权，但是访问是被禁止的!',
     errMsg404: '网络请求错误,未找到该资源!',
     errMsg405: '网络请求错误,请求方法未允许!',
     errMsg408: '网络请求超时!',

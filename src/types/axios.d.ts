@@ -12,6 +12,7 @@ export interface RequestOptions {
     // 是否取消阻止重复请求默认否
     preventDuplication?: boolean
 }
+// 接口返回参数
 export interface Result<T>{
     code: number,
     message:string,

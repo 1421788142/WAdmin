@@ -10,7 +10,6 @@ export interface uploadFile {
     message: string
 }
 
-
 export interface fileInterface {
     name:string,
     url:string,

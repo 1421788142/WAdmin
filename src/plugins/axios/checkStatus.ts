@@ -1,10 +1,10 @@
 import { i18nText } from '../language/setupI18n'
 import { message, Modal } from 'ant-design-vue';
 import userStore from '@/store/user';
-export function checkStatus(
+export const checkStatus = async (
     status: number,
     msg:string
-):void{
+)=>{
     let errMessage = '';
     const { loginOut } = userStore()
     switch(status){
@@ -22,34 +22,34 @@ export function checkStatus(
             });
             break;
         case 403:
-            errMessage = i18nText('sys.errMsg403');
+            errMessage = await i18nText('sys.errMsg403');
             break;
         case 404:
-            errMessage = i18nText('sys.errMsg404');
+            errMessage = await i18nText('sys.errMsg404');
             break;
         case 405:
-            errMessage = i18nText('sys.errMsg405');
+            errMessage = await i18nText('sys.errMsg405');
             break;
         case 408:
-            errMessage = i18nText('sys.errMsg408');
+            errMessage = await i18nText('sys.errMsg408');
             break;
         case 500:
-            errMessage = i18nText('sys.errMsg500');
+            errMessage = await i18nText('sys.errMsg500');
             break;
         case 501:
-            errMessage = i18nText('sys.errMsg501');
+            errMessage = await i18nText('sys.errMsg501');
             break;
         case 502:
-            errMessage = i18nText('sys.errMsg502');
+            errMessage = await i18nText('sys.errMsg502');
             break;
         case 503:
-            errMessage = i18nText('sys.errMsg503');
+            errMessage = await i18nText('sys.errMsg503');
             break;
         case 504:
-            errMessage = i18nText('sys.errMsg504');
+            errMessage = await i18nText('sys.errMsg504');
             break;
         case 505:
-            errMessage = i18nText('sys.errMsg505');
+            errMessage = await i18nText('sys.errMsg505');
             break;
     }
     if(errMessage){

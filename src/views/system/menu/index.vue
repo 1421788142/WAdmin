@@ -1,6 +1,7 @@
 <template>
 	<div>
-		<w-table :expandedRowKeys="expandedRowKeys" ref="table" :selection="false" :afterLoad="afterLoad" :pagination="false" :requestApi="getRouter" :columns="tableColumns">
+		<w-table ref="table" :selection="false" :afterLoad="afterLoad" :pagination="false" :requestApi="menuList"
+			:columns="tableColumns">
 			<template #tableHeader>
 				<w-button btnType="primary" @click="update()" />
 			</template>
@@ -9,22 +10,22 @@
 			</template>
 			<template #operation="{ row }">
 				<div class="w-table-btn">
-					<w-button v-if="row.record.menuType != 'F'" @click="update('add',row.record)" />
-					<w-button @click="update('edit',row.record)" type="update" />
-					<w-button @click="update('delete',row.record)" color="red" type="delete" />
+					<w-button v-if="row.record.menuType != 'F'" @click="update('add', row.record)" />
+					<w-button @click="update('update', row.record)" type="update" />
+					<w-button @click="update('delete', row.record)" color="red" type="delete" />
 				</div>
 			</template>
 		</w-table>
 		<!-- 新增编辑 -->
-		<w-modal :destroyOnClose="false" :loading="loading" :title="title" width="1000px" v-model:visible="visible" @btnOk="btnOk">
-			<w-form ref="form" :labelCol="{ span: 6 }" :submitApi="submitApi" :columns="formColumns" :initFormParam="initFormParam" />
+		<w-modal :destroyOnClose="false" :loading="loading" :title="title" width="1000px" v-model:visible="visible"
+			@btnOk="btnOk">
+			<w-form ref="form" :labelCol="{ span: 6 }" :columns="formColumns" v-model:value="formParam" />
 		</w-modal>
 	</div>
 </template>
 
 <script lang="ts" setup>
-import { ref, nextTick } from 'vue'
-import { getRouter } from '@/apis/user/index'
+import { ref } from 'vue'
 import { usePageData } from './index'
 import { arrayToTree } from '@/utils/util'
 import { Table } from '@/components/global/table/interface'
@@ -32,80 +33,68 @@ import { message, Modal } from 'ant-design-vue'
 import formVue from '@/components/global/form/index.vue'
 import tableVue from '@/components/global/table/index.vue'
 
-const expandedRowKeys = ref<any[]>([])
-const afterLoad = (value:any,state:Table.stateProps)=>{
-	state.expandedKeys = Array.from(new Set(value.dataList.map(x=>x.menuType !=='C' && x.id)))
-	return arrayToTree(value.dataList)
+const afterLoad = (value: any, state: Table.stateProps) => {
+	state.expandedKeys = Array.from(new Set(value.dataList.map(x => x.menuType !== 'C' && x.id)))
+	return arrayToTree<menuListType>(value.dataList).sort((a, b) => {
+		return a.orderNum - b.orderNum
+	})
 }
 
 const [
 	form,
 	table
 ] = [
-	ref<RefComponent<typeof formVue>>(),
-	ref<RefComponent<typeof tableVue>>()
-]
-
-const refresh = ()=>{
-	table.value.refresh()
-}
-const { 
+		ref<RefComponent<typeof formVue>>(),
+		ref<RefComponent<typeof tableVue>>()
+	]
+const refresh = () => table.value.refresh()
+const {
 	title,
 	visible,
 	loading,
 	formColumns,
-	initFormParam,
 	tableColumns,
-	getMenu
+	formParam,
+	menuList,
+	open,
+	updateMenu,
+	delMenu,
 } = usePageData()
 
-const update = async (type:string = 'add', row?:menuListType)=>{
-	if(type === 'delete'){
+const update = async (type: string = 'add', row?: menuListType) => {
+	if (type === 'delete') {
 		Modal.confirm({
 			title: '是否确认删除',
-			onOk:()=>message.warn('演示模式，不允许操作'),
+			onOk: async () => {
+				let { code, data } = await delMenu({ id: row.id })
+				if (code === 200) {
+					refresh()
+					message.warn(data.message)
+				}
+			},
 		});
-		return
-	}
-	await getMenu()
-	visible.value = true
-	await nextTick()
-	if(type === 'add'){
-		if(row) {
-			form.value.reset({...initFormParam.value,pId:row.id},'clear')
-		} else {
-			form.value.reset(initFormParam.value,'clear')
-		}
 	} else {
-		form.value.reset(row,'clear')
+		await open(type, row)
+		form.value?.reset()
 	}
-	title.value = row && type !== 'add' ? `编辑${row.title}` : '新增'
 }
 
-const btnOk = async ()=>{
-	try {
-		loading.value = true
-		let { code, data } = await form.value.submitForm<menuListType>()
-		if(code === 201) return
-		submitApi(data)
-	} finally {
+const btnOk = async () => {
+	let res = await form.value.submitForm()
+	if (res) submitApi()
+}
+
+const submitApi = async () => {
+	loading.value = true
+	let { code, data } = await updateMenu(formParam.value)
+	if (code === 200) {
+		message.warn(data.message)
+		visible.value = false
+		refresh()
 		loading.value = false
 	}
 }
 
-const submitApi = async (params:any) => {
-	params['children'] && delete params['children']
-	if(params.id){
-		message.warn('修改失败,演示模式不允许操作')
-	} else {
-		message.warn('新增失败,演示模式不允许操作')
-	}
-	visible.value = false
-	refresh()
-}
-
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

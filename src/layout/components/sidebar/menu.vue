@@ -6,6 +6,7 @@
             :class="menuClass"
             :selectedKeys="selectedKeys"
             :openKeys="openKeys"
+            @openChange="onOpenChange"
         >
             <template v-for="item in menuList" :key="item.path">
                 <menuItemVue :menuItemValue="item" />
@@ -31,7 +32,8 @@ const {
     mode,
     menuClass,
     getConfigState,
-    setMenuList
+    setMenuList,
+    onOpenChange
 } = useMenu(props.menuTheme,route);
 
 defineExpose({ setMenuList })

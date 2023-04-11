@@ -11,18 +11,18 @@ export const useTable = ({
 	requestApi,
 	beforeLoad,
 	afterLoad,
-}:Table.hookProps) => {
+}: Table.hookProps) => {
 	const state = reactive<Table.stateProps>({
 		dataList: [],// 表格数据
-		expandedKeys:[],// 展开的行
-		size:['middle'],// 表格大小
-		loading:false,// 加载动画
-		showSearch:true,// 是否显示查询模块
-		isSelected:false,// 是否选中数据
-		selectedList:[],// 选择的数据
-		searchColumns:[],// 查询组件集合
-		tableColumns:[],// 查询组件集合
-		errorReset:0,//是否查询失败重启 0没有重启任务 1正在重启,重启成功恢复到0
+		expandedKeys: [],// 展开的行
+		size: ['middle'],// 表格大小
+		loading: false,// 加载动画
+		showSearch: true,// 是否显示查询模块
+		isSelected: false,// 是否选中数据
+		selectedList: [],// 选择的数据
+		searchColumns: [],// 查询组件集合
+		tableColumns: [],// 查询组件集合
+		errorReset: 0,//是否查询失败重启 0没有重启任务 1正在重启,重启成功恢复到0
 		pageable: {
 			// 当前页数
 			pageNum: 1,
@@ -36,38 +36,38 @@ export const useTable = ({
 		totalParam: {},// 总参数(包含分页和查询参数)
 	});
 
-	const getSort = (sort:number)=> sort ?? 10 //排序
-	const setColumns = ()=>{
+	const getSort = (sort: number) => sort ?? 10 //排序
+	const setColumns = () => {
 		// 设置搜索模块
-		state.searchColumns = columns.filter(x=>x.search || x.searchOption).map<searchProps>(column=>{
+		state.searchColumns = columns.filter(x => x?.search || x?.searchOption).map<searchProps>(column => {
 			let searchOption = column.searchOption
 			state.initSearchParam[searchOption?.name || column.dataIndex] = searchOption?.defaultValue || ''
 			return {
-				label:searchOption?.label || column.title,
-				name:searchOption?.name || column.dataIndex,
-				type:searchOption?.type || 'a-input',
-				searchOption:searchOption,
-				renderForm:searchOption?.renderForm,
-				listeners:searchOption?.listeners || {},
-				sort:searchOption?.sort || 0
+				label: searchOption?.label || column.title,
+				name: searchOption?.name || column.dataIndex,
+				type: searchOption?.type || 'a-input',
+				searchOption: searchOption,
+				renderForm: searchOption?.renderForm,
+				listeners: searchOption?.listeners || {},
+				sort: searchOption?.sort || 0
 			}
-		}).sort((a,b)=>{
+		}).sort((a, b) => {
 			return getSort(a.sort) - getSort(b.sort)
 		})
 		// 设置表格模块
-		state.tableColumns = columns.filter(x=>!x.hide).map(item => {
+		state.tableColumns = columns.filter(x => !x.hide).map(item => {
 			return {
 				...item,
-				enum:item?.enum ?? item?.searchOption?.options,
+				enum: item?.enum ?? item?.searchOption?.options,
 				show: isBoolean(item?.show) ? item?.show : true,
 				preview: isBoolean(item?.preview) ? item?.preview : true,
 				showEnum: isBoolean(item?.showEnum) ? item?.showEnum : true,
 				resizable: isBoolean(item?.resizable) ? item?.resizable : true,
-				width:item.width || 150,
-				align:item.align || 'center',
-				searchOption:{}
+				width: item.width || 150,
+				align: item.align || 'center',
+				searchOption: {}
 			};
-		}).filter(x=>!x.hide).sort((a,b)=>{
+		}).filter(x => !x.hide).sort((a, b) => {
 			return getSort(a.sort) - getSort(b.sort)
 		});
 	}
@@ -76,7 +76,7 @@ export const useTable = ({
 	 * 
 	 * @param selectedRowKeys 勾选的table列数据
 	 */
-	const selectionChange = (selectedRowKeys:string[] | number[] | object[])=>{
+	const selectionChange = (selectedRowKeys: string[] | number[] | object[]) => {
 		state.isSelected = !!selectedRowKeys.length
 		state.selectedList = selectedRowKeys
 	}
@@ -111,7 +111,7 @@ export const useTable = ({
 			updatedTotalParam();
 			Object.assign(state.totalParam, initParam);
 			const { data } = await requestApi(beforeLoad ? beforeLoad(state.totalParam) : state.totalParam);
-			state.dataList = afterLoad ? afterLoad(data,state) : (() => (pagination ? data.dataList : data))()
+			state.dataList = afterLoad ? afterLoad(data, state) : (() => (pagination ? data.dataList : data))()
 			state.errorReset = 0
 			// 解构后台返回的分页数据(如果有分页更新分页信息)
 			const { pageNum, pageSize, total } = data;
@@ -119,11 +119,11 @@ export const useTable = ({
 		} catch (error) {
 			// 失败重启查询一次  bug:前一次请求和当前请求一样则会情况当前请求,所以导致拿不到数据  所以这里定义一下重启
 			state.errorReset += 1
-			if(state.errorReset !== 1) return
+			if (state.errorReset !== 1) return
 			message.warn('查询失败,2秒后重启查询')
-			setTimeout(()=>{
+			setTimeout(() => {
 				getTableList()
-			},2000)
+			}, 2000)
 		} finally {
 			state.loading = false
 		}
@@ -140,7 +140,7 @@ export const useTable = ({
 		// 防止手动清空输入框携带参数（可以自定义查询参数前缀）
 		for (let key in state.searchParam) {
 			// * 某些情况下参数为 false/0 也应该携带参数
-			if ([false,0].includes(state.searchParam[key]) || state.searchParam[key]) {
+			if ([false, 0].includes(state.searchParam[key]) || state.searchParam[key]) {
 				nowSearchParam[key] = state.searchParam[key];
 			}
 		}
@@ -155,12 +155,12 @@ export const useTable = ({
 	const updatePageable = (resPageable: Table.pageableProps) => {
 		Object.assign(state.pageable, resPageable);
 	};
-	
+
 	/**
 	 * @description 修改表格尺寸
 	 * @return void
 	 * */
-	 const setTableSize = ({ key }) => state.size = [key];
+	const setTableSize = ({ key }) => state.size = [key];
 
 	/**
 	 * @description 表格数据查询
@@ -191,7 +191,7 @@ export const useTable = ({
 	 * @param {Number} pageSize 当前条数
 	 * @return void
 	 * */
-	const change = (pageNum:number, pageSize:number) => {
+	const change = (pageNum: number, pageSize: number) => {
 		state.pageable.pageNum = pageNum;
 		state.pageable.pageSize = pageSize;
 		getTableList();

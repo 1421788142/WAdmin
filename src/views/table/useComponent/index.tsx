@@ -1,17 +1,18 @@
 import { reactive, toRefs } from 'vue'
 import { upload } from '@/hooks/interface/upload';
+import { userList, userInterface } from '@/apis/system/user'
 
 interface stateInterface {
 	title:string, //modal 标题
 	visible:boolean, //modal是否显示
 	loading:boolean, 
-	initFormParam:any,
+	formParam:userInterface,
 	tableColumns:wTableProps,
 	formColumns:wFormProps,
 	fileList:upload.stateProps['fileListData']
 }
 
-const starsList:wTableEnumProps = [
+const gradeList:wTableEnumProps = [
 	{ label:'一级', color: "blue", value: 1 },
 	{ label:'二级', color: "#FF9800", value: 2 },
 	{ label:'三级', color: "red", value: 3 },
@@ -25,7 +26,7 @@ const userType:wTableEnumProps = [
 ]
 
 // 自定义(使用tsx语法)
-const renderAge = ({ row, value }) => {
+const renderAge = ({ row }) => {
 	return (
 		<a-input-number step={1} min={1} max={100} v-model:value={row!['age']}></a-input-number>
 	);
@@ -37,27 +38,34 @@ export const usePageData = ()=>{
 		visible:false,
 		loading:false,
 		fileList:[],
-		initFormParam:{
-			stars:1,
-			userType:1,
-			age:18
-		},
+		formParam:null,
 		tableColumns:[
 			{
-				title:'用户姓名',
-				dataIndex: "nickname",
+				title:'id',
+				width:50,
+				dataIndex: "id",
+				fixed:'left',
+				summary:true
+			},
+			{
+				title:'用户信息',
 				search: true,
+				filters: [
+					{ text: '彭于晏', value: 1 },
+					{ text: '吴彦祖', value: 2 },
+				],
+				filterSearch:true,
+				onFilter: (value: string, record: any) =>record.id === value,
+				children: [
+					{ title: '用户名称', dataIndex: 'nickname', width: 100 },
+					{ title: '用户地址', dataIndex: 'address', width: 100 },
+				],
 			},
 			{ 
 				title:'用户年龄',
 				dataIndex: "age",
 				search: true,
-				summary:true,
-				sorter: (a: any, b: any) => a.age - b.age,
-				renderSummary:(pageData)=>{
-					let ageAll:number[] = pageData.map(x=>x.age)
-					return `年龄总数: ${ageAll.reduce(((a,b)=> a+ b),0)} !!!`
-				}
+				sorter: (a: any, b: any) => a.age - b.age
 			},
 			{
 				title:'创建时间',
@@ -68,14 +76,19 @@ export const usePageData = ()=>{
 					const t2 = new Date(b.createdTime).getTime();
 					return t1 - t2
 				},
+				summary:true,
+				renderSummary:(pageData)=>{
+					let ageAll:number[] = pageData.map(x=>x.age)
+					return `年龄总数: ${ageAll.reduce(((a,b)=> a+ b),0)} !!!`
+				}
 			},
 			{ title:'门户地址', dataIndex: "url", ellipsis: true },
 			{ title:'用户头像', dataIndex: "avatar", image:true },
 			{
 				title:'会员等级',
-				dataIndex: "stars",
-				searchOption:{ type:'a-select', options:starsList },		
-				sorter: (a: any, b: any) => a.stars - b.stars,
+				dataIndex: "grade",
+				searchOption:{ type:'a-select', options:gradeList },		
+				sorter: (a: any, b: any) => a.grade - b.grade,
 				tag:true,
 				showEnum:true
 			},
@@ -92,42 +105,32 @@ export const usePageData = ()=>{
 		formColumns:[
 			{
 				name: 'nickname',
-				formItemOption:{
-					label: '用户姓名',
-					rules: [{ required: true, trigger: ['change', 'blur'] }],
-				},
+				isRule:true,
+				formItemOption:{ label: '用户姓名' },
 			},
 			{
 				name: 'age',
-				formItemOption:{
-					label: '用户年龄',
-					rules: [{ required: true, trigger: ['change', 'blur'] }],
-				},
+				isRule:true,
+				formItemOption:{ label: '用户年龄' },
 				renderForm:renderAge
 			},
 			{
 				name: 'url',
-				formItemOption:{
-					label: '门户地址',
-					rules: [{ required: true, trigger: ['change', 'blur'] }],
-				},
+				isRule:true,
+				formItemOption:{ label: '门户地址' },
 			},
 			{
 				name: 'avatar',
-				formItemOption:{
-					label: '用户头像',
-					rules: [{ required: true, trigger: ['blur'] }],
-				},
+				isRule:true,
+				formItemOption:{ label: '用户头像' },
 			},
 			{
-				name: 'stars',
+				name: 'grade',
 				formItemType:'a-select',
-				formItemOption:{
-					label: '会员等级',
-					rules: [{ required: true, trigger: ['change', 'blur'] }],
-				},
+				isRule:true,
+				formItemOption:{ label: '会员等级' },
 				componentOption:{
-					options:starsList,
+					options:gradeList,
 					showSearch:true,
 					allowClear:true,
 					filterOption:(input: string, option: any) => {
@@ -138,10 +141,8 @@ export const usePageData = ()=>{
 			{
 				name: 'userType',
 				formItemType:'a-select',
-				formItemOption:{
-					label: '用户类型',
-					rules: [{ required: true, trigger: ['change', 'blur'] }],
-				},
+				isRule:true,
+				formItemOption:{ label: '用户类型' },
 				componentOption:{
 					options:userType
 				}
@@ -152,8 +153,26 @@ export const usePageData = ()=>{
 	// ["ID", "姓名", "年龄", "编号", "地址", "开始时间", "结束时间"]
 	let xlsxHeader = state.tableColumns.filter((column) => column.title != '操作').map((column)=>column.title);
 
+	const open = async (type:string,row?:userInterface)=>{
+		state.visible = true
+		state.title = type === 'add' ? '新增' : `编辑`
+		state.fileList = row ? [{
+			url: row.avatar,
+			status: 'done',
+			isHand: true,//手动上传 以防数据混乱
+			uid: String(row.userId),
+			name: '用户头像'
+		}] : []
+		state.formParam = row ? row : {
+			userType:1,
+			grade:1,
+		} as userInterface
+	}
+
 	return {
 		...toRefs(state),
-		xlsxHeader
+		xlsxHeader,
+		open,
+		userList
 	}
 }

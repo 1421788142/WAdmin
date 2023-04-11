@@ -7,7 +7,7 @@
                 :width="row.column.width || 130"
                 :height="row.column?.height || 60"
                 :src="row.text"
-                :fallback="getAssetsImage('image/404.png')"
+                :fallback="getAssets('image/404.png')"
             ></a-image>
         </div>
     </template>
@@ -23,18 +23,18 @@
     </template>
     <!-- 文字默认 -->
     <template v-else>
-        <span>
+        <div :class="`truncate text-center mx-auto`">
             {{ 
                 (row.column.enum?.length && row.column.showEnum) ? 
                 filterEnum(row.text,row.column.enum): 
                 defaultFormat(row.text) 
             }}
-        </span>
+        </div>
     </template>
 </template>
 
 <script setup lang="ts">
-import { filterEnum, defaultFormat, getAssetsImage } from '@/utils/util'
+import { filterEnum, defaultFormat, getAssets } from '@/utils/util'
 interface propsInterface {
     row:{
         text:string,

@@ -86,8 +86,6 @@ export default class VAxios {
         }
     }
 
-    W
-
     private interceptors() {
         //挂载拦截器
         this.interceptorsRequest()

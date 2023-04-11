@@ -1,95 +1,128 @@
 <template>
 	<div class="h-full">
-		<w-table ref="table" :selection="false" :requestApi="getRole" :columns="tableColumns">
-			<template #tableHeader="scope">
-				<w-button btnType="primary" @click="add" />
+		<w-table ref="table" :requestApi="roleList" :columns="tableColumns">
+			<template #tableHeader>
+				<w-button btnType="primary" @click="update" />
 			</template>
 			<template #status="{ row }">
-				<a-switch v-model:checked="row.record.status" @click="change(row.record)" :checkedValue="1" checked-children="正常" un-checked-children="禁用" />
+				<a-switch v-model:checked="row.record.status" @click="statusChange(row.record)" :checkedValue="1"
+					checked-children="正常" un-checked-children="禁用" />
 			</template>
 			<template #operation="{ row }">
 				<div class="w-table-btn">
-					<w-button type="update" @click="update(row.record)"/>
-					<w-button type="delete" color="red" @click="update(row.record)"/>
+					<w-button @click="update('edit', row.record)" type="update" />
+					<w-button @click="update('delete', row.record)" color="red" type="delete" />
 				</div>
 			</template>
 		</w-table>
 		<!-- 新增编辑框 -->
-		<w-modal :loading="loading" :destroyOnClose="false" :title="title" width="1000px" v-model:visible="visible" @btnOk="btnOk">
-			<w-form :submitApi="submitApi" :labelCol="{span:4}" :initFormParam="initFormParam" :columns="formColumns" ref="form" />
+		<w-modal :loading="loading" :destroyOnClose="false" :title="title" width="700px" v-model:visible="visible"
+			@btnOk="btnOk">
+			<w-form :submitApi="submitApi" :labelCol="{ span: 4 }" :span="24" layout="horizontal" v-model:value="formParam"
+				:columns="formColumns" ref="form">
+				<template #menuIdFormItem>
+					<a-checkbox-group v-model:value="roleBtnIds">
+						<a-tree v-model:checkedKeys="rolePagesId" autoExpandParent defaultExpandAll show-line checkable
+							:style="{ width: '100%' }" :dropdownStyle="{ maxHeight: '400px', overflow: 'auto' }"
+							:fieldNames="{ children: 'children', title: 'title', key: 'id' }" :tree-data="treeData"
+							@check="check">
+							<template #title="{ dataRef }">
+								<div class="flex justify-between w-[400px]">
+									<div class="w-[150px]">{{ dataRef.title }}</div>
+									<!-- 页面按钮 -->
+									<div class="w-[200px] text-right" @click.stop>
+										<a-checkbox v-for="box in menuBtn.filter(x => x.pId === dataRef.id)" :value="box.id"
+											:key="box.id"
+											@change="change(menuBtn.filter(x => x.pId === dataRef.id), dataRef)">
+											<span>{{ box.title }}</span>
+										</a-checkbox>
+									</div>
+								</div>
+							</template>
+						</a-tree>
+					</a-checkbox-group>
+				</template>
+			</w-form>
 		</w-modal>
 	</div>
 </template>
 
 <script lang="ts" setup>
-import { ref, nextTick } from 'vue'
+import { ref } from 'vue'
 import { usePageData } from './index'
-import { getRole, roleInterafce } from '@/apis/user'
-import { message } from 'ant-design-vue'
-import { deepCopy } from '@/utils/util'
+import { roleInterface } from '@/apis/system/role'
+import { message, Modal } from 'ant-design-vue'
 import formVue from '@/components/global/form/index.vue'
 import tableVue from '@/components/global/table/index.vue'
 
 const {
 	tableColumns,
 	formColumns,
-	initFormParam,
+	formParam,
 	visible,
 	loading,
 	title,
-    getMenu
+	rolePagesId,
+	roleBtnIds,
+	treeData,
+	menuBtn,
+	getMenu,
+	check,
+	change,
+	open,
+	roleList,
+	updateRole,
+	delRole
 } = usePageData()
 
 const [
 	form,
 	table
 ] = [
-	ref<RefComponent<typeof formVue>>(),
-	ref<RefComponent<typeof tableVue>>()
-]
+		ref<RefComponent<typeof formVue>>(),
+		ref<RefComponent<typeof tableVue>>()
+	]
 
 getMenu()
-const add = ()=>{
-	visible.value = true
-	nextTick(()=>{
-		form.value.reset()
-	})
+const refresh = () => table.value.refresh()
+const update = async (type: string = 'add', row: roleInterface) => {
+	if (type === 'delete') {
+		Modal.confirm({
+			title: '是否确认删除',
+			onOk: async () => {
+				let { code, data } = await delRole({ id: row.id })
+				if (code === 200) {
+					refresh()
+					message.warn(data.message)
+				}
+			},
+		});
+	} else {
+		await open(type, row)
+		form.value?.reset()
+	}
 }
-const update = (value:roleInterafce)=>{
-	visible.value = true
-	title.value = '编辑数据'
-	nextTick(()=>{
-		form.value.reset(value,'clear')
-	})
+const btnOk = async () => {
+	let res = await form.value.submitForm()
+	if (res) submitApi()
 }
-const btnOk = async ()=>{
-	try {
-		loading.value = true
-		let { code, data } = await form.value.submitForm<roleInterafce>()
-		if(code === 201) return
-		submitApi(data)
-	} finally {
+
+const submitApi = async () => {
+	loading.value = true
+	let { code, data } = await updateRole(formParam.value)
+	if (code === 200) {
+		message.warn(data.message)
+		visible.value = false
+		refresh()
 		loading.value = false
 	}
 }
 
-const submitApi = async (params:roleInterafce) => {
-	if(params.id){
-		message.warn('修改失败,演示模式不允许操作')
-	} else {
-		message.warn('提交失败,演示模式不允许操作')
-	}
-	visible.value = false
-	table.value.refresh()
-}
-
-const change = (params:roleInterafce)=>{
+const statusChange = (params: roleInterface) => {
 	params.status = params.status === 1 ? 1 : 2
 	table.value.refresh()
 }
 
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

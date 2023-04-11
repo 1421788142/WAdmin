@@ -1,4 +1,3 @@
-import qs from 'qs'
 import {AxiosRequestConfig} from "axios";
 
 import userStore from '@/store/user';

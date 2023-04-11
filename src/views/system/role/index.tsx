@@ -1,68 +1,38 @@
-import { reactive, toRefs, ref } from "vue";
+import { reactive, toRefs } from "vue";
 import { getRouter } from '@/apis/user/index'
+import { roleList, updateRole, delRole ,roleInterface } from '@/apis/system/role'
 import { arrayToTree } from '@/utils/util'
-import { SelectProps } from 'ant-design-vue'
 
 interface stateInterface {
 	title:string, //modal 标题
 	visible:boolean, //modal是否显示
 	loading:boolean,
-	initFormParam:any,
+	formParam:roleInterface,
 	tableColumns:wTableProps,
-	formColumns:wFormProps
+	formColumns:wFormProps,
+	rolePagesId:number[],
+	roleBtnIds:number[],
+	menuList:menuListType[]
+	menuBtn:menuListType[],
+	treeData:menuListType[]
 }
 
 const starsList:wTableEnumProps = [
-	{ label:'禁用', value: 1 },
-	{ label:'正常', value: 2 },
+	{ label:'禁用', value: 0 },
+	{ label:'正常', value: 1 },
 ]
-
-// 自定义(使用tsx语法)
-const renderAge = ({ row, value }) => {
-	return (
-		<a-input-number step={1} min={0} max={100} v-model:value={row!['order']}></a-input-number>
-	);
-};
-const treeData = ref<any[]>([])
-const getMenu = async () => {
-	let { code, data } = await getRouter()
-	let dataList = arrayToTree<menuListType>(data.dataList);
-	code === 200 && (treeData.value = dataList)
-};
-
-const renderMenu = ({ row, value }) => {
-	let dropdownStyle = {
-		maxHeight: '400px', 
-		overflow: 'auto'
-	}
-	let fieldNames = { children:'children', title:'title', key: 'id'}
-	return (
-		<a-tree
-			v-model:checkedKeys={row!['menuId']}
-			checkable
-			showSearch
-			allowClear
-			blockNode
-			checkStrictly
-			style={{width: "100%"}}
-			dropdownStyle={dropdownStyle}
-			fieldNames={fieldNames}
-			tree-data={treeData.value}
-		>
-		</a-tree>
-	);
-};
 
 export const usePageData = ()=>{
 	const state = reactive<stateInterface>({
 		title:'新增数据',
 		visible:false,
 		loading:false,
-		initFormParam:{
-			order:0,
-			status:2,
-			menuId:[]
-		},
+		formParam:null,
+		rolePagesId:[],
+		roleBtnIds:[],
+		menuList:[],//页面菜单
+		menuBtn:[],//页面按钮
+		treeData:[],
 		tableColumns:[
 			{ title:'角色名称', dataIndex: "roleName", search: true },
 			{
@@ -90,27 +60,25 @@ export const usePageData = ()=>{
 		],
 		formColumns:[
 			{
+				isRule:true,
 				name: 'roleName',
-				formItemOption:{
-					label: '角色名称',
-					rules: [{ required: true, trigger: ['change', 'blur'] }],
-				},
+				formItemOption:{ label: '角色名称' },
 			},
 			{
+				isRule:true,
 				name: 'order',
-				formItemOption:{
-					label: '排序',
-					rules: [{ required: true, trigger: ['change', 'blur'] }],
-				},
-				renderForm:renderAge
+				formItemOption:{ label: '排序' },
+				renderForm:() => {
+					return (
+						<a-input-number step={1} min={0} max={100} v-model:value={state.formParam!['order']}></a-input-number>
+					);
+				}
 			},
 			{
+				isRule:true,
 				name: 'status',
 				formItemType:'a-select',
-				formItemOption:{
-					label: '状态',
-					rules: [{ required: true, trigger: ['change', 'blur'] }],
-				},
+				formItemOption:{ label: '状态' },
 				componentOption:{ options:starsList }
 			},
 			{
@@ -120,17 +88,66 @@ export const usePageData = ()=>{
 			},
 			{
 				name: 'menuId',
-				formItemOption:{
-					label: '菜单分配',
-					rules: [{ required: true, trigger: ['change', 'blur'] }],
-				},
-				renderForm:renderMenu
+				formItemOption:{ label: '菜单分配' },
 			},
 		]
 	})
 
+	const getMenu = async ()=>{
+		let { code, data } = await getRouter()
+		if(code !== 200) return
+		let dataList = data.dataList;
+		let [ menuBtn, menuList ] = [dataList.filter(x=>x.menuType === 'F'), dataList.filter(x=>x.menuType !== 'F')]
+		state.treeData = arrayToTree<menuListType>(menuList);
+		state.menuBtn = menuBtn
+		state.menuList = menuList
+	}
+
+	const check = (value:string[],e:any)=>{
+		let btnList = state.menuBtn.filter(x=>x.pId === e.node.id).map(x=>x.id)
+		if(!e.node.checked){
+			state.roleBtnIds.push(...btnList)
+		} else {
+			state.roleBtnIds = state.roleBtnIds.filter(x=>!btnList.includes(x))
+		}
+	}
+
+	const change = (btnList:menuListType[],menuItem:menuListType)=>{
+		let pageBtnIds = btnList.map(x=>x.id)
+		setTimeout(()=>{
+			let hasBtn = pageBtnIds.filter(x=>state.roleBtnIds.indexOf(x) !== -1).length > 0
+			if(hasBtn){
+				state.rolePagesId.push(menuItem.id)
+			} else {
+				state.rolePagesId = state.rolePagesId.filter(x=>x !== menuItem.id)
+			}
+		},200)
+	}
+
+	const open = async (type:string,row?:roleInterface)=>{
+		state.title = type === 'add' ? '新增' : `编辑`
+		state.visible = true
+		// 因为角色id返回格式是合并菜单和按钮  但是tree组件id过多会报警告 所以做一下过滤
+		state.rolePagesId = row ? state.menuList.filter(x=>row?.menuId.indexOf(x.id) !== -1).map(x=>x.id) : [] //过滤目录和菜单id
+		state.roleBtnIds = row ? state.menuBtn.filter(x=>row?.menuId.indexOf(x.id) !== -1).map(x=>x.id) : [] //过滤按钮id
+		state.formParam = {
+			id:row?.id ?? null,
+			memo:row?.memo ?? '',
+			roleName:row?.roleName ?? '',
+			menuId:row?.menuId ?? [],
+			order: row?.order ?? 0,
+			status:row?.status ?? 1,
+		}
+	}
+
 	return {
 		...toRefs(state),
-		getMenu
+		getMenu,
+		check,
+		change,
+		open,
+		roleList,
+		updateRole,
+		delRole
 	}
 }
