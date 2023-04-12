@@ -67,7 +67,7 @@ export const usePageData = ()=>{
 					options:gradeList
 				},
 				tag:true,
-				sorter: (a: any, b: any) => a.stars - b.stars,
+				sorter: (a: any, b: any) => a.grade - b.grade,
 			},
 			{
 				title:'用户类型',

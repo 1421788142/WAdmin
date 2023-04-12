@@ -5,18 +5,20 @@ import throttle from './modules/throttle'
 import longpress from './modules/longpress'
 import permission from './modules/permission'
 import waterMarker from './modules/waterMarker'
+import loading from './modules/loading'
 // 所以指令集合
 const directivesList: any = {
-	copy,
-	debounce,
+    copy,
+    debounce,
     throttle,
     longpress,
     permission,
-    waterMarker
+    waterMarker,
+    loading
 };
-const setDirectives = (app:App)=>{
+const setDirectives = (app: App) => {
     const directives = {
-        install:function(app:App<Element>) {
+        install: function (app: App<Element>) {
             Object.keys(directivesList).forEach(key => {
                 // 注册所有自定义指令
                 app.directive(key, directivesList[key]);

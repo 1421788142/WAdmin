@@ -37,7 +37,7 @@ export interface tableProps extends TableColumnType {
     dataIndex?: string, //单元格表头（非特殊类型必填）
     search?: boolean, //是否作为查询条件,有搜索条件或者
     searchOption?: searchProps, //查询表单配置项
-    show?: () => boolean, //可通过表格设置显示隐藏,默认true
+    show?: boolean, //可通过表格设置显示隐藏,默认true
     hide?: boolean, //是否渲染(不会显示并且不能加入表格设置)
     tag?: boolean; //是否是标签展示
     sort?: number, //排序

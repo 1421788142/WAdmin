@@ -102,7 +102,7 @@ export const usePageData = ()=>{
 			name: 'path',
 			tooltip: '访问的路由地址,如:`/user`，如外网地址需内链访问则以`http(s)://`开头,如果为目录,请以当前文件夹地址做拼接(system),注意请不要和其他目录文件夹重复,保持唯一性',
 			label: '组件路径',
-			isHide:()=>state.formParam?.menuType === 'C'
+			isHide:()=>state.formParam?.menuType !== 'F'
 		},
 		{
 			isRule:true,
