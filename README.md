@@ -66,22 +66,29 @@ yarn build
 ### 六、项目截图 📷
 
 
-![login](http://121.4.119.52/image/login.png)
+![login](http://121.4.119.52/image/9.png)
 
-![index](http://121.4.119.52/image/web4.png)
+![web](http://121.4.119.52/image/7.png)
 
-![web](http://121.4.119.52/image/web1.png)
+![web](http://121.4.119.52/image/1.png)
 
-![web](http://121.4.119.52/image/web2.png)
+![web](http://121.4.119.52/image/2.png)
 
-![web](http://121.4.119.52/image/web3.png)
+![web](http://121.4.119.52/image/3.png)
 
-![web](http://121.4.119.52/image/webDark.png)
+![web](http://121.4.119.52/image/4.png)
 
-![phone-light](http://121.4.119.52/image/phone.png)
+![web](http://121.4.119.52/image/5.png)
 
-![login-Dark](http://121.4.119.52/image/phoneDark.png)
+![web](http://121.4.119.52/image/6.png)
 
+![web](http://121.4.119.52/image/12.png)
+
+![web](http://121.4.119.52/image/8.png)
+
+![web](http://121.4.119.52/image/10.png)
+
+![web](http://121.4.119.52/image/11.png)
 
 ### 七、项目后台接口
 > 项目后台接口完全采用Mock 数据，感谢下面Mock平台支持
