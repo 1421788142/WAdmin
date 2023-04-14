@@ -52,13 +52,9 @@ const codeLoading = ref<boolean>(true)
 const codeImage = ref<string>('')
 const setupCodeImg = async () => {
   codeLoading.value = true
-  // let res = await codeImg()
-  // codeImage.value = res.data.img
-  setTimeout(() => {
-    codeImage.value = 'https://vben.vvbin.cn/assets/header.1b5fa5f8.jpg'
-    codeLoading.value = false
-  }, 500)
-  // codeLoading.value = false
+  let res = await codeImg()
+  codeImage.value = res.data.img
+  codeLoading.value = false
 }
 setupCodeImg()
 // 定义接口
