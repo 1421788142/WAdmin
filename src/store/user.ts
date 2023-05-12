@@ -75,7 +75,8 @@ export default defineStore('user', {
             try {
                 const { code, data } = await getRouter() //获取用户菜单
                 if (code === 200) {
-                    let menuTree = arrayToTree(data?.dataList ?? [])
+                    let dataList = (data?.dataList ?? []).sort((a, b) => a.orderNum - b.orderNum)
+                    let menuTree = arrayToTree(dataList)
                     await this.setMenuTree(menuTree)
                     await this.setupUserRouter(menuTree)
                     return true

@@ -1,31 +1,20 @@
 <template>
     <a-divider class="!mt-0 !mb-1" />
     <div class="flex items-center justify-between mb-1">
-        <div class="grid justify-start grid-flow-col gap-2 overflow-y-auto w-[70%]">
-            <a-button
-                v-for="(item,index) of historyMenu" :key="index"
-                :type="item.path === currentPage ? 'primary' : ''"
-                @click.stop="tabPage(item.path)"
-                size="small"
-            >
-                <tabOptions 
-                    :tabItmes="tabItmes" 
-                    :title="item.title" 
-                    :tagsIndex="Number(index)" 
-                    trigger="contextmenu" 
-                    :item="item" 
-                    @change="optionChange"
-                />
-            </a-button>
+        <div class="grid justify-start flex-1 grid-flow-col gap-2 historyMenu">
+            <a-tabs type="card" @change="tabPage" size="large" v-model:activeKey="currentPage">
+                <a-tab-pane v-for="(item, index) in historyMenu" :key="item.path">
+                    <template #tab>
+                        <tabOptions :tabItmes="tabItmes" :title="item.title" :tagsIndex="Number(index)"
+                            trigger="contextmenu" :item="item" @change="optionChange" />
+                    </template>
+                </a-tab-pane>
+            </a-tabs>
         </div>
         <div class="flex items-center">
             <sync-outlined class="text-xl cursor-pointer" @click="refresh" :class="animate" />
             <expand-outlined class="mx-4 text-xl cursor-pointer" @click="fullChange" />
-            <tabOptions 
-                :tabItmes="tabItmes" 
-                :disabled="false" 
-                @change="optionChange"
-            />
+            <tabOptions :tabItmes="tabItmes" :disabled="false" @change="optionChange" />
         </div>
     </div>
 </template>
@@ -46,7 +35,7 @@ const {
 const route = useRoute()
 const router = useRouter()
 
-const { 
+const {
     tabItmes,
     historyMenu,
     set,
@@ -55,62 +44,72 @@ const {
     closeRight,
     closeAll,
     closeOther
-} = useTagData(route,router)
+} = useTagData(route, router)
 
 // 标签页切换
-const tabPage = (path:string)=>{
-    router.push({path:path})
+const tabPage = (path: string) => {
+    router.push({ path: path })
 }
 // 切换全屏
-const fullChange = ()=>{
-    setConfigState('isHasFull',!getConfigState('isHasFull'))
+const fullChange = () => {
+    setConfigState('isHasFull', !getConfigState('isHasFull'))
 }
 //重新加载页面
 const emit = defineEmits(['change'])
 const animate = ref<string>('')
-const refresh = ()=>{
+const refresh = () => {
     animate.value = 'animate-spin'//加载动画
-    setTimeout(()=>animate.value = '',1000)
+    setTimeout(() => animate.value = '', 1000)
     emit('change')
 }
 
 const currentPage = ref<string>('') //当前路由path
 // 监听路由变化
-watch(() => route.path,(newPath:string) => {
+watch(() => route.path, (newPath: string) => {
     currentPage.value = newPath
     set()
-},{ immediate: true });
+}, { immediate: true });
 
 // 标签操作栏事件
 type keyType = 'refresh' | 'closeCurrent' | 'closeLeft' | 'closeRight' | 'closeOther' | 'closeAll'
 interface valueInterface {
-    key:keyType,
-    data:menuItem
+    key: keyType,
+    data: menuItem
 }
 
-const optionChange = (value:valueInterface)=>{
-    if(value.key === 'refresh') return refresh()
-    switch(value.key){
+const optionChange = (value: valueInterface) => {
+    if (value.key === 'refresh') return refresh()
+    switch (value.key) {
         case 'closeLeft':
             closeLeft(value.data);
-        break;
+            break;
         case 'closeRight':
             closeRight(value.data);
-        break;
+            break;
         case 'closeAll':
             closeAll();
-        break;
+            break;
         case 'closeOther':
             closeOther(value.data);
-        break;
+            break;
         default:
             closeCurrent(value.data);
-        break;
+            break;
     }
-    historyMenu.value.length > 0 && emit('change', value.key === 'closeAll')
+    historyMenu.value.length && emit('change', value.key === 'closeAll')
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+.historyMenu {
+    :deep(.ant-tabs) {
+        .ant-tabs-nav {
+            margin: 0 !important;
+        }
 
+        .ant-tabs-tab-active {
+            border-bottom-color: #f0f0f0 !important;
+        }
+    }
+}
 </style>

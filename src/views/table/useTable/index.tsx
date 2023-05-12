@@ -46,7 +46,12 @@ export const usePageData = ()=>{
 			{
 				title:'创建时间',
 				dataIndex: "createdTime",
-				searchOption: { type:'a-date-picker' },
+				searchOption: { 
+					type:'a-range-picker',
+					format:'YYYY-MM-DD',
+					valueFormat:'YYYY-MM-DD',
+					defaultValue:[ "2023-04-06", "2023-05-11" ]
+				},
 				sorter: (a: any, b: any) =>{
 					const t1 = new Date(a.createdTime).getTime();
 					const t2 = new Date(b.createdTime).getTime();

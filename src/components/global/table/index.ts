@@ -41,7 +41,7 @@ export const useTable = ({
 		// 设置搜索模块
 		state.searchColumns = columns.filter(x => x?.search || x?.searchOption).map<searchProps>(column => {
 			let searchOption = column.searchOption
-			state.initSearchParam[searchOption?.name || column.dataIndex] = searchOption?.defaultValue || ''
+			state.initSearchParam[searchOption?.name || column.dataIndex] = searchOption?.defaultValue || null;
 			return {
 				label: searchOption?.label || column.title,
 				name: searchOption?.name || column.dataIndex,
@@ -52,7 +52,7 @@ export const useTable = ({
 				sort: searchOption?.sort || 0
 			}
 		}).sort((a, b) => {
-			return getSort(a.sort) - getSort(b.sort)
+			return getSort(a?.searchOption?.sort) - getSort(b?.searchOption?.sort)
 		})
 		// 设置表格模块
 		state.tableColumns = columns.filter(x => !x.hide).map(item => {

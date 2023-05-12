@@ -1,17 +1,81 @@
 <template>
-    <div class="h-[100%]">
-        <contentBox title="金额汇总" type="boxOblong" class="h-[100%]">
-            <div class="echarts" id="amountStatistics"></div>
+    <div class="h-[310px]">
+        <contentBox title="充电运营趋势" type="box" class="h-full">
+            <template #subTitle>
+                <div class="flex items-center justify-end flex-1 bi-component">
+                    <a-select :options="startMode" allowClear dropdownClassName="bi-component" placeholder="启动方式"
+                        class="!w-[150px]">
+                        <template #notFoundContent>
+                            <div class="text-center">
+                                <container-outlined class="!text-[#29fcff] text-4xl" />
+                                <div class="!text-[#29fcff] mt-2">暂无数据</div>
+                            </div>
+                        </template>
+                    </a-select>
+                    <a-select allowClear dropdownClassName="bi-component" placeholder="渠道" class="!w-[150px] !mx-2">
+                        <template #notFoundContent>
+                            <div class="text-center">
+                                <container-outlined class="!text-[#29fcff] text-4xl" />
+                                <div class="!text-[#29fcff] mt-2">暂无数据</div>
+                            </div>
+                        </template>
+                    </a-select>
+                    <div>
+                        <a-tabs v-model:activeKey="activeKey">
+                            <a-tab-pane key="0" tab="日"></a-tab-pane>
+                            <a-tab-pane key="1" tab="周"></a-tab-pane>
+                            <a-tab-pane key="2" tab="月"></a-tab-pane>
+                        </a-tabs>
+                    </div>
+                </div>
+            </template>
+            <template #prove>
+                <question-circle-outlined @click="proveRef.visible = true" class="mr-2 text-xl cursor-pointer" />
+            </template>
+            <div class="w-[100] h-[80%]">
+                <div class="echarts" id="trend"></div>
+            </div>
         </contentBox>
+
+        <!-- 说明 -->
+        <proveVue title="充电运营趋势" info="可查看各渠道或充电启动方式运营趋势" ref="proveRef" />
     </div>
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue';
+import { SelectProps } from 'ant-design-vue';
+import proveVue from "../../components/prove.vue";
 import contentBox from '../../components/contentBox.vue';
 import { ECharts, EChartsOption, init } from "echarts";
-import { amountStatisticsInterface } from '@/apis/dataScreen/home'
-const initChart = (data: amountStatisticsInterface[]): ECharts => {
-    const charEle = document.getElementById("amountStatistics") as HTMLElement;
+
+const proveRef = ref<any>()
+const activeKey = ref<string>('0')
+
+const startMode = ref<SelectProps['options']>([
+    { label: '扫码支付', value: 1 },
+    { label: '终端操作', value: 2 }
+])
+
+
+
+const listData = [
+    { value: 210, date: "2022-1" },
+    { value: 19323, date: "2022-2" },
+    { value: 16002, date: "2022-3" },
+    { value: 19000, date: "2022-4" },
+    { value: 18324, date: "2022-5" },
+    { value: 12222, date: "2022-6" },
+    { value: 1323, date: "2022-7" },
+    { value: 13512, date: "2022-8" },
+    { value: 173, date: "2022-9" },
+    { value: 113, date: "2022-10" },
+    { value: 142, date: "2022-11" },
+    { value: 10, date: "2022-12" },
+]
+
+const initChart = (): ECharts => {
+    const charEle = document.getElementById("trend") as HTMLElement;
     const charEch: ECharts = init(charEle);
     const option: EChartsOption = {
         tooltip: {
@@ -36,9 +100,9 @@ const initChart = (data: amountStatisticsInterface[]): ECharts => {
         },
         grid: {
             top: "5%",
-            left: "10%",
+            left: "15%",
             right: "5%",
-            bottom: "20%"
+            bottom: "35%"
         },
         xAxis: [
             {
@@ -55,6 +119,12 @@ const initChart = (data: amountStatisticsInterface[]): ECharts => {
                         shadowColor: "#233653"
                     }
                 },
+                splitLine: {
+                    show: false,
+                },
+                axisTick: {
+                    show: false
+                },
                 axisLabel: {
                     // 坐标轴刻度标签的相关设置
                     color: "#7ec7ff",
@@ -64,16 +134,23 @@ const initChart = (data: amountStatisticsInterface[]): ECharts => {
                         return data;
                     }
                 },
-                splitLine: {
-                    show: false,
-                },
-                axisTick: {
-                    show: false
-                },
-                data: data.map(x => x.date)
+                data: listData.map(x => x.date)
             }
         ],
+        dataZoom: {
+            textStyle: { //滚动条两边字体样式
+                color: "#7ec7ff",
+                fontSize: 20
+            },
+            show: true, // 为true 滚动条出现
+            realtime: true,
+            type: 'slider', // 有type这个属性，滚动条在最下面，也可以不行，写y：36，这表示距离顶端36px，一般就是在图上面。
+            height: 20, // 表示滚动条的高度，也就是粗细
+            start: 20, // 表示默认展示20%～80%这一段。
+            end: 80
+        },
         yAxis: {
+            type: 'value',
             nameTextStyle: {
                 color: "#7ec7ff",
                 fontSize: 12,
@@ -96,7 +173,7 @@ const initChart = (data: amountStatisticsInterface[]): ECharts => {
                 show: false
             }
         },
-        series: data.map(() => {
+        series: listData.map(() => {
             return {
                 name: "",
                 type: "line",
@@ -145,7 +222,7 @@ const initChart = (data: amountStatisticsInterface[]): ECharts => {
                     shadowColor: "rgba(255, 199, 37, 0)", // 阴影颜色
                     shadowBlur: 20 // shadowBlur设图形阴影的模糊大小。配合shadowColor,shadowOffsetX/Y, 设置图形的阴影效果。
                 },
-                data: data.map(x => x.value)
+                data: listData.map(x => x.value)
             };
         })
     };
@@ -155,12 +232,13 @@ const initChart = (data: amountStatisticsInterface[]): ECharts => {
 defineExpose({
     initChart
 });
+
 </script>
 
 <style lang="scss" scoped>
 .echarts {
     width: 100%;
-    height: 70%;
+    height: 90%;
 
     :deep(.lineChart-bg) {
         box-sizing: border-box;
@@ -174,7 +252,7 @@ defineExpose({
 
         span {
             font-size: 20px;
-            color: #fff !important;
+            color: rgb(255 255 255 / 80%);
         }
     }
 }

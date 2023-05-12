@@ -7,8 +7,6 @@
 						:xlsxData="[]" :columns="xlsxHeader" />
 					<w-button btnType="primary" type="export" @click="downloadTemplate" />
 					<w-button btnType="primary" @click="update" />
-					<w-button ghost btnType="primary" :icon="false" :disabled="!scope.isSelected" type="delete" danger
-						title="批量删除" />
 				</div>
 			</template>
 			<template #nicknameTableHeader="scope">
@@ -72,7 +70,7 @@ const xlsxData = ref<any>([]) //导出的数据
 const getTableList = async () => {
 	const { data } = await userList({
 		pageNum: 1,
-		pageSize: 10,
+		pageSize: 100,
 	});
 	xlsxData.value = setTableExportData<any>(tableColumns.value, data.dataList).map((item) => {
 		return Object.keys(item).map((key) => item[key]);

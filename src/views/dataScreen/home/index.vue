@@ -4,19 +4,19 @@
             <!-- 头部 -->
             <div class="dataScreen-header">
                 <div class="header-lf">
-                    <span class="header-screening" @click="router.push('/')">首页</span>
+                    <span class="absolute top-0 right-0 left-btn" @click="router.push('/')">首页</span>
                 </div>
                 <div class="header-ct">
                     <div class="header-ct-title">
-                        <span>WAdmin可视化大数据展示平台</span>
-                        <div class="header-ct-warning">
+                        <span>小二快充可视化大数据展示</span>
+                        <div class="header-ct-content">
                             <deviceNumVue ref="deviceNumRef" />
                         </div>
                     </div>
                 </div>
                 <div class="header-rg">
-                    <span class="cursor-pointer header-download" @click="message.warn('待开发')">数据</span>
-                    <span class="header-time">当前时间：{{ time }}</span>
+                    <menuVue />
+                    <searchVue />
                 </div>
             </div>
             <!-- 中间部分 -->
@@ -59,9 +59,7 @@
 <script setup lang="ts">
 import { ref, Ref, onMounted, onBeforeUnmount } from "vue";
 import { chartData } from '.'
-import { message } from "ant-design-vue";
 import { useRouter } from "vue-router";
-import { useTime } from "@/hooks/useTime";
 import { ECharts } from "echarts";
 import mapChartVue from "./components/chinaMapChart.vue";
 import todayStatisticsVue from "./components/todayStatistics.vue";
@@ -71,6 +69,8 @@ import deviceStatisticsVue from "./components/deviceStatistics.vue";
 import topDeviceVue from "./components/topDevice.vue";
 import amountStatisticsVue from "./components/amountStatistics.vue";
 import { getAssets } from "@/utils/util";
+import menuVue from "../components/menu.vue";
+import searchVue from "../components/search.vue";
 
 const {
     topData,
@@ -165,21 +165,12 @@ const resize = () => {
     });
 };
 
-// 获取当前时间
-const { nowTime } = useTime();
-let timer: NodeJS.Timer | null = null;
-let time: Ref<string> = ref(nowTime.value);
-timer = setInterval(() => {
-    time.value = useTime().nowTime.value;
-}, 1000);
-
 // 销毁时触发
 onBeforeUnmount(() => {
     window.removeEventListener("resize", resize);
-    clearInterval(timer!);
     Object.values(dataScreen).forEach(val => val?.dispose());
 });
 </script>
 <style lang="scss" scoped>
-@import "./index.scss";
+@import "../assets/index.scss";
 </style>

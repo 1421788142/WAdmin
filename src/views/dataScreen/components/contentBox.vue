@@ -1,7 +1,13 @@
 <template>
     <div :class="type" class="box-content relative pt-1">
-        <div class="mx-10 my-4">
-            <span class="text-[#05E8FE] text-2xl font-bold">{{ title }}</span>
+        <div class="mx-10 mt-4">
+            <div class="text-[#05E8FE] font-bold flex items-center">
+                <span class="mr-2 text-[22px]">{{ title }}</span>
+                <slot name="prove"></slot>
+                <slot name="subTitle">
+                    <div class="flex-1 text-right !text-md">{{ subTitle }}</div>
+                </slot>
+            </div>
             <div class="line w-[50px] h-[10px] my-2"></div>
         </div>
         <slot></slot>
@@ -10,9 +16,11 @@
 
 <script setup lang="ts">
 const props = withDefaults(defineProps<{
-    title: string
-    type?: string
+    title: string,
+    subTitle?: string,
+    type?: string,
 }>(), ({
+    subTitle: '',
     type: 'boxMax'
 }))
 </script>
@@ -52,7 +60,7 @@ const props = withDefaults(defineProps<{
 }
 
 .box::after {
-    top: 4.5%;
+    top: 4.7%;
     left: 6%;
 }
 

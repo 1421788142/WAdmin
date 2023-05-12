@@ -1,22 +1,14 @@
 <template>
-    <div 
-        class="justify-between p-2 md:flex table-search bg-white dark:bg-[#141414]"
-        v-if="columns.length"
-    >
+    <div class="justify-between p-2 md:flex table-search bg-white dark:bg-[#141414]" v-if="columns.length">
         <a-form class="flex-1" :model="searchParam" name="formRef">
             <a-row :gutter="16">
                 <template v-for="item in searchColumns" :key="item.prop">
                     <a-col :xs="24" :sm="12" :lg="6" :order="1" :span="12">
                         <a-form-item v-bind="item">
                             <slot name="formItemAll" :formItem="item" :searchParam="searchParam">
-                                <component
-                                    v-if="!item.renderForm"
-                                    :is="item.type" 
-                                    v-bind="item.searchOption"
-                                    v-on="item?.listeners || {}"
-                                    v-model:value="searchParam[item.name!]"
-                                    :row="searchParam"
-                                ></component>
+                                <component v-if="!item.renderForm" :is="item.type" v-bind="item.searchOption"
+                                    v-on="item?.listeners || {}" v-model:value="searchParam[item.name!]" :row="searchParam">
+                                </component>
                                 <component v-else :is="item.renderForm" :row="searchParam"></component>
                             </slot>
                         </a-form-item>
@@ -45,17 +37,17 @@ import { DownOutlined, UpOutlined } from '@ant-design/icons-vue';
 import { searchProps } from '@/types/table/interface';
 
 interface propsInterface {
-	columns: searchProps[]; // 搜索配置列
-	searchParam: any; // 搜索参数
+    columns: searchProps[]; // 搜索配置列
+    searchParam: any; // 搜索参数
     loading: boolean, //请求loading
-	search: (params: any) => void; // 搜索方法
-	reset: (params: any) => void; // 重置方法
+    search: (params: any) => void; // 搜索方法
+    reset: (params: any) => void; // 重置方法
 }
 
 // 默认值
 const props = withDefaults(defineProps<propsInterface>(), {
-	columns: () => [],
-	searchParam: {}
+    columns: () => [],
+    searchParam: {}
 });
 
 // 是否展开搜索项
@@ -64,10 +56,9 @@ const maxLength = ref<number>(4)//搜索最大展示数量
 
 // 根据是否展开配置搜索项长度
 const searchColumns = ref<searchProps[]>([])
-watch(()=>isShowMax.value,(newV)=>{
+watch(() => isShowMax.value, (newV) => {
     searchColumns.value = newV ? props.columns : props.columns.slice(0, maxLength.value)
-},{immediate: true})
+}, { immediate: true })
 </script>
 
-<style scoped lang="scss">
-</style>
+<style scoped lang="scss"></style>

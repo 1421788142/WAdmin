@@ -1,7 +1,7 @@
 <template>
     <a-card title="这是详情页" :bordered="false">
         <div>
-            <div class="my-5">组件拿到参数为{{params}}</div>
+            <div class="my-5">组件拿到参数为{{ params }}</div>
             <a-input v-model:value="test"></a-input>
             <div class="flex">
                 <a-button type="primary">
@@ -20,6 +20,4 @@ const params = route.params
 const test = ref<string>('')
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

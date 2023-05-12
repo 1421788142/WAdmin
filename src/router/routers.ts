@@ -29,6 +29,15 @@ export const routes = [
             title: "数据大屏",
             icon: "bar-chart-outlined"
         }
+    },
+    {
+        path: '/dataScreen/operationsAnalysis',
+        name: 'dataScreenOperationsAnalysis',
+        component: () => import('@/views/dataScreen/operationsAnalysis/index.vue'),
+        meta: {
+            title: "数据大屏",
+            icon: "bar-chart-outlined"
+        }
     }
 ] as RouteRecordRaw[]
 

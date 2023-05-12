@@ -1,0 +1,276 @@
+.dataScreen-container {
+	// 最大盒子
+	user-select:none;
+	width: 100vw;
+	height: 100vh;
+	// background: url("../images/bg.png") no-repeat;
+	// background-repeat: no-repeat;
+	// background-attachment: fixed;
+	// background-position: center;
+	// background-size: 100% 100%;
+	// background-size: cover;
+    background-color: #033447;
+	.dataScreen {
+		// 盒子内容区
+		position: fixed;
+		top: 50%;
+		left: 50%;
+		z-index: 999;
+		display: flex;
+		flex-direction: column;
+		overflow: hidden;
+		transition: all 0.3s;
+		transform-origin: left top;
+		.dataScreen-header {
+			z-index: 1;
+			display: flex;
+			width: 100%;
+			height: 170px !important;
+			.header-lf,
+			.header-rg {
+				position: relative;
+				width: 567px;
+			}
+			.header-rg{
+				background: url("../images/oblong-bg.png") no-repeat;
+				background-size: 100% 45px;
+				display: flex;
+			}
+			.header-ct {
+				position: relative;
+				flex: 1;
+                margin: 0 10px;
+				height: 100%;
+				.header-ct-title {
+					position: absolute;
+					top: 0;
+					left: 0;
+					width: 100%;
+					font-family: YouSheBiaoTiHei;
+					font-size: 32px;
+					line-height: 78px;
+					color: #05e8fe;
+					text-align: center;
+					letter-spacing: 4px;
+					background: url("../images/title-box.png") no-repeat;
+					background-size: 100% 80px;
+					.header-ct-content {
+						position: absolute;
+						bottom: -80px;
+						left: 50%;
+						width: 850px;
+						font-family: YouSheBiaoTiHei;
+						transform: translateX(-50%);
+					}
+				}
+			}
+		}
+		.dataScreen-main{
+			box-sizing: border-box;
+			display: flex;
+			width: 100%;
+			height: 550px;
+			.dataScreen-map{
+				margin: 0 auto;
+				border-radius: 40px;
+				overflow: hidden;
+				box-shadow: 0 0 40px #0c9ad3;
+			}
+		}
+	}
+}
+
+// 按钮
+.left-btn,.right-btn{
+    width: 150px;
+    height: 55px;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 50px;
+    font-family: YouSheBiaoTiHei;
+    text-align: center;
+    cursor: pointer;
+    color: #29fcff;
+    z-index: 9;
+    display: block;
+}
+// 左方向按钮
+.left-btn{
+    background: url("../images/btn-left.png") no-repeat;
+    background-size: 100% 100%;
+}
+// 左方向按钮
+.right-btn{
+    background: url("../images/btn-right.png") no-repeat;
+    background-size: 100% 100%;
+}
+
+// 修改antd 各控件的css
+.bi-component{
+    // 时间控件
+    .ant-picker {
+        background: #085b5d9c !important;
+        border: 1px solid #29fcff !important;
+        color: #29fcff !important;
+    }
+
+    .ant-picker-input {
+        input {
+            color: #29fcff !important;
+        }
+        input:-moz-placeholder,   
+        textarea:-moz-placeholder {   
+            color: #29fcff !important;
+        }   
+        
+        input:-ms-input-placeholder,   
+        textarea:-ms-input-placeholder {   
+            color: #29fcff !important;
+        }   
+        
+        input::-webkit-input-placeholder,   
+        textarea::-webkit-input-placeholder {   
+            color: #29fcff !important;
+        }
+    }
+
+    .ant-picker-suffix {
+        svg {
+            fill: #29fcff !important;
+        }
+    }
+
+    .ant-picker-active-bar {
+        background-color: #29fcff !important;
+    }
+    .ant-picker-panel-container {
+        background: #085c5dde !important;
+        color: #29fcff;
+    }
+
+    .ant-picker-header {
+        border-bottom: 1px solid #29fcff !important;
+        color: #29fcff;
+    }
+
+    .ant-picker-panel {
+        border-bottom: 1px solid #29fcff !important;
+    }
+
+    .ant-picker-content {
+        thead {
+            th {
+                color: #29fcff;
+            }
+        }
+
+        tbody {
+            td {
+                color: #29fcff;
+            }
+        }
+    }
+
+    // 气泡卡片
+    .ant-popover-inner{
+        background-color: #085b5d9c !important;
+    }
+
+    // tabs 页签
+    .ant-tabs-tab {
+        padding: 0;
+        margin: 0 5px !important;
+
+        div {
+            color: #fff !important;
+            font-size: 20px;
+        }
+    }
+
+    .ant-tabs-nav::before {
+        border: none !important;
+    }
+
+    .ant-tabs-nav {
+        margin: 0 !important;
+    }
+
+    .ant-tabs-tab-active {
+        div {
+            color: #56D0E3 !important;
+        }
+    }
+    .ant-picker-cell-selected{
+        .ant-picker-cell-inner{
+            background-color: #56D0E3 !important;
+        }
+    }
+
+
+    .ant-tabs-ink-bar {
+        background-color: #56D0E3 !important;
+    }
+
+    // 日历
+    .ant-picker-calendar{
+        .ant-picker-panel{
+            border: none !important;
+        }
+        
+        .ant-picker-body {
+            padding: 10px !important;
+            background: url("../images/line-bg-light.png") no-repeat !important;
+            background-size: 100% 100% !important;
+            color: #fff !important;
+            background-color: #0e3d4f !important;
+            border: 0 !important;
+    
+            thead {
+                th {
+                    color: #fff;
+                    font-size: 18px;
+                }
+            }
+        }
+    }
+
+    // seletct 下拉选择框
+    .ant-select-selector {
+        background: #085b5d9c !important;
+        border: 1px solid #29fcff !important;
+        color: #29fcff !important;
+        input {
+            color: #29fcff !important;
+        }
+        input:-moz-placeholder,   
+        textarea:-moz-placeholder {   
+            color: #29fcff !important;
+        }   
+        
+        input:-ms-input-placeholder,   
+        textarea:-ms-input-placeholder {   
+            color: #29fcff !important;
+        }   
+        
+        input::-webkit-input-placeholder,   
+        textarea::-webkit-input-placeholder {   
+            color: #29fcff !important;
+        }
+    }
+}
+.bi-component.ant-select-dropdown{
+    background-color: #0B5E64 !important;
+    color: #05e8fe;
+    .ant-select-item-option-content{
+        color: #05e8fe;
+    }
+    .ant-select-item{
+        background-color: #0B5E64 !important;
+    }
+    .ant-select-item-option-active{
+        background-color: #05e8fe !important;
+        .ant-select-item-option-content{
+            color: #fff !important;
+        }
+    }
+}

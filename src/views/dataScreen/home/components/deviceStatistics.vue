@@ -8,7 +8,7 @@
 </template>
 
 <script setup lang="ts">
-import contentBox from './contentBox.vue';
+import contentBox from '../../components/contentBox.vue';
 import { ECharts, EChartsOption, init } from "echarts";
 import { deviceStatisticsInterface } from '@/apis/dataScreen/home'
 
@@ -27,7 +27,16 @@ const initChart = (data: deviceStatisticsInterface[]): ECharts => {
         tooltip: {
             trigger: "item",
             formatter: "{b} :  {c}个",
-            className: 'tooltipCar'
+            className: 'tooltipCar',
+            backgroundColor: "transparent", // 提示标签背景颜色
+            borderColor: "transparent",
+            axisPointer: {
+                lineStyle: {
+                    type: "dashed"
+                },
+                snap: true
+            },
+            extraCssText: "box-shadow: none;padding:20px"
         },
         legend: {
             show: true,
@@ -138,10 +147,16 @@ defineExpose({
     height: 200px;
 
     :deep(.tooltipCar) {
-        background-color: #16E3E380 !important;
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+        width: max-content;
+        background-color: none !important;
+        background: url("../../images/line-bg.png") no-repeat;
         border: none !important;
+        background-size: 100% 100%;
+        font-size: 20px !important;
         color: #fff !important;
-        font-size: 18px !important;
     }
 }
 </style>

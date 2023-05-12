@@ -14,10 +14,10 @@
 </template>
 
 <script setup lang="ts">
-import contentBox from './contentBox.vue';
+import contentBox from '../../components/contentBox.vue';
 import { topRanking } from '@/apis/dataScreen/home'
 import { ECharts, EChartsOption, init } from "echarts";
-import { ranking1, ranking2, ranking3, ranking4 } from "../assets/ranking-icon";
+import { ranking1, ranking2, ranking3, ranking4 } from "../../assets/ranking-icon";
 
 const colors = ["#1089E7", "#F57474", "#56D0E3", "#F8B448", "#8B78F6"]
 
@@ -43,8 +43,15 @@ const initChart = (data: topRanking[]): ECharts => {
                     </div>`;
                 return html;
             },
-            borderColor: '#ffffff00',
-            backgroundColor: 'none'
+            backgroundColor: "transparent", // 提示标签背景颜色
+            borderColor: "transparent",
+            axisPointer: {
+                lineStyle: {
+                    type: "dashed"
+                },
+                snap: true
+            },
+            extraCssText: "box-shadow: none;padding:0"
         },
         grid: {
             top: "5%",
@@ -183,13 +190,13 @@ defineExpose({
         justify-content: center;
         width: max-content;
         height: 60px;
-        background: url("../images/line-bg.png") no-repeat;
+        background: url("../../images/line-bg.png") no-repeat;
         background-size: 100% 100%;
         padding: 0 10px;
 
         span {
             font-size: 18px;
-            color: #05FFFF;
+            color: #fff;
         }
     }
 }

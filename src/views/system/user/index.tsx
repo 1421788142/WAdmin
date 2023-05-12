@@ -60,7 +60,7 @@ export const usePageData = ()=>{
 				dataIndex: "grade",
 				search: true,
 				searchOption:{ type:'a-select',options:gradeList },
-				sorter: (a: any, b: any) => a.stars - b.stars,
+				sorter: (a: any, b: any) => a.grade - b.grade,
 			},
 			{
 				title:'用户类型',

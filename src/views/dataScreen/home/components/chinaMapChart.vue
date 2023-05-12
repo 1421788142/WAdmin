@@ -8,20 +8,53 @@ import { useAMap } from "@/hooks/useMap";
 import { parkInterface } from "@/apis/dataScreen/home";
 const mapContainerRef = ref<HTMLDivElement>()
 
+// 示例
 const map = useAMap(mapContainerRef, {
-	zoom: 12,
-	center: [106.55, 29.57],
-	mapStyle: 'amap://styles/blue',
+	zoom: 12,//放大倍数
+	center: [120.279, 31.60],//初始点
+	mapStyle: 'amap://styles/blue',//地图主题
 })
+
+// 创建原点
+const createMarker = async (info: parkInterface) => {
+	let className = info.value > 100 ? 'max' : info.value > 50 ? 'auto' : 'min' //点class名称
+	let marker = new AMap.Marker({
+		position: new AMap.LngLat(info.Longitude, info.Latitude), // 经纬度对象，
+		title: info.parkName,
+		content: `<div class="ping ${className}"></div>`,
+		extData: info.parkId,
+		clickable: true
+	})
+	return marker
+}
+
+// 设置点击弹出框
+const setInfoContent = (marker: AMap.Marker, info: parkInterface) => {
+	let x = info.value > 100 ? 35 : info.value > 50 ? 25 : 15 //x偏移量
+	let y = 0 //y偏移量
+	let infoWindow = new AMap.InfoWindow({ offset: new AMap.Pixel(x, y) })
+	infoWindow.setContent(
+		`<div class="map-box">
+			<div>站点名称： ${info.parkName}</div>
+			<div>站点地址： ${info.address}</div>
+			<div>总枪数： ${info.value}（个）</div>
+			<div>快充： ${parseInt(String(info.value / 2))}（个）</div>
+			<div>慢充： ${info.value - parseInt(String(info.value / 2))}（个）</div>
+			<div>充电中： ${parseInt(String(info.value / 5))}（个）</div>
+			<div>空余充电枪： ${info.value - parseInt(String(info.value / 5))}（个）</div>
+		</div>`
+	)
+	marker.on('click', (e) => {
+		infoWindow.open(map.value, e.target.getPosition())
+	})
+	map.value.on('click', () => infoWindow.close()) //点击地图任何地点都关闭弹出框
+}
+
 const initData = (data: parkInterface[]) => {
 	setTimeout(() => {
-		data.forEach(x => {
-			var marker = new AMap.Marker({
-				position: new AMap.LngLat(x.Longitude, x.Latitude), // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
-				title: x.parkName,
-				content: `<div class="ping ${x.value > 100 ? 'max' : x.value > 50 ? 'auto' : 'min'}"></div>`,
-				extData: x.parkId
-			})
+		data.forEach(async (info) => {
+			let marker = await createMarker(info)
+			setInfoContent(marker, info)
 			map.value.add([marker])
 		})
 	}, 1000)
@@ -30,7 +63,7 @@ defineExpose({
 	initData
 });
 </script>
-<style>
+<style lang="scss">
 .ping {
 	border-radius: 50%;
 	animation: ping 1.2s ease-in-out infinite both;
@@ -45,7 +78,8 @@ defineExpose({
 	width: 140%;
 	height: 140%;
 	border-radius: 50%;
-	border: 1px solid #00eaff;
+	border: 2px solid #00eaff;
+	animation: border 1.2s ease-in-out infinite both;
 }
 
 .ping::before {
@@ -56,8 +90,11 @@ defineExpose({
 	width: 120%;
 	height: 120%;
 	border-radius: 50%;
-	border: 1px solid #00eaff;
+	border: 2px solid #00eaff;
+	animation: border 1.2s ease-in-out infinite both;
 }
+
+
 
 .max {
 	width: 70px;
@@ -144,6 +181,94 @@ defineExpose({
 		transform: scale(0.75);
 		opacity: 0.75;
 	}
+}
+
+@keyframes border {
+	0% {
+		-webkit-transform: scale(0.8);
+		transform: scale(0.8);
+		opacity: 0.2;
+	}
+
+	10% {
+		-webkit-transform: scale(0.85);
+		transform: scale(0.85);
+		opacity: 0.4;
+	}
+
+	20% {
+		-webkit-transform: scale(0.9);
+		transform: scale(1);
+		opacity: 0.6;
+	}
+
+	30% {
+		-webkit-transform: scale(0.95);
+		transform: scale(0.95);
+		opacity: 0.8;
+	}
+
+	40% {
+		-webkit-transform: scale(1);
+		transform: scale(1);
+		opacity: 1;
+	}
+
+	50% {
+		-webkit-transform: scale(1.05);
+		transform: scale(1.05);
+		opacity: 0.8;
+	}
+
+	60% {
+		-webkit-transform: scale(1);
+		transform: scale(1);
+		opacity: 0.6;
+	}
+
+	70% {
+		-webkit-transform: scale(0.95);
+		transform: scale(0.95);
+		opacity: 0.5;
+	}
+
+	80% {
+		-webkit-transform: scale(0.9);
+		transform: scale(0.9);
+		opacity: 0.4;
+	}
+
+	90% {
+		-webkit-transform: scale(0.85);
+		transform: scale(0.85);
+		opacity: 0.3;
+	}
+
+	100% {
+		-webkit-transform: scale(0.8);
+		transform: scale(0.8);
+		opacity: 0.2;
+	}
+}
+
+.map-box {
+	div {
+		margin-top: 5px;
+		font-size: 18px;
+	}
+}
+
+.amap-info-content {
+	width: max-content;
+	padding: 15px 30px !important;
+	background: url("../../images/line-bg.png") no-repeat;
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	color: #00eaff;
+}
+
+.bottom-center .amap-info-sharp {
+	border-top: 8px solid #00eaff;
 }
 </style>
   

@@ -5,10 +5,11 @@
             <div class='title'>点击解锁屏幕</div>
         </div>
         <div class='!select-none flex flex-row justify-around grid-flow-row gap-2 my-40 text-white items-center'>
-            <digitalFlip/>
+            <digitalFlip />
         </div>
         <transition name="fade-slide">
-            <div class="w-screen h-screen bg-[#060606bd] fixed left-0 top-0 z-10 backdrop-blur flex justify-center items-center" v-show="showData">
+            <div class="w-screen h-screen bg-[#060606bd] fixed left-0 top-0 z-10 backdrop-blur flex justify-center items-center"
+                v-show="showData">
                 <div class='flex flex-col items-center justify-center mb-4 w-[300px] mx-auto fixed' v-show="showData">
                     <a-avatar src='https://vben.vvbin.cn/assets/header.1b5fa5f8.jpg' :size="100" />
                     <div class='my-4 text-4xl text-white'>WAdmin</div>
@@ -16,14 +17,14 @@
                     <div class="my-2 text-red-700 text-lt">{{ errMsg }}</div>
                     <div class="flex justify-between w-full text-white">
                         <span class="cursor-pointer" @click="showData = false">返回</span>
-                        <span class="cursor-pointer" @click="loginOut().then(()=>reset())">重新登录</span>
+                        <span class="cursor-pointer" @click="loginOut().then(() => reset())">重新登录</span>
                         <span class="cursor-pointer" @click="toSys">进入系统</span>
                     </div>
                 </div>
             </div>
         </transition>
         <div class='mt-10 text-4xl text-center text-white'>
-            {{ `${year}/${month} ${week}` }}
+            {{ `${year}/${month} 星期${week}` }}
         </div>
     </div>
 </template>
@@ -31,18 +32,19 @@
 <script setup lang="ts">
 import { ref, inject } from 'vue';
 import digitalFlip from '../digitalFlip/index.vue'
-import { useNow } from '@/hooks/useNow'
+import { useTime } from '@/hooks/useTime';
 import { layoutInterface } from '@/hooks/interface/layout'
 import emitter from '@/plugins/mitt';
 
 import userStore from '@/store/user';
 import { Modal } from 'ant-design-vue';
 const { loginOut } = userStore()
-const { 
-    month, 
-    year, 
+
+const {
+    month,
+    year,
     week,
-} = useNow();
+} = useTime()
 
 const {
     getConfigState,
@@ -53,29 +55,29 @@ const showData = ref<boolean>(false)
 const lockPassword = ref<string>('') //锁屏密码
 const errMsg = ref<string>('') //锁屏提示
 
-const open = ()=> showData.value = true
+const open = () => showData.value = true
 
-const stop = ()=>{
+const stop = () => {
     clearInterval(timer)
 }
 
-let timer:NodeJS.Timer = null
-const setAutoLock = ()=>{
+let timer: NodeJS.Timer = null
+const setAutoLock = () => {
     (timer || showData.value) && stop()
-    timer = setInterval(()=>{
+    timer = setInterval(() => {
         timerFn()
-    },getConfigState('lockNum') * 60000)
+    }, getConfigState('lockNum') * 60000)
 }
 
-const timerFn = ()=>{
-    if(!getConfigState('lockNum')) return stop()
-    if(getConfigState('lockExpireNum') < new Date().getTime()){
+const timerFn = () => {
+    if (!getConfigState('lockNum')) return stop()
+    if (getConfigState('lockExpireNum') < new Date().getTime()) {
         let secondsToGo = 5;
         const modal = Modal.success({
             title: '锁屏时间到了,是否锁屏!',
             content: `${secondsToGo}秒后将自动锁屏`,
-            okText:`取消锁屏,${getConfigState('lockNum')}分钟后将重新锁屏!`,
-            onOk:()=>{
+            okText: `取消锁屏,${getConfigState('lockNum')}分钟后将重新锁屏!`,
+            onOk: () => {
                 setExpire()
                 clearInterval(interval)
             }
@@ -85,43 +87,41 @@ const timerFn = ()=>{
             modal.update({
                 content: `${secondsToGo}秒后将自动锁屏`,
             });
-            if(secondsToGo === 0){
+            if (secondsToGo === 0) {
                 clearInterval(interval);
                 modal.destroy();
-                setConfigState('isHasLock',true)
+                setConfigState('isHasLock', true)
                 stop()
             }
         }, 1000);
     }
 }
 
-const setExpire = async ()=>{
+const setExpire = async () => {
     let expire = new Date().getTime() + (getConfigState('lockNum') * 60000)
-    setConfigState('lockExpireNum',expire)
+    setConfigState('lockExpireNum', expire)
     setAutoLock()
     timerFn()
 }
 
 setExpire()
 
-emitter.on('setExpire',()=>{
+emitter.on('setExpire', () => {
     setExpire()
 })
 
-const reset = ()=>{
-    setConfigState('isHasLock',false)
+const reset = () => {
+    setConfigState('isHasLock', false)
     errMsg.value = ''
     lockPassword.value = ''
     showData.value = false
 }
 
-const toSys = ()=>{
-    if(lockPassword.value !== getConfigState('lockPassword')) return errMsg.value = '密码错误'
+const toSys = () => {
+    if (lockPassword.value !== getConfigState('lockPassword')) return errMsg.value = '密码错误'
     reset()
     setExpire()
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

@@ -20,14 +20,10 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import contentBox from './contentBox.vue';
+import contentBox from '../../components/contentBox.vue';
 import { topDevice } from '@/apis/dataScreen/home'
 import { Vue3SeamlessScroll } from "vue3-seamless-scroll";
-interface AlarmProps {
-    id: number;
-    value: number;
-    name: string;
-}
+
 const alarmData = ref<topDevice[]>([])
 
 const initData = (data: topDevice[]) => {

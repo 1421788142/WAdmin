@@ -1,20 +1,12 @@
 <template>
-    <div 
-		class="flex flex-col px-2 pt-2
-		border border-gray-200 dark:border-gray-700 rounded shadow-sm 
-		overflow-auto bg-white dark:bg-[#141414]"
-	 	:class="{'pb-2':!pagination,wrapClass}">
+	<div class="flex flex-col px-2 pt-2
+			border border-gray-200 dark:border-gray-700 rounded shadow-sm 
+			overflow-auto bg-white dark:bg-[#141414]" :class="{ 'pb-2': !pagination, wrapClass }">
 		<!-- 表格搜索 -->
-        <w-search-form
-            :search="search"
-			:reset="reset"
-			:loading="loading"
-			:searchParam="searchParam"
-			:columns="searchColumns"
-			v-show="showSearch"
-        >
-		<!-- 搜索条件插槽 -->
-			<template #formItemAll="{formItem,searchParam}">
+		<w-search-form :search="search" :reset="reset" :loading="loading" :searchParam="searchParam"
+			:columns="searchColumns" v-show="showSearch">
+			<!-- 搜索条件插槽 -->
+			<template #formItemAll="{ formItem, searchParam }">
 				<slot :name="`${formItem.name}FormItem`" :formItem="formItem" :searchParam="searchParam"></slot>
 			</template>
 		</w-search-form>
@@ -22,17 +14,17 @@
 		<div class="flex justify-between mb-2">
 			<slot name="tableTitle">
 				<div class="flex items-center max-w-[25%]">
-					<span class="mr-1 text-lg truncate">{{$route.meta.title}}</span>
+					<span class="mr-1 text-lg truncate">{{ $route.meta.title }}</span>
 					<a-tooltip placement="right" v-if="subTitle">
 						<template #title>
-							<span>{{subTitle}}</span>
+							<span>{{ subTitle }}</span>
 						</template>
 						<info-circle-outlined class=" !text-zinc-500" />
 					</a-tooltip>
 				</div>
 			</slot>
 			<div class="flex items-center max-w-[70%] overflow-auto">
-				<div class="flex min-w-min"> 
+				<div class="flex min-w-min">
 					<!-- 按钮插槽 isSelected 是否已选择, selectedList根据key所取的data数据集合 -->
 					<slot name="tableHeader" :selectedList="selectedList" :isSelected="isSelected"></slot>
 				</div>
@@ -60,35 +52,25 @@
 						</a-dropdown>
 					</a-tooltip>
 					<!-- 操作表头排序和显示隐藏 -->
-					<colSetting :columns="tableColumns" @change="settingChange"/>
+					<colSetting :columns="tableColumns" @change="settingChange" />
 				</div>
 			</div>
 		</div>
 		<!-- 表格 -->
-		<a-table
-			:columns="tableColumns.filter(x=>x.show)"
-			:data-source="dataList"
-			:size="size[0]"
-			:scroll="scroll"
-			v-bind="$attrs"
-			:pagination="false"
-			:loading="loading"
-			v-model:expandedRowKeys="expandedKeys"
-			bordered
-			@resizeColumn="handleResizeColumn"
-			:row-key="record => rowKey === 'allKey' ? record : record[rowKey]"
-			:row-selection="selection ? { 
+		<a-table :columns="tableColumns.filter(x => x.show)" :data-source="dataList" :size="size[0]" :scroll="scroll"
+			v-bind="$attrs" :pagination="false" :loading="loading" v-model:expandedRowKeys="expandedKeys" bordered
+			@resizeColumn="handleResizeColumn" :row-key="record => rowKey === 'allKey' ? record : record[rowKey]"
+			:row-selection="selection ? {
 				rowSelection: selectedList,
 				onChange: selectionChange,
 				...selectionOption
-			} : null"
-		>
+			} : null">
 			<template #headerCell="{ column }">
 				<slot :name="`${column['dataIndex']}TableHeader`" :row="column"></slot>
 			</template>
 			<template #bodyCell="{ text, record, index, column }">
-				<slot :name="column.dataIndex" :row="{text, record, index, column}">
-					<bodyCell :row="{ text, record, index, column }"/>
+				<slot :name="column.dataIndex" :row="{ text, record, index, column }">
+					<bodyCell :row="{ text, record, index, column }" />
 				</slot>
 			</template>
 			<template #expandedRowRender="{ record }" v-if="expandedRowRender">
@@ -96,19 +78,19 @@
 			</template>
 			<template #summary="{ pageData }">
 				<slot name="summaryCell">
-					<summaryCell v-if="summary" :row="{ pageData, fixed:summaryFixed, tableColumns, selection}"/>
+					<summaryCell v-if="summary" :row="{ pageData, fixed: summaryFixed, tableColumns, selection }" />
 				</slot>
 			</template>
 		</a-table>
 		<!-- 分页 -->
-		<w-pagination v-if="pagination" :pageable="pageable" :change="change"/>
-    </div>
+		<w-pagination v-if="pagination" :pageable="pageable" :change="change" />
+	</div>
 </template>
 
 <script lang="ts">
 // 禁止透传
 export default {
-  inheritAttrs: false
+	inheritAttrs: false
 }
 </script>
 
@@ -127,7 +109,7 @@ interface tablePorps {
 	dataSource?: object[], //数据源 如果使用那么requestApi则失效
 	requestApi: Table.hookProps['requestApi'], //请求表格数据的api ==> 必传
 	beforeLoad?: Table.hookProps['beforeLoad'], //请求前触发入参为searchParams,返回值为false时取消请求,否则将返回值searchParams合并
-  	afterLoad?: Table.hookProps['afterLoad'], //请求完成后渲染数据前触发,可处理数据
+	afterLoad?: Table.hookProps['afterLoad'], //请求完成后渲染数据前触发,可处理数据
 	selection?: boolean, //是否显示表格选择框
 	selectionOption?: TableProps['rowSelection'], //表格左侧选择框属性
 	pagination?: boolean, //是否需要分页组件 ==> 非必传（默认为true）
@@ -145,13 +127,13 @@ interface tablePorps {
 
 // 接受父组件prop，配置默认值
 const props = withDefaults(defineProps<tablePorps>(), {
-	columns:()=>[],
+	columns: () => [],
 	dataSource: () => [],
 	pagination: true,
 	selectable: false,
 	initParam: {},
 	toolButton: true,
-	subTitle:null,
+	subTitle: null,
 	selection: false,
 	expandedRowRender: false,
 	rowKey: 'id',
@@ -161,13 +143,13 @@ const props = withDefaults(defineProps<tablePorps>(), {
 			y: 550
 		}
 	},
-	selectionOption:()=>({})
+	selectionOption: () => ({})
 })
 
-const { 
-    dataList,
-    pageable,
-    searchParam, 
+const {
+	dataList,
+	pageable,
+	searchParam,
 	tableColumns,
 	searchColumns,
 	loading,
@@ -177,13 +159,13 @@ const {
 	showSearch,
 	expandedKeys,
 	setTableSize,
-    search, 
-    reset,
+	search,
+	reset,
 	change,
 	selectionChange,
 	setColumns
 } = useTable({
-	...pick(props,[
+	...pick(props, [
 		'columns',
 		'initParam',
 		'pagination',
@@ -196,24 +178,24 @@ const {
 // 根据配置定义搜索模块和表格数据源
 setColumns()
 // 重置表格已选的值
-watch(loading,()=>selectionChange([]))
+watch(loading, () => selectionChange([]))
 // 	修改表头宽度
-const handleResizeColumn = (w:number, col:wTableProp) => {
-	let columns = tableColumns.value.filter(x=>x.dataIndex === col.dataIndex)
+const handleResizeColumn = (w: number, col: wTableProp) => {
+	let columns = tableColumns.value.filter(x => x.dataIndex === col.dataIndex)
 	columns[0].width = w
 }
-const settingChange = (columns:wTableProps)=>{
+const settingChange = (columns: wTableProps) => {
 	loading.value = true
 	tableColumns.value = columns
-	setTimeout(()=>loading.value = false,300)
+	setTimeout(() => loading.value = false, 300)
 }
 // 暴露给父组件的参数和方法
 defineExpose({ searchParam, refresh: reset });
 </script>
 
 <style lang="scss">
-.table-img-box{
-	img{
+.table-img-box {
+	img {
 		height: 100%;
 	}
 }

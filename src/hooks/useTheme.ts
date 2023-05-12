@@ -18,7 +18,6 @@ const state: stateInterface = {
 export const useTheme = () => {
     // 切换暗黑和亮色主题
     const switchDark = async (checked: boolean) => {
-        message.loading('切换主题中,请稍后...', 0);
         setConfigState('isHasDark', checked)
         let darkDom = document.getElementById(state.darkId)
         document.documentElement.setAttribute('data-theme', checked ? 'dark' : 'light')
@@ -29,7 +28,6 @@ export const useTheme = () => {
         // 开发模式需要promise.then  生产模式引入之后立即获取dom
         if (!state.isDev) return (state.darkContent = getContent())
         dark.then(() => {
-            message.destroy()
             state.darkContent = getContent()
         })
 
@@ -42,7 +40,6 @@ export const useTheme = () => {
     }
     // 重置dom
     const regetContent = (el: Element, value: any) => {
-        message.destroy()
         el && (state.isDev ? (el.textContent = value) : el.setAttribute('href', value))
     }
 
