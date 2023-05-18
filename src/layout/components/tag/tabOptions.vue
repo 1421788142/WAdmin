@@ -4,9 +4,9 @@
             <span class="text-xs">更多</span>
             <DownOutlined />
         </a-button>
-        <div class="flex items-center justify-center" v-else>
+        <div class="flex items-center justify-center tab-item" v-else>
             <span class="mr-2 text-xs">{{ title }}</span>
-            <close-outlined class="!mr-0" v-if="tagsIndex > 0" @click.stop="setupFn('closeCurrent')" />
+            <close-outlined class="!mr-0 close-outlined" v-if="tagsIndex > 0" @click.stop="setupFn('closeCurrent')" />
         </div>
         <template #overlay>
             <a-menu>
@@ -67,4 +67,4 @@ const isDisabled = (disabled: boolean) => {
 }
 </script>
 
-<style scoped></style>
+<style lang="scss"></style>

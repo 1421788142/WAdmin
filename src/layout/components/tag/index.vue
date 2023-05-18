@@ -20,9 +20,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, inject } from 'vue'
+import { ref, watch, inject, nextTick, unref } from 'vue'
 import tabOptions from './tabOptions.vue'
 import { useTagData } from './index'
+
+import { deepCopy } from '@/utils/util'
+import { isNullAndUnDef } from '@/utils/is';
+import Sortablejs from 'sortablejs';
+import type Sortable from 'sortablejs';
 
 import { useRoute, useRouter } from 'vue-router';
 import { layoutInterface } from '@/hooks/interface/layout'
@@ -98,6 +103,35 @@ const optionChange = (value: valueInterface) => {
     }
     historyMenu.value.length && emit('change', value.key === 'closeAll')
 }
+
+// 拖拽排序
+let sortableOrder: string[] = [];
+let sortable: Sortable;
+nextTick(() => {
+    sortable = Sortablejs.create(document.getElementsByClassName('ant-tabs-nav-list')[0], {
+        animation: 500,
+        delay: 400,
+        delayOnTouchOnly: true,
+        handle: '.ant-tabs-tab',
+        onEnd: (evt: Sortable) => {
+            const { oldIndex, newIndex } = evt;
+            if (isNullAndUnDef(oldIndex) || isNullAndUnDef(newIndex) || oldIndex === newIndex) return
+            let historyMenuList = deepCopy<menuItem[]>(historyMenu.value)
+            if (oldIndex > newIndex) {
+                historyMenuList.splice(newIndex, 0, historyMenuList[oldIndex]);
+                historyMenuList.splice(oldIndex + 1, 1);
+            } else {
+                historyMenuList.splice(newIndex + 1, 0, historyMenuList[oldIndex]);
+                historyMenuList.splice(oldIndex, 1);
+            }
+            historyMenu.value = historyMenuList
+        },
+    });
+    // 记录原始order 序列
+    sortableOrder = sortable.toArray();
+});
+
+
 </script>
 
 <style scoped lang="scss">
