@@ -6,7 +6,8 @@
         </a-button>
         <div class="flex items-center justify-center tab-item" v-else>
             <span class="mr-2 text-xs">{{ title }}</span>
-            <close-outlined class="!mr-0 close-outlined" v-if="tagsIndex > 0" @click.stop="setupFn('closeCurrent')" />
+            <close-outlined class="!mr-0 text-[12px] close-outlined" v-if="tagsIndex > 0"
+                @click.stop="setupFn('closeCurrent')" />
         </div>
         <template #overlay>
             <a-menu>
