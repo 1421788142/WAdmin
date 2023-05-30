@@ -20,7 +20,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, inject, nextTick, unref } from 'vue'
+import { ref, watch, inject, nextTick } from 'vue'
 import tabOptions from './tabOptions.vue'
 import { useTagData } from './index'
 

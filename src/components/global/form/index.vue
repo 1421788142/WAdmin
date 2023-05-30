@@ -1,6 +1,7 @@
 <template>
     <a-form :model="formParam" ref="wFormRef" name="wFormRef" :label-col="labelCol" :layout="layout"
         :wrapper-col="wrapperCol">
+        {{ formParam }}
         <a-row :gutter="gutter">
             <template v-for="item in formColumns" :key="item.prop">
                 <a-col :span="item?.colSpan || span" v-if="item?.isHide ? item.isHide(formParam) : true">
@@ -14,7 +15,7 @@
                         <slot :name="`${item.name}FormItem`" :row="formParam">
                             <component v-if="!item.renderForm" :is="item.formItemType || 'a-input'"
                                 v-bind="item.componentOption" v-on="item.componentOption?.listeners || {}"
-                                v-model:value="formParam[item.name!]" :row="formParam"></component>
+                                v-model:value="formParam[item.name!]"></component>
                             <component v-else :is="item.renderForm" :row="formParam"></component>
                         </slot>
                     </a-form-item>
@@ -39,7 +40,7 @@ interface propsInterface {
     labelCol?: FormProps['labelCol'],
     wrapperCol?: FormProps['wrapperCol'],
     layout?: FormProps['layout'],
-    value: any
+    value: Record<string, any>
 }
 
 // 默认值
@@ -54,7 +55,6 @@ const props = withDefaults(defineProps<propsInterface>(), {
 })
 const getSort = (sort: number) => sort ?? 99
 const initParam = {} //初始值
-
 //表单配置项  这里预留配置项
 const formColumns = props.columns.map((item): wFormProp => {
     initParam[item.name] = ''
@@ -87,19 +87,16 @@ const emit = defineEmits(['update:value'])
 // 设置form表单数据
 const formParam = computed({
     get() {
-        return {
-            ...initParam,
-            ...new Proxy(props.value, {
-                set(obj, name, val) {
-                    emit('update:value', {
-                        ...initParam,
-                        ...obj,
-                        [name]: val
-                    })
-                    return true
-                }
-            })
-        }
+        return new Proxy(props.value, {
+            set(obj, name, val) {
+                emit('update:value', {
+                    ...initParam,
+                    ...obj,
+                    [name]: val
+                })
+                return true
+            }
+        })
     },
     set() {
         emit('update:value', formParam.value)

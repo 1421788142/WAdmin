@@ -18,6 +18,7 @@
         </a-form>
         <div class="flex justify-end h-max">
             <div class="flex items-center ml-5">
+                <slot name="searchBtn"></slot>
                 <a-button type="primary" @click="search" :loading="loading">查询</a-button>
                 <a-button @click="reset" class="ml-1">重置</a-button>
             </div>

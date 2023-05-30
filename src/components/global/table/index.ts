@@ -61,7 +61,7 @@ export const useTable = ({
 				enum: item?.enum ?? item?.searchOption?.options,
 				show: isBoolean(item?.show) ? item?.show : true,
 				preview: isBoolean(item?.preview) ? item?.preview : true,
-				showEnum: isBoolean(item?.showEnum) ? item?.showEnum : true,
+				showEnum: isBoolean(item?.showEnum) ? item?.showEnum : false,
 				resizable: isBoolean(item?.resizable) ? item?.resizable : true,
 				width: item.width || 150,
 				align: item.align || 'center',

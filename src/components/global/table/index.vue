@@ -3,13 +3,18 @@
 			border border-gray-200 dark:border-gray-700 rounded shadow-sm 
 			overflow-auto bg-white dark:bg-[#141414]" :class="{ 'pb-2': !pagination, wrapClass }">
 		<!-- 表格搜索 -->
-		<w-search-form :search="search" :reset="reset" :loading="loading" :searchParam="searchParam"
-			:columns="searchColumns" v-show="showSearch">
-			<!-- 搜索条件插槽 -->
-			<template #formItemAll="{ formItem, searchParam }">
-				<slot :name="`${formItem.name}FormItem`" :formItem="formItem" :searchParam="searchParam"></slot>
-			</template>
-		</w-search-form>
+		<slot name="search" :search="search" :reset="reset" :loading="loading" :searchParam="searchParam">
+			<w-search-form :search="search" :reset="reset" :loading="loading" :searchParam="searchParam"
+				:columns="searchColumns" v-show="showSearch">
+				<!-- 搜索条件插槽 -->
+				<template #formItemAll="{ formItem, searchParam }">
+					<slot :name="`${formItem.name}FormItem`" :formItem="formItem" :searchParam="searchParam"></slot>
+				</template>
+				<template #searchBtn>
+					<slot name="searchBtnSlot"></slot>
+				</template>
+			</w-search-form>
+		</slot>
 		<!-- 表格头部 -->
 		<div class="flex justify-between mb-2">
 			<slot name="tableTitle">
