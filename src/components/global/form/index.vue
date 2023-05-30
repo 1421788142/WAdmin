@@ -1,7 +1,6 @@
 <template>
     <a-form :model="formParam" ref="wFormRef" name="wFormRef" :label-col="labelCol" :layout="layout"
         :wrapper-col="wrapperCol">
-        {{ formParam }}
         <a-row :gutter="gutter">
             <template v-for="item in formColumns" :key="item.prop">
                 <a-col :span="item?.colSpan || span" v-if="item?.isHide ? item.isHide(formParam) : true">
