@@ -69,7 +69,8 @@ export const usePageData = ()=>{
 				fieldNames:{ children:'children', label:'title', value: 'id'},
 				allowClear:true,
 				treeDefaultExpandAll:true,
-				treeData:[]
+				treeData:[],
+				treeNodeFilterProp:'title'
 			},
 		},
 		{ isRule:true, name: 'title', formItemOption:{ label: '菜单名称' } },

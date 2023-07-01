@@ -104,7 +104,7 @@ export default class VAxios {
             })
             // 阻止重复请求
             this.handleStopRepeatRequest(this.reqList, config.url, cancel, `${config.url} 正在请求中，请不要重复请求！`)
-            // // 请求前根据option修改config
+            // 请求前根据option修改config
             config = { ...setUpConfig(config, this.option) }
             return config;
         }, (error) => {

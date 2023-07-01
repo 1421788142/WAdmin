@@ -8,23 +8,23 @@ export interface fileList extends UploadFile {
 
 export namespace upload {
     export interface stateProps {
-        fileListData:fileList[],
-        notFileList:fileList[],
-        action:string,
-        visible:boolean,
-        currentFile:fileList,
+        fileListData: fileList[],
+        notFileList: fileList[],
+        action: string,
+        visible: boolean,
+        currentFile: fileList,
     }
 
     export interface hookProps {
-        uploadRule: (file:UploadFile)=>boolean,
+        uploadRule: (file: UploadFile) => boolean,
         fileList: fileList[],
         fileSize: number,
         total: number,
         fileAction: string,
         autoUpload?: boolean, //是否默认上传 
-        beforeLoad?: (params: any,state:upload.stateProps) => any, //初始化前执行可处理fileList。。
-        setEmit?: (event:uploadEvent,state:upload.stateProps) => any, //处理上传后拿到的数据
+        beforeLoad?: (params: any, state: upload.stateProps) => any, //初始化前执行可处理fileList。。
+        setEmit?: (event: uploadEvent, state: upload.stateProps) => any, //处理上传后拿到的数据
     }
-    
-    
+
+
 }

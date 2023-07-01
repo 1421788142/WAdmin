@@ -44,5 +44,6 @@ export interface parkInterface {
     Latitude: number,
     value: number,
     parkName: string,
+    address: string,
     parkId: string,
 }

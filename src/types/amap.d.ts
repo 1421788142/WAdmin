@@ -468,6 +468,9 @@ declare namespace AMap {
 
     /** Marker类 **/
     export class Marker {
+        on(arg0: string, arg1: (e: any) => void) {
+            throw new Error("Method not implemented.");
+        }
         /**构造一个点标记对象, 通过MarkerOptions设置点标记对象的属性**/
         constructor(opt: MarkerOptions)
         /**唤起高德地图客户端标注页其中Object里面包含有{ name: String, name属性 必要参数 position:

@@ -4,11 +4,16 @@ interface ElType extends HTMLElement {
 }
 
 const permission: Directive = {
-  mounted(el: ElType, binding: DirectiveBinding) {
-    if (typeof binding.value !== 'object') {
+  mounted(el: ElType, binding: DirectiveBinding<[string, string[]]>) {
+    if (typeof binding.value !== 'object' || binding.value.length !== 2) {
       throw 'callback must be a objcet'
     }
-    !binding.value[1]?.some((x: string) => x === binding.value[0]) ? el.parentNode.removeChild(el) : ''
+    let [key, keyAll] = binding.value
+    let $key = key.split(',')
+    let intersection = [...new Set(keyAll)].filter(x => [...new Set($key)].includes(x))
+    if (intersection.join(',') !== $key.join(',')) {
+      el.parentNode.removeChild(el)
+    }
   }
 }
 export default permission

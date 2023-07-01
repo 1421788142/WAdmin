@@ -49,7 +49,12 @@ export const usePageData = ()=>{
 			},
 			{
 				title:'用户信息',
+				dataIndex:'',
 				search: true,
+				searchOption:{
+					name:'nickname',
+					label:'用户名称'
+				},
 				filters: [
 					{ text: '彭于晏', value: 1 },
 					{ text: '吴彦祖', value: 2 },
@@ -64,13 +69,18 @@ export const usePageData = ()=>{
 			{ 
 				title:'用户年龄',
 				dataIndex: "age",
-				search: true,
-				sorter: (a: any, b: any) => a.age - b.age
+				searchOption:{
+					type:'a-input-number',					
+				},
+				sorter: (a: any, b: any) => a.age - b.age,
 			},
 			{
 				title:'创建时间',
 				dataIndex: "createdTime",
-				searchOption:{ type:'a-date-picker' },
+				searchOption:{
+					defaultValue:[],
+					type:'a-range-picker',
+				},
 				sorter: (a: any, b: any) =>{
 					const t1 = new Date(a.createdTime).getTime();
 					const t2 = new Date(b.createdTime).getTime();
@@ -95,6 +105,7 @@ export const usePageData = ()=>{
 			{
 				title:'用户类型',
 				dataIndex: "userType",
+				showEnum:true,
 				searchOption:{ 
 					type:'a-select', 
 					options:userType

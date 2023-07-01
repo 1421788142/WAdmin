@@ -56,7 +56,7 @@ body.color-weak, html.color-weak {
 
 // table表格按钮
 .w-table-btn{
-	@apply flex flex-col items-center justify-center md:flex-row;
+	@apply flex flex-col items-center justify-center md:flex-row md:w-full;
 	.ant-btn{
 		@apply p-1
 	}

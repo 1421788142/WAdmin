@@ -1,15 +1,16 @@
 export default {
-    zhCN:'Chinese',//中文
-    enCN:'English',//英文
-    FullScreen:'Full Screen',//全屏
-    CancelFullScreen:'Exit Full Screen',//取消全屏
-    PleaseEnter:'Please Enter',//请输入
-    Password:'Password',//密码
-    Sign:'Sign In',//登录
-    OutLogin:'Sign Out',//退出登录,
-    ModifyInfo:'Modify info.',//修改信息
+    language: '中文',
+    zhCN: '中文',
+    enCN: '英文',
+    FullScreen: '全屏',
+    CancelFullScreen: '取消全屏',
+    PleaseEnter: '请输入',
+    Password: '密码',
+    Sign: '登录',
+    OutLogin: '退出登录',
+    ModifyInfo: '修改信息',
     errMsg401: '用户没有权限（令牌、用户名、密码错误）!',
-    errMsg403: '用户得到授权，但是访问是被禁止的!',
+    errMsg403: '用户得到授权，但是访问是被禁止的。!',
     errMsg404: '网络请求错误,未找到该资源!',
     errMsg405: '网络请求错误,请求方法未允许!',
     errMsg408: '网络请求超时!',

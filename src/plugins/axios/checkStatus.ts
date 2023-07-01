@@ -1,13 +1,14 @@
-import { i18nText } from '../language/setupI18n'
 import { message, Modal } from 'ant-design-vue';
 import userStore from '@/store/user';
+import { i18nText } from '../language/setupI18n';
+
 export const checkStatus = async (
     status: number,
-    msg:string
-)=>{
+    msg: string
+) => {
     let errMessage = '';
     const { loginOut } = userStore()
-    switch(status){
+    switch (status) {
         case 400:
             errMessage = `${msg}`;
             break;
@@ -16,7 +17,7 @@ export const checkStatus = async (
             Modal.info({
                 title: '温馨提示',
                 content: '用户信息过期,请重新登录!',
-                onOk:async ()=>{
+                onOk: async () => {
                     await loginOut()
                 }
             });
@@ -52,7 +53,7 @@ export const checkStatus = async (
             errMessage = await i18nText('sys.errMsg505');
             break;
     }
-    if(errMessage){
+    if (errMessage) {
         message.error(errMessage)
     }
 }

@@ -1,4 +1,5 @@
 import { reactive, toRefs } from "vue";
+import { upload } from '@/hooks/interface/upload';
 import { userList, updateUser, delUser ,userInterface } from '@/apis/system/user'
 interface stateInterface {
 	title:string, //modal 标题
@@ -8,7 +9,7 @@ interface stateInterface {
 	tableColumns:wTableProps,
 	formColumns:wFormProps,
 	initParam:any,
-	imgList:any[],
+	fileList:upload.stateProps['fileListData']
 }
 
 const gradeList:wTableEnumProps = [
@@ -35,13 +36,13 @@ export const usePageData = ()=>{
 		title:'新增数据',
 		visible:false,
 		loading:false,
-		imgList:[],
+		fileList:[],
 		formParam:null,
 		initParam:{
 			deptId:''
 		},
 		tableColumns:[
-			{ title:'用户姓名', dataIndex: "nickname", search: true },
+			{ title:'真实姓名', dataIndex: "nickname", search: true },
 			{ title:'用户年龄', dataIndex: "age" },
 			{
 				title:'创建时间',
@@ -59,26 +60,28 @@ export const usePageData = ()=>{
 				title:'会员等级',
 				dataIndex: "grade",
 				search: true,
+				tag:true,
+				showEnum:true,
 				searchOption:{ type:'a-select',options:gradeList },
 				sorter: (a: any, b: any) => a.grade - b.grade,
 			},
 			{
 				title:'用户类型',
 				dataIndex: "userType",
+				showEnum:true,
 				searchOption:{ type:'a-select', options: userType }
 			},
 			{
 				dataIndex: "operation",
 				title: "操作",
 				fixed: "right",
-				width:200
 			}
 		],
 		formColumns:[
 			{
 				name: 'userName',
 				isRule:true,
-				formItemOption:{ label: '用户姓名' },
+				formItemOption:{ label: '用户账号' },
 			},
 			{ name: 'nickname', formItemOption:{ label: '真实姓名' } },
 			{
@@ -98,6 +101,7 @@ export const usePageData = ()=>{
 				name: 'avatar',
 				isRule:true,
 				formItemOption:{ label: '用户头像' },
+				sort:11
 			},
 			{ name: 'email', formItemOption:{ label: '邮箱' } },
 			{ name: 'address', formItemOption:{ label: '地址' } },
@@ -109,7 +113,6 @@ export const usePageData = ()=>{
 				componentOption:{
 					options:gradeList,
 					showSearch:true,
-					allowClear:true,
 					filterOption:(input: string, option: any) => {
 						return option.label.indexOf(input) != -1
 					}
@@ -130,9 +133,16 @@ export const usePageData = ()=>{
 	const open = async (type:string,row?:userInterface)=>{
 		state.visible = true
 		state.title = type === 'add' ? '新增' : `编辑`
+		state.fileList = row ? [{
+			url: row.avatar,
+			status: 'done',
+			isHand: true,//手动上传 以防数据混乱
+			uid: String(row.userId),
+			name: '用户头像'
+		}] : []
 		state.formParam = row ? row: {
-			id: null,
-			grade: 1,
+			userType:1,
+			grade:1,
 		} as userInterface
 	}
 

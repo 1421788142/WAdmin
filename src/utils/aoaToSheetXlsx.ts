@@ -6,13 +6,13 @@ import { CheckCircleTwoTone } from '@ant-design/icons-vue';
 import { h } from 'vue';
 // 导出数据
 export default ({
-  data,
-  header,
-  filename,
+    data,
+    header,
+    filename,
 }) => {
     notification.open({
         message: '正在导出请稍后',
-        description:`如果数据庞大会导致下载缓慢哦，请您耐心等待！`,
+        description: `如果数据庞大会导致下载缓慢哦，请您耐心等待！`,
         icon: () => h(CheckCircleTwoTone, { twoToneColor: '#09F175' }),
     });
     const arrData = [...data];

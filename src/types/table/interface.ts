@@ -19,6 +19,15 @@ export interface enumProp {
     color?: string
 }
 
+type layout = {
+    labelCol?: {
+        span: number
+    },
+    wrapperCol?: {
+        span: number
+    }
+}
+
 export interface searchProps {
     type?: searchType, //组件类型,默认a-input
     name?: string, //查询入参,默认取dataIndex
@@ -28,17 +37,19 @@ export interface searchProps {
     renderForm?: (params: any) => any, //自定义表单tsx
     options?: SelectProps['options'] & enumProp[],
     allowClear?: boolean,
-    listeners?: { [prop: string]: Function }
+    listeners?: { [prop: string]: Function },
+    layout?: layout,
     [prop: string]: any, //暂时为了适配其他配置项
 }
 
 export interface tableProps extends TableColumnType {
     title: string, //单元格表头（非特殊类型必填）
-    dataIndex?: string, //单元格表头（非特殊类型必填）
+    dataIndex: string, //单元格表头（非特殊类型必填）
     search?: boolean, //是否作为查询条件,有搜索条件或者
-    searchOption?: searchProps, //查询表单配置项
+    searchOption?: searchProps, //查询表单配置项(有此配置则默认做完搜索条件)
     show?: boolean, //可通过表格设置显示隐藏,默认true
     hide?: boolean, //是否渲染(不会显示并且不能加入表格设置)
+    tooltip?: boolean, //是否显示提示框
     tag?: boolean; //是否是标签展示
     sort?: number, //排序
     image?: boolean; //是否是图片展示
@@ -48,5 +59,5 @@ export interface tableProps extends TableColumnType {
     renderSummary?: (pageData: any, column: tableProps) => any, //自定义汇总内容
     enum?: searchProps['options'], //tag标签 默认取 searchOption['options']
     showEnum?: boolean; //表格有枚举时是否显示枚举内容,默认true
-    children?: any
+    children?: tableProps[],//子表格
 }

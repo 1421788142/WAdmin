@@ -26,9 +26,7 @@ export interface roleInterafce {
 }
 
 export const codeImg = () => {
-    return Http.get<any>({ url: `/phcent-api/seller/code` }, {
-        apiUrl: 'https://proapi.phcent.com',//修改请求地址
-    })
+    return Http.get<{ url: string, key: string }>({ url: `/code` })
 }
 
 export const login = (data: loginInterface) => {

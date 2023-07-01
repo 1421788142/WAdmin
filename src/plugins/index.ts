@@ -10,7 +10,7 @@ import 'virtual:svg-icons-register' //本地icon
 
 export async function setupPlugins(app: App) {
     await setupPinia(app)
-    await setupI18n(app)
+    setupI18n(app)
     setupTailwindcss()
     setupAntDesign(app)
     autoRegister(app)

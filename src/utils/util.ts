@@ -22,7 +22,7 @@ export function deepCopy<T>(obj: any): T {
 		newObj = {};
 	}
 	for (let attr in obj) {
-		if (typeof obj[attr] === "object" && ![null,'null'].includes(obj[attr])) {
+		if (typeof obj[attr] === "object" && ![null, 'null'].includes(obj[attr])) {
 			newObj[attr] = deepCopy(obj[attr]);
 		} else {
 			newObj[attr] = obj[attr];
@@ -75,7 +75,7 @@ export function getFlatArr(arr: any) {
  * @param {String} callValue 当前单元格值
  * @return string
  * */
-export function defaultFormat(callValue: any, joinStr:string = ',') {
+export function defaultFormat(callValue: any, joinStr: string = ',') {
 	// 如果当前值为数组,使用 / 拼接（根据需求自定义）
 	if (isArray(callValue))
 		return callValue.length ? callValue.join(joinStr) : "--";
@@ -191,8 +191,8 @@ export function arrayToTree<T>(
 	id: string = "id",
 	pId: string = "pId",
 	map: Map<string, Array<T>> = new Map()
-):T[] {
-	if (!Array.isArray(target)){
+): T[] {
+	if (!Array.isArray(target)) {
 		console.warn("target is not array");
 		return target
 	}
@@ -225,7 +225,7 @@ export function arrayToTree<T>(
  * @param {Array} target 数据源
  * @return Array
  * */
-export const arrRemoval = (target:string[]) => {
+export const arrRemoval = (target: string[]) => {
 	let set = [...new Set(target)];
 	return set;
 }
@@ -234,7 +234,7 @@ export const arrRemoval = (target:string[]) => {
  * @description 获取当前时间区间
  * @return string
  */
- export function timeState() {
+export function timeState() {
 	let timeNow = new Date();
 	let hours = timeNow.getHours();
 	if (hours >= 6 && hours <= 10) return `早上好 ⛅`;
@@ -248,12 +248,12 @@ export const arrRemoval = (target:string[]) => {
  * @description 防抖函数
  * @return function
  */
-export function debounce(fn:any,delay:number) {
-	let timerId:any;
-    return function(){
-        clearTimeout(timerId)
-        timerId = setTimeout(()=>fn(),delay)
-    }
+export function debounce(fn: any, delay: number = 300) {
+	let timerId: any;
+	return function () {
+		clearTimeout(timerId)
+		timerId = setTimeout(() => fn(), delay)
+	}
 }
 
 /**
@@ -265,8 +265,8 @@ export function getUid() {
 	const timeArr = time.split('')
 	const arr = 'abcdefghijklmnopqrstuvwxyz'.split('')
 	timeArr.forEach((item, index) => {
-	  const random = arr[Math.floor(Math.random() * arr.length)]
-	  timeArr.splice(index * 2, 0, random)
+		const random = arr[Math.floor(Math.random() * arr.length)]
+		timeArr.splice(index * 2, 0, random)
 	})
 	return timeArr.join('')
 }
@@ -287,12 +287,12 @@ export const pick = <T, K extends keyof T>(
 	target: (object | string) & T,
 	keys: (string & K) | K[],
 	clearNull: boolean = false
-): Pick<T,K> =>{
+): Pick<T, K> => {
 	const newVlaue = typeof target === 'string' && target.startsWith('{') ? JSON.parse(target) : ({} as T)
-	if(!Array.isArray(keys)) keys = [keys]
-	for(let key of new Set(keys)){
+	if (!Array.isArray(keys)) keys = [keys]
+	for (let key of new Set(keys)) {
 		let value = target[key]
-		if(!value && clearNull) continue
+		if (!value && clearNull) continue
 		newVlaue[key] = value
 	}
 	return newVlaue
@@ -303,6 +303,6 @@ export const pick = <T, K extends keyof T>(
  * @returns {*|string}
  */
 
-export const getAssets = (name:string): any | string=>{
+export const getAssets = (name: string): any | string => {
 	return new URL(`/src/assets/${name}`, import.meta.url).href;
 }
