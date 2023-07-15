@@ -24,9 +24,7 @@ const loading: Directive = {
 
 // 插入元素
 const appendEl = (el) => {
-    console.log(!!el.style.position)
     hasPosition = !el.style.position
-    console.log(hasPosition)
     // 给父元素加个定位，让loading元素定位,
     el.style.position = 'relative';
     el?.appendChild(el.instance.$el);

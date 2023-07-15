@@ -1,7 +1,7 @@
 <template>
   <div>
-    <imgComponentVue />
     <videoComponentVue />
+    <imgComponentVue />
   </div>
 </template>
 

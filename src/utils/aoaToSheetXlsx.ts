@@ -9,6 +9,10 @@ export default ({
     data,
     header,
     filename,
+}: {
+    data: string[][],
+    header: string[],
+    filename: string,
 }) => {
     notification.open({
         message: '正在导出请稍后',

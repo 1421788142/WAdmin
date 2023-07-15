@@ -15,7 +15,7 @@ export const useUpload = ({
     fileSize,
     total,
     fileAction,
-    autoUpload,
+    handUpload,
     beforeLoad,
 }: upload.hookProps) => {
     const state = reactive<upload.stateProps>({
@@ -50,7 +50,7 @@ export const useUpload = ({
             setTimeout(() => state.fileListData.pop(), 100)
             return false
         }
-        if (autoUpload) { //自定义上传
+        if (handUpload) { //自定义上传
             state.notFileList.push(file)
             return false
         }
@@ -81,8 +81,8 @@ export const useUpload = ({
     }
 
     // 手动上传
-    const autoUploadFn = () => {
-        setEmit('autoUpload', state)
+    const handUploadFn = () => {
+        setEmit('handUpload', state)
     }
 
     const handlePreview = (flie: fileList) => {
@@ -95,7 +95,7 @@ export const useUpload = ({
         beforeUpload,
         upChange,
         setFileList,
-        autoUploadFn,
+        handUploadFn,
         handlePreview
     }
 }

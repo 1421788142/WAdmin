@@ -4,6 +4,7 @@
       :class="listType === 'picture-card' ? boxType : ''"
       v-model:file-list="fileListData"
       v-bind="$attrs"
+      accept="image/*"
       :list-type="listType"
       :action="action"
       :maxCount="total"
@@ -25,18 +26,20 @@
         </slot>
       </div>
     </a-upload>
-    <div>{{ tooltip }}</div>
-    <slot name="autoBtnSlot">
-      <a-button
-        type="primary"
-        v-if="autoUpload && notFileList.length"
-        class="mt-2 mb-2 mr-2"
-        @click="autoUploadFn"
-      >
-        <upload-outlined />
-        <span>确认上传</span>
-      </a-button>
-    </slot>
+    <div class="text-center">
+      <p>{{ tooltip }}</p>
+      <slot name="autoBtnSlot">
+        <a-button
+          type="primary"
+          v-if="handUpload && notFileList.length"
+          class="mt-2 mb-2 mr-2"
+          @click="handUploadFn"
+        >
+          <upload-outlined />
+          <span>确认上传</span>
+        </a-button>
+      </slot>
+    </div>
     <w-modal
       :width="previewWidth"
       v-model:visible="visible"
@@ -60,12 +63,13 @@ import { upload, uploadEvent } from "@/hooks/interface/upload";
 import { pick } from "@/utils/util";
 import { message } from "ant-design-vue";
 import { UploadFile } from "ant-design-vue";
-// 设置上传地址
+import { imageUpUrl } from "@/apis/common";
+
 interface propsInterface {
   fileList?: upload.stateProps["fileListData"];
   fileSize?: number;
   previewWidth?: number;
-  autoUpload?: boolean;
+  handUpload?: boolean;
   disabled?: boolean;
   total?: number;
   text?: string;
@@ -79,14 +83,14 @@ interface propsInterface {
 }
 const props = withDefaults(defineProps<propsInterface>(), {
   fileList: () => [],
-  autoUpload: false,
+  handUpload: false,
   disabled: false,
   total: 4,
   previewWidth: 400,
   fileSize: 1,
   text: "上传图片",
   tooltip: "",
-  fileAction: "/upload/image",
+  fileAction: imageUpUrl,
   listType: "picture-card",
   icon: "picture-outlined",
   iconStyle: () => ({
@@ -103,7 +107,7 @@ const uploadRule = (file: UploadFile): boolean => {
   return isFileType;
 };
 
-const emit = defineEmits(["change", "success", "autoUpload"]);
+const emit = defineEmits(["change", "success", "handUpload"]);
 const setEmit = (event: uploadEvent, state: upload.stateProps) => {
   debounce(emit(event, state), 500);
 };
@@ -117,7 +121,7 @@ const {
   setFileList,
   beforeUpload,
   upChange,
-  autoUploadFn,
+  handUploadFn,
   handlePreview,
 } = useUpload({
   uploadRule,
@@ -127,7 +131,7 @@ const {
     "total",
     "fileSize",
     "fileAction",
-    "autoUpload",
+    "handUpload",
     "beforeLoad",
   ]),
 });

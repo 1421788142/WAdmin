@@ -34,7 +34,7 @@ export interface formProps {
     label?: string, // 使用tooltip时需要label(并且formItemOption里面不能有label,否则冲突)
     //默认验证(默认给表单添加rules(可被formItemOption的rules替换)  rules: [{ required: true, trigger: ['change', 'blur'] }] )
     isRule?: boolean,
-    validator?: (param: any) => any, //验证器
+    validator?: (param: any) => void, //验证器
     colSpan?: number, //col占比
     formItemOption?: FormItemProps, //form-item的api
     componentOption?: { //表单组件api组合,可先添加通用的prop属性
@@ -43,5 +43,5 @@ export interface formProps {
         [prop: string]: any
         listeners?: { [prop: string]: Function }
     },
-    renderForm?: (params: any) => any; //自定义表单tsx
+    renderForm?: (params: any) => JSX.Element; //自定义表单tsx
 }

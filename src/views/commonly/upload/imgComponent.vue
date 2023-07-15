@@ -31,11 +31,21 @@
     </a-card>
 
     <a-card title="单图片上传" class="!mt-4" :bordered="false">
-      <div class="flex justify-around">
+      <div class="flex flex-wrap justify-around">
         <uploadImgVue tooltip="圆形组件" :fileSize="5" uploadType="image" />
         <uploadImgVue
           tooltip="长方形组件"
           :fileSize="5"
+          uploadType="image"
+          boxType="oblong"
+        />
+        <uploadImgVue
+          handUpload
+          ref="uploadImgRef"
+          tooltip="手动上传图片"
+          :total="1"
+          :fileSize="5"
+          @handUpload="afterFn"
           uploadType="image"
           boxType="oblong"
         />
@@ -64,8 +74,8 @@
         <a-descriptions-item label="fileAction">
           图片上传api 默认为/upload/image
         </a-descriptions-item>
-        <a-descriptions-item label="autoUpload">
-          是否自定义上传 默认为false 需要搭配 @autoUpload
+        <a-descriptions-item label="handUpload">
+          是否自定义上传 默认为false 需要搭配 @handUpload
         </a-descriptions-item>
         <a-descriptions-item label="text">
           上传按钮文本 上传图片
@@ -88,6 +98,7 @@
 import { ref } from "vue";
 import { upload } from "@/hooks/interface/upload";
 import uploadImgVue from "@/components/upload/uploadImg.vue";
+import { uploadImg } from "@/apis/common";
 
 const fileList = ref<upload.stateProps["fileListData"]>([
   {
@@ -98,6 +109,30 @@ const fileList = ref<upload.stateProps["fileListData"]>([
     name: "图片",
   },
 ]);
+
+const uploadImgRef = ref<RefComponent<typeof uploadImgVue>>();
+
+const afterFn = async (state: upload.stateProps) => {
+  let imgList = state.fileListData.filter(x => x.isHand);
+  try {
+    for (let i = 0; i < state.notFileList.length; i++) {
+      let formData = new FormData();
+      formData.append("file", state.notFileList[i] as any);
+      let { data } = await uploadImg(formData);
+      imgList.push({
+        url: data.url,
+        isHand: true, //手动上传 以防数据混乱
+        status: "done",
+        uid: String(data.id),
+        name: data.name,
+      });
+    }
+    state.fileListData = imgList;
+    state.notFileList = [];
+  } finally {
+    uploadImgRef.value.setEmit("change", state);
+  }
+};
 </script>
 
 <style scoped></style>

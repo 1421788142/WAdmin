@@ -14,6 +14,7 @@
     </div>
     <a-tree
       class="!w-[150px]"
+      v-model:expandedKeys="expandedKeys"
       :multiple="multiple"
       :treeData="treeData"
       :defaultExpandAll="defaultExpandAll"
@@ -25,16 +26,18 @@
 </template>
 <script setup lang="ts">
 import { useTreeFilterData } from "./index";
+import { TreeProps } from "ant-design-vue";
+
 interface propInterface {
   title: string;
-  fieldNames?: any;
+  fieldNames?: TreeProps["fieldNames"];
   multiple?: boolean;
   placeholder?: string;
   defaultExpandAll?: boolean;
 }
 withDefaults(defineProps<propInterface>(), {
   title: "部门列表",
-  fieldNames: { children: "children", title: "title", key: "key" },
+  fieldNames: () => ({ children: "children", title: "title", key: "id" }),
   multiple: false,
   defaultExpandAll: true,
   placeholder: "输入关键字搜索",
@@ -44,7 +47,7 @@ const emit = defineEmits(["update:value", "change"]);
 const select = (selectedKeys: string[], event: { selectedNodes: any[] }) => {
   let map = event.selectedNodes.map(x => x.id);
   emit("update:value", map.join(","));
-  emit("change");
+  emit("change", map.join(","));
 };
-const { treeData, searchValue } = useTreeFilterData();
+const { treeData, searchValue, expandedKeys } = useTreeFilterData();
 </script>

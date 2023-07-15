@@ -58,20 +58,21 @@
     >
       <w-form v-model:value="formParam" :columns="formColumns" ref="form">
         <template #avatarFormItem>
-          <uploadImgVue
-            autoUpload
-            ref="uploadImgRef"
-            :total="1"
-            accept="image/*"
-            :fileList="fileList"
-            @autoUpload="afterFn"
-            @change="
-              state =>
-                (formParam.avatar = state.fileListData
-                  .map(x => x.url)
-                  .join(','))
-            "
-          />
+          <div class="flex">
+            <uploadImgVue
+              handUpload
+              ref="uploadImgRef"
+              :total="1"
+              :fileList="fileList"
+              @handUpload="afterFn"
+              @change="
+                state =>
+                  (formParam.avatar = state.fileListData
+                    .map(x => x.url)
+                    .join(','))
+              "
+            />
+          </div>
         </template>
       </w-form>
     </w-modal>

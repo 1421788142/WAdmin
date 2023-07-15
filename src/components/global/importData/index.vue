@@ -30,27 +30,17 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import aoaToSheetXlsx from "@/utils/aoaToSheetXlsx";
-import uploadXlsxVue from "./uploadXlsx.vue";
-import { message } from "ant-design-vue";
-const visible = ref<boolean>(false);
-interface columnProps {
-  title: string;
-  valueKey: string;
-}
-interface importProps {
-  title?: string;
-  xlsxTitle?: string;
-  xlsxData: any[];
-  columns: string[];
-  submit: (list: any) => void;
-}
-const props = withDefaults(defineProps<importProps>(), {
+import uploadXlsxVue from "./components/uploadXlsx.vue";
+import type { exportType } from "./interface";
+
+interface propsType extends exportType.props {}
+const props = withDefaults(defineProps<propsType>(), {
   title: "批量导入",
-  xlsxTitle: "模板.xlsx",
   xlsxData: () => [],
   columns: () => [],
 });
 
+const visible = ref<boolean>(false);
 // 导出模板
 const downloadTemplate = () => {
   aoaToSheetXlsx({
@@ -60,19 +50,8 @@ const downloadTemplate = () => {
   });
 };
 // 表格最终导出数据
-const tableListRef = ref<
-  {
-    title: string;
-    columns?: columnProps[];
-    dataList?: any[];
-  }[]
->([]);
-interface excelDataInterface {
-  header: string[];
-  meta: { sheetName: string };
-  results: any[];
-}
-function loadDataSuccess(excelDataList: excelDataInterface[]) {
+const tableListRef = ref<exportType.tableListType[]>([]);
+function loadDataSuccess(excelDataList: exportType.excelDataType[]) {
   tableListRef.value = [];
   for (const excelData of excelDataList) {
     const {
@@ -80,7 +59,7 @@ function loadDataSuccess(excelDataList: excelDataInterface[]) {
       results,
       meta: { sheetName },
     } = excelData;
-    const columns: any[] = [];
+    const columns = [];
     for (const title of header) {
       columns.push({ title, dataIndex: title });
     }

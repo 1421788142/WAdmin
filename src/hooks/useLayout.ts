@@ -1,6 +1,6 @@
 import { reactive, computed, toRefs } from 'vue'
 import { Layout } from "./interface/layout"
-import { RouteLocationNormalizedLoaded, Router } from 'vue-router';
+import { RouteLocationNormalizedLoaded } from 'vue-router';
 import { storeToRefs } from "pinia"
 import config from '@/store/config';
 import user from '@/store/user';
@@ -23,8 +23,7 @@ let { userRouterList } = storeToRefs(userStore)
  * @param {String} route 当前路由
  * */
 export const useLayout = (
-    route?: RouteLocationNormalizedLoaded,
-    router?: Router
+    route: RouteLocationNormalizedLoaded,
 ) => {
     const state = reactive<Layout.LayoutStatePrpos>({
         menuMixList: userRouterList.value,// 混合模式菜单
@@ -34,6 +33,8 @@ export const useLayout = (
 
     // 头部面包屑
     const crumbsList = computed(() => setBreadCrumbs(route.path))
+
+    // 混合菜单头部当前选中的菜单
     let parentPath = route.meta.parentPath as string
     state.selectedKeys = [crumbsList.value.length && crumbsList.value[0].path || parentPath || '']
 

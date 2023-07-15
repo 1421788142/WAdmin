@@ -23,8 +23,9 @@
 import { nextTick, computed, shallowRef, onBeforeUnmount } from "vue";
 import { IToolbarConfig, IEditorConfig } from "@wangeditor/editor";
 import { Editor, Toolbar } from "@wangeditor/editor-for-vue";
-// import { uploadImg, uploadVideo } from "@/api/modules/upload";
+import { uploadImg, uploadVideo } from "@/apis/common";
 import "@wangeditor/editor/dist/css/style.css";
+import { message } from "ant-design-vue";
 // 富文本 DOM 元素
 const editorRef = shallowRef();
 // 实列化编辑器 记录 editor 实例，重要！
@@ -93,19 +94,19 @@ props.editorConfig.MENU_CONF!["uploadImage"] = {
     if (!uploadImgValidate(file)) return;
     let formData = new FormData();
     formData.append("file", file);
-    console.log(formData);
-    // try {
-    // 	const { data } = await uploadImg(formData);
-    insertFn("https://vben.vvbin.cn/assets/header-1b5fa5f8.jpg");
-    // } catch (error) {
-    // 	console.log(error);
-    // }
+    try {
+      const { data } = await uploadImg(formData);
+      insertFn(data.url);
+    } catch (error) {
+      console.log(error);
+    }
   },
 };
 
 // 图片上传前判断
 const uploadImgValidate = (file: File): boolean => {
   console.log(file);
+  message.warning("图片格式已打印控制台,请按需判断类型");
   return true;
 };
 
@@ -120,21 +121,18 @@ props.editorConfig.MENU_CONF!["uploadVideo"] = {
     if (!uploadVideoValidate(file)) return;
     let formData = new FormData();
     formData.append("file", file);
-    console.log(formData);
-    // try {
-    // 	const { data } = await uploadVideo(formData);
-    // 	insertFn(data!.fileUrl);
-    insertFn(
-      "https://iamge-1259297738.cos.ap-chengdu.myqcloud.com/img/20220728112848.mp4",
-    );
-    // } catch (error) {
-    // 	console.log(error);
-    // }
+    try {
+      const { data } = await uploadVideo(formData);
+      insertFn(data.url);
+    } catch (error) {
+      console.log(error);
+    }
   },
 };
 
 // 视频上传前判断
 const uploadVideoValidate = (file: File): boolean => {
+  message.warning("视频格式已打印控制台,请按需判断类型");
   console.log(file);
   return true;
 };

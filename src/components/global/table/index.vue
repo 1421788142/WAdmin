@@ -145,37 +145,15 @@ export default {
 
 <script setup lang="ts">
 import { watch } from "vue";
-import { TableProps } from "ant-design-vue";
 import { pick } from "@/utils/util";
 import { useTable } from "./index";
-import { Table } from "./interface";
+import type { Table } from "./interface";
 import colSetting from "./components/colSetting.vue";
 import bodyCell from "./components/bodyCell.vue";
 import summaryCell from "./components/summaryCell.vue";
 
-interface tablePorps {
-  columns: wTableProps; //列配置项
-  dataSource?: object[]; //数据源 如果使用那么requestApi则失效
-  requestApi: Table.hookProps["requestApi"]; //请求表格数据的api ==> 必传
-  beforeLoad?: Table.hookProps["beforeLoad"]; //请求前触发入参为searchParams,返回值为false时取消请求,否则将返回值searchParams合并
-  afterLoad?: Table.hookProps["afterLoad"]; //请求完成后渲染数据前触发,可处理数据
-  selection?: boolean; //是否显示表格选择框
-  selectionOption?: TableProps["rowSelection"]; //表格左侧选择框属性
-  pagination?: boolean; //是否需要分页组件 ==> 非必传（默认为true）
-  initParam?: any; //初始化请求参数 ==>非必传（默认为{}）
-  toolButton?: boolean; //是否显示表格功能按钮 ==>非必传（默认为true）
-  summary?: boolean; //是否显示汇总
-  summaryFixed?: boolean | "top" | "bottom"; //汇总是否固定
-  subTitle?: string; //副标题
-  rowKey?: string; //选择框所选键值 allKey代表选择行数据
-  searchShowTotal?: number; //搜索条件显示数量
-  scroll?: TableProps["scroll"]; // 滚动配置项
-  wrapClass?: string; //外层盒子的css类名
-  expandedRowRender?: boolean; //是否自定义子级插槽
-}
-
 // 接受父组件prop，配置默认值
-const props = withDefaults(defineProps<tablePorps>(), {
+const props = withDefaults(defineProps<Table.tableProps>(), {
   columns: () => [],
   dataSource: () => [],
   pagination: true,
@@ -188,6 +166,7 @@ const props = withDefaults(defineProps<tablePorps>(), {
   rowKey: "id",
   scroll: () => {
     return {
+      scrollToFirstRowOnChange: true,
       x: "max-content",
       y: 550,
     };

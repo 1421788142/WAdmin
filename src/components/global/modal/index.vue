@@ -1,123 +1,121 @@
 <template>
-  <div id="modalBox">
-    <a-modal
-      :closable="false"
-      :width="isFull ? '100%' : width"
-      :wrap-class-name="isFull ? 'full-modal' : ''"
-      ref="modalRef"
-      @cancel="cancel"
-      v-model:visible="modalVisibled"
-      :maskClosable="maskClosable"
-      :getContainer="getContainer"
-      :wrap-style="{ overflow: 'hidden' }"
-      :destroyOnClose="destroyOnClose"
-      :style="{top:top,left:'0px'}"
-    >
-      <template #title v-if="headShow">
-        <div style="cursor: move">
-          <modalHeader
-            :title="title"
-            :destroyOnClose="destroyOnClose"
-            :isFull="isFull"
-            @change="setupFull"
-            @cancel="cancel"
-            @modalMin="modalMin"
-          />
-        </div>
-      </template>
-      <div class="!max-h-[70vh] overflow-y-scroll overflow-x-hidden">
-        <slot></slot>
+  <a-modal
+    :closable="false"
+    :width="isFull ? '100%' : width"
+    :wrap-class-name="isFull ? 'full-modal' : ''"
+    ref="modalRef"
+    @cancel="cancel"
+    v-model:visible="modalVisibled"
+    :maskClosable="maskClosable"
+    :wrap-style="{ overflow: 'hidden' }"
+    :destroyOnClose="destroyOnClose"
+    :style="{ top: top, left: '0px' }"
+  >
+    <template #title v-if="headShow">
+      <div style="cursor: move">
+        <modalHeader
+          :title="title"
+          :destroyOnClose="destroyOnClose"
+          :isFull="isFull"
+          @change="setupFull"
+          @cancel="cancel"
+          @modalMin="modalMin"
+        />
       </div>
-      <template #footer>
-        <slot name="btnSlot">
-          <!-- 按需插槽底部按钮  -->
-          <modalFooter
-            v-if="footer"
-            :okText="okText"
-            :loading="loading"
-            :cancelText="cancelText"
-            :showCancelBtn="showCancelBtn"
-            :showOkBtn="showOkBtn"
-            @confirm="ok"
-            @cancel="cancel"
-          />
-        </slot> 
-      </template>
-    </a-modal>
-  </div>
+    </template>
+    <div class="!max-h-[70vh] overflow-y-scroll overflow-x-hidden">
+      <slot></slot>
+    </div>
+    <template #footer>
+      <slot name="btnSlot">
+        <!-- 按需插槽底部按钮  -->
+        <modalFooter
+          v-if="footer"
+          :okText="okText"
+          :loading="loading"
+          :cancelText="cancelText"
+          :showCancelBtn="showCancelBtn"
+          :showOkBtn="showOkBtn"
+          @confirm="ok"
+          @cancel="cancel"
+        />
+      </slot>
+    </template>
+  </a-modal>
 </template>
 <script lang="ts" setup>
 import { ref, watch } from "vue";
-import { sysModeEnum } from '@/enums/sys';
-import { basicProps } from './index';
-import { useModalDragMove } from '@/hooks/useModal';
+import { sysModeEnum } from "@/enums/sys";
+import { basicProps } from "./index";
+import { useModalDragMove } from "@/hooks/useModal";
+import modalHeader from "./components/modalHeader.vue";
+import modalFooter from "./components/modalFooter.vue";
+import emitter from "@/plugins/mitt";
+import { getUid } from "@/utils/util";
+import config from "@/store/config";
 
-import modalHeader from './components/modalHeader.vue';
-import modalFooter from './components/modalFooter.vue';
-import emitter from '@/plugins/mitt'
-import { getUid } from '@/utils/util'
+const { getConfigState } = config();
+const props = defineProps(basicProps);
+const isFull = ref<boolean>(false); // 是否全屏
+const modalRef = ref<ComponentRef>(); // 是否全屏
+const top = ref<string>(null);
 
-import config from '@/store/config';
-const configStore = config()
-const { sysMode } = configStore
-const props = defineProps(basicProps)
-const isFull = ref<boolean>(false)// 是否全屏
-const modalRef = ref<ComponentRef>()// 是否全屏
-const top = ref<string>(null)
+watch(
+  () => getConfigState("sysMode"),
+  (newVal, oldVal) => {
+    isFull.value = newVal === sysModeEnum.phone;
+  },
+  { immediate: true },
+);
 
-const getContainer = () => {
-  return document.getElementById("modalBox");
+const setupFull = (bol: boolean) => {
+  isFull.value = bol;
+  top.value = bol ? "0px" : null;
 };
-
-watch(()=>sysMode,(newVal,oldVal)=>{
-    isFull.value = newVal === sysModeEnum.phone
-},{immediate: true})
-
-const setupFull = (bol:boolean)=>{
-  isFull.value = bol
-  top.value = bol ? '0px' : null
-}
-const emit = defineEmits(['btnOk','btnCancel','update:visible'])
-const modalVisibled = ref<boolean>(false)
+const emit = defineEmits(["btnOk", "btnCancel", "update:visible"]);
+const modalVisibled = ref<boolean>(false);
 
 // 底部按钮
-const ok = ()=>{
-  emit('btnOk')
-}
-const cancel = ()=>{
-  emit('update:visible',false)
-  emit('btnCancel')
-}
+const ok = () => {
+  emit("btnOk");
+};
+const cancel = () => {
+  emit("update:visible", false);
+  emit("btnCancel");
+};
 
-const uid = getUid() //弹窗绑定唯一id
-//挂载拖动modal hook 
-watch(()=>props.visible,(newVal,oldVal)=>{
-  modalVisibled.value = newVal
-  useModalDragMove({
-    visible:newVal,
-    destroyOnClose:props.destroyOnClose,
-    draggable:props.draggable,
-  })
-  props.visible && emitter.emit('delModalMin',uid)
-},{immediate: true})
+const uid = getUid(); //弹窗绑定唯一id
+//挂载拖动modal hook
+watch(
+  () => props.visible,
+  (newVal, oldVal) => {
+    modalVisibled.value = newVal;
+    useModalDragMove({
+      visible: newVal,
+      destroyOnClose: props.destroyOnClose,
+      draggable: props.draggable,
+    });
+    props.visible && emitter.emit("delModalMin", uid);
+  },
+  { immediate: true },
+);
 
 // 小化
-const modalMin = ()=>{
-  emit('update:visible',false)
-  if(props.destroyOnClose) return
+const modalMin = () => {
+  emit("update:visible", false);
+  if (props.destroyOnClose) return;
   let refObj = {
-    title:props.title,
-    uid:uid
-  }
-  emitter.emit('setModalMin',refObj)
-}
-emitter.on('openModalMin',(uId)=>{
-  if(uId === uid) emit('update:visible',true)
-})
-
+    title: props.title,
+    uid: uid,
+  };
+  emitter.emit("setModalMin", refObj);
+};
+emitter.on("openModalMin", uId => {
+  if (uId === uid) emit("update:visible", true);
+});
 </script>
 <style lang="scss">
-.ant-modal{
+.ant-modal {
   padding: 0 !important;
 }
 .full-modal {

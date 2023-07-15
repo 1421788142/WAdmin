@@ -1,7 +1,16 @@
 <template>
   <div class="h-full">
-    <w-table ref="table" :requestApi="userList" :columns="tableColumns">
-      <template #tableHeader>
+    <w-table
+      ref="table"
+      selection
+      :requestApi="userList"
+      :columns="tableColumns"
+      rowKey="userId"
+      :selectionOption="{
+        selectedRowKeys: [1, 3, 5],
+      }"
+    >
+      <template #tableHeader="{ selectedList }">
         <w-button type="add" btnType="primary" @click="update()" />
       </template>
       <template #url="{ row }">

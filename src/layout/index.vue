@@ -55,8 +55,7 @@
             <div
               class="flex items-center"
               v-if="
-                menuType === 'verticalDark' ||
-                menuType === 'verticalLight' ||
+                ['verticalDark', 'verticalLight'].includes(menuType) ||
                 getConfigState('sysMode') === sysModeEnum.phone
               "
             >
@@ -227,7 +226,7 @@ const {
   getConfigState,
   setConfigState,
   resetConfig,
-} = useLayout(route, router);
+} = useLayout(route);
 let sysConfig = {
   crumbsList,
   switchDark,

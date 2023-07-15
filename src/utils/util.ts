@@ -55,20 +55,6 @@ export function randomNum(min: number, max: number): number {
 }
 
 /**
- * @description 扁平化数组对象
- * @param {Array} arr 数组对象
- * @return array
- */
-export function getFlatArr(arr: any) {
-	return arr.reduce((pre: any, current: any) => {
-		let flatArr = [...pre, current];
-		if (current.children)
-			flatArr = [...flatArr, ...getFlatArr(current.children)];
-		return flatArr;
-	}, []);
-}
-
-/**
  * @description 格式化表格单元格默认值
  * @param {Number} row 行
  * @param {Number} col 列
@@ -218,6 +204,20 @@ export function arrayToTree<T>(
 		!idMap.get(key).children.length && delete idMap.get(key).children; // children子元素为空则删除该属性
 	});
 	return result;
+}
+
+/**
+ * @description 扁平化数组对象
+ * @param {Array} arr 数组对象
+ * @return array
+ */
+export function getFlatArr(arr: any) {
+	return arr.reduce((pre: any, current: any) => {
+		let flatArr = [...pre, current];
+		if (current.children)
+			flatArr = [...flatArr, ...getFlatArr(current.children)];
+		return flatArr;
+	}, []);
 }
 
 /**
