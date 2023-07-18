@@ -1,6 +1,6 @@
 import { Result } from '@/types/axios'
 import { tableResultData } from '@/apis/interface'
-import { searchProps } from '@/types/table/interface'
+import { searchFormProps } from '@/types/searchForm'
 import { TableProps } from "ant-design-vue";
 export namespace Table {
 	type columnsType = wTableProps
@@ -8,7 +8,6 @@ export namespace Table {
 	type beforeLoadType = (params: any) => boolean | object | void
 	type afterLoadType = (records: tableResultData<any[]>, state: stateProps) => any
 	export interface hookProps {
-		columns: columnsType,
 		initParam?: any,
 		pagination?: boolean,
 		requestApi: requestApiType,
@@ -30,7 +29,7 @@ export namespace Table {
 		selectedList: string[] | number[] | any[],
 		size: string[],
 		loading: boolean,
-		searchColumns: searchProps[],
+		searchColumns: searchFormProps[],
 		tableColumns: columnsType,
 		searchParam: {
 			[key: string]: any;

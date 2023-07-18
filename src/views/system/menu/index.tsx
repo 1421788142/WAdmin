@@ -42,8 +42,7 @@ export const usePageData = ()=>{
 	state.formColumns = [
 		{
 			isRule:true,
-			name: 'menuType',
-			formItemOption:{ label: '菜单类型' },
+			formItemOption:{ name: 'menuType', label: '菜单类型' },
 			renderForm:()=>{
 				return (
 					<a-radio-group v-model:value={state.formParam['menuType']} button-style="solid">
@@ -56,8 +55,7 @@ export const usePageData = ()=>{
 		},
 		{
 			isRule:true,
-			name: 'pId',
-			formItemOption:{ label: '上级菜单' },
+			formItemOption:{ name: 'pId', label: '上级菜单' },
 			formItemType:'a-tree-select',
 			componentOption:{
 				showSearch:true,
@@ -73,10 +71,9 @@ export const usePageData = ()=>{
 				treeNodeFilterProp:'title'
 			},
 		},
-		{ isRule:true, name: 'title', formItemOption:{ label: '菜单名称' } },
+		{ isRule:true, formItemOption:{ name: 'title', label: '菜单名称' } },
 		{
-			name: 'icon',
-			formItemOption:{ label: '图标' },
+			formItemOption:{ name: 'icon', label: '图标' },
 			renderForm:()=>{
 				return (
 					<w-icon-picker v-model:icon={state.formParam['icon']} />
@@ -86,30 +83,30 @@ export const usePageData = ()=>{
 		},
 		{
 			isRule:true,
-			name: 'orderNum',
-			formItemOption:{ label: '显示排序' },
+			formItemOption:{ name: 'orderNum', label: '显示排序' },
 			formItemType:'a-input-number',
 			componentOption:{ min:0, step:1 }
 		},
 		{
-			name: 'component',
+			
 			isRule:true,
 			tooltip: '访问的组件路径，如：`system/user/index`，默认在`views`目录下',
 			label: '组件路径',
+			formItemOption:{name: 'component'},
 			isHide:()=>state.formParam?.menuType === 'C'
 		},
 		{
 			isRule:true,
-			name: 'path',
 			tooltip: '访问的路由地址,如:`/user`，如外网地址需内链访问则以`http(s)://`开头,如果为目录,请以当前文件夹地址做拼接(system),注意请不要和其他目录文件夹重复,保持唯一性',
 			label: '组件路径',
+			formItemOption:{name: 'path'},
 			isHide:()=>state.formParam?.menuType !== 'F'
 		},
 		{
 			isRule:true,
-			name: 'isFrame',
 			tooltip: '选择是外链则路由地址需要以`http(s)://`开头',
 			label: '是否外链',
+			formItemOption:{name: 'isFrame'},
 			isHide:()=>state.formParam?.menuType !== 'F',
 			renderForm:()=>{
 				return (
@@ -122,9 +119,9 @@ export const usePageData = ()=>{
 		},
 		{
 			isRule:true,
-			name: 'hidden',
 			tooltip: '选择否则路由将不会出现在菜单栏,但依然会加载菜单',
 			label: '是否显示',
+			formItemOption:{name: 'hidden'},
 			isHide:()=>state.formParam?.menuType !== 'F',
 			renderForm:()=>{
 				return (
@@ -137,8 +134,7 @@ export const usePageData = ()=>{
 		},
 		{
 			isRule:true,
-			name: 'keepAlive',
-			formItemOption:{ label: '是否缓存' },
+			formItemOption:{ name: 'keepAlive', label: '是否缓存' },
 			isHide:()=>state.formParam?.menuType === 'C',
 			renderForm:()=>{
 				return (
@@ -150,10 +146,10 @@ export const usePageData = ()=>{
 			},
 		},
 		{
-			name: 'status',
 			isRule:true,
 			tooltip: '选择停用则路由将不会出现在菜单栏不会加载菜单',
 			label: '菜单状态',
+			formItemOption:{ name: 'status' },
 			isHide:()=>state.formParam?.menuType !== 'F',
 			renderForm:()=>{
 				return (
@@ -166,8 +162,7 @@ export const usePageData = ()=>{
 		},
 		{
 			isRule:true,
-			name: 'perms',
-			formItemOption:{ label: '权限字符串' },
+			formItemOption:{ name: 'perms', label: '权限字符串' },
 			isHide:()=>state.formParam?.menuType === 'F',
 		}
 	]
@@ -176,7 +171,7 @@ export const usePageData = ()=>{
 		let { code, data } = await menuList()
 		let treeData = arrayToTree<menuListType>(data.dataList);
 		if(code === 200){
-			state.formColumns.forEach(x=>x.name === 'pId' && (x.componentOption.treeData = treeData))
+			state.formColumns.forEach(x=>x.formItemOption.name === 'pId' && (x.componentOption.treeData = treeData))
 		}
 	};
 

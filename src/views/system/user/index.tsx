@@ -79,37 +79,34 @@ export const usePageData = ()=>{
 		],
 		formColumns:[
 			{
-				name: 'userName',
 				isRule:true,
-				formItemOption:{ label: '用户账号' },
+				formItemOption:{ name: 'userName', label: '用户账号' },
 			},
-			{ name: 'nickname', formItemOption:{ label: '真实姓名' } },
+			{ formItemOption:{ name: 'nickname', label: '真实姓名' } },
 			{
-				name: 'age',
 				formItemOption:{
+					name: 'age',
 					label: '用户年龄',
 					rules: [{ required: true, trigger: ['change', 'blur'] }],
 				},
 				renderForm:renderAge
 			},
 			{
-				name: 'url',
 				isRule:true,
-				formItemOption:{ label: '门户地址' },
+				formItemOption:{ name: 'url', label: '门户地址' },
 			},
 			{
-				name: 'avatar',
 				isRule:true,
-				formItemOption:{ label: '用户头像' },
+				formItemOption:{ name: 'avatar', label: '用户头像' },
 				sort:11
 			},
-			{ name: 'email', formItemOption:{ label: '邮箱' } },
-			{ name: 'address', formItemOption:{ label: '地址' } },
+			{ formItemOption:{  name: 'email', label: '邮箱' } },
+			{ formItemOption:{ name: 'address', label: '地址' } },
 			{
-				name: 'grade',
+				
 				isRule:true,
 				formItemType:'a-select',
-				formItemOption:{ label: '会员等级' },
+				formItemOption:{ name: 'grade', label: '会员等级' },
 				componentOption:{
 					options:gradeList,
 					showSearch:true,
@@ -119,10 +116,10 @@ export const usePageData = ()=>{
 				}
 			},
 			{
-				name: 'userType',
+				
 				formItemType:'a-select',
 				isRule:true,
-				formItemOption:{ label: '用户类型' },
+				formItemOption:{ name: 'userType', label: '用户类型' },
 				componentOption:{
 					options:userType
 				}

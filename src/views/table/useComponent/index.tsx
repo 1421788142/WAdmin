@@ -115,31 +115,26 @@ export const usePageData = ()=>{
 		],
 		formColumns:[
 			{
-				name: 'nickname',
 				isRule:true,
-				formItemOption:{ label: '用户姓名' },
+				formItemOption:{ name: 'nickname', label: '用户姓名' },
 			},
 			{
-				name: 'age',
 				isRule:true,
-				formItemOption:{ label: '用户年龄' },
+				formItemOption:{ name: 'age', label: '用户年龄' },
 				renderForm:renderAge
 			},
 			{
-				name: 'url',
 				isRule:true,
-				formItemOption:{ label: '门户地址' },
+				formItemOption:{ name: 'url', label: '门户地址' },
 			},
 			{
-				name: 'avatar',
 				isRule:true,
-				formItemOption:{ label: '用户头像' },
+				formItemOption:{ name: 'avatar', label: '用户头像' },
 			},
 			{
-				name: 'grade',
 				formItemType:'a-select',
 				isRule:true,
-				formItemOption:{ label: '会员等级' },
+				formItemOption:{ name: 'grade', label: '会员等级' },
 				componentOption:{
 					options:gradeList,
 					showSearch:true,
@@ -150,10 +145,9 @@ export const usePageData = ()=>{
 				}
 			},
 			{
-				name: 'userType',
 				formItemType:'a-select',
 				isRule:true,
-				formItemOption:{ label: '用户类型' },
+				formItemOption:{ name: 'userType', label: '用户类型' },
 				componentOption:{
 					options:userType
 				}

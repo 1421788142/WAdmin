@@ -4,35 +4,23 @@
     v-if="columns.length"
     ref="searchFormRef"
   >
-    <a-form class="flex-1" :model="searchParam" name="formRef">
+    <a-form class="flex-1" :model="formParam" name="formRef">
       <a-row :gutter="gutter">
-        <template v-for="item in searchColumns" :key="item.prop">
+        <template v-for="item in searchColumns" :key="item.formItemProps.name">
           <a-col :span="formSpan">
-            <a-form-item
-              v-bind="{
-                ...item,
-                labelCol: item?.layout?.labelCol,
-                wrapperCol: item?.layout?.wrapperCol,
-              }"
-            >
+            <a-form-item v-bind="item.formItemProps">
               <slot
                 name="formItemSlot"
                 :formItem="item"
-                :searchParam="searchParam"
+                :searchParam="formParam"
               >
                 <component
                   class="!w-full"
-                  v-if="!item.renderForm"
-                  :is="item.type"
-                  v-bind="item.searchOption"
+                  :is="item?.renderForm ?? item.type"
+                  v-bind="item.componentProps"
                   v-on="item?.listeners || {}"
-                  v-model:value="searchParam[item.name!]"
-                  :row="searchParam"
-                ></component>
-                <component
-                  v-else
-                  :is="item.renderForm"
-                  :row="searchParam"
+                  v-model:value="formParam[item.formItemProps.name!]"
+                  :row="formParam"
                 ></component>
               </slot>
             </a-form-item>
@@ -46,7 +34,9 @@
         <a-button type="primary" @click="search" :loading="loading">
           查询
         </a-button>
-        <a-button @click="reset" class="ml-1">重置</a-button>
+        <a-button @click="reset" class="ml-1" :disabled="loading">
+          重置
+        </a-button>
       </div>
       <div
         class="flex pt-1 ml-1 cursor-pointer"
@@ -64,12 +54,13 @@
 <script setup lang="ts">
 import { ref, onMounted, computed, watchEffect } from "vue";
 import { DownOutlined, UpOutlined } from "@ant-design/icons-vue";
-import { searchProps } from "@/types/table/interface";
+import { searchFormProps } from "@/types/searchForm";
 import { useAutoFormRow } from "@/hooks/useAutoFormRow";
+import { useVModel } from "@/hooks/useVModel";
 
 interface propsInterface {
-  columns: searchProps[]; // 搜索配置列
-  searchParam: any; // 搜索参数
+  columns: searchFormProps[]; // 搜索配置列
+  value: Record<string, any>; // 搜索参数
   loading: boolean; //请求loading
   search: (params: any) => void; // 搜索方法
   reset: (params: any) => void; // 重置方法
@@ -78,8 +69,10 @@ interface propsInterface {
 // 默认值
 const props = withDefaults(defineProps<propsInterface>(), {
   columns: () => [],
-  searchParam: {},
 });
+
+const emit = defineEmits(["update:value"]);
+const formParam = useVModel(props, "value", emit);
 
 // 是否展开搜索项
 const searchFormRef = ref();
@@ -102,7 +95,7 @@ onMounted(() => {
 });
 
 // 根据是否展开配置搜索项长度
-const searchColumns = computed((): searchProps[] => {
+const searchColumns = computed((): searchFormProps[] => {
   return isShowMax.value
     ? props.columns
     : props.columns.slice(0, maxLength.value);

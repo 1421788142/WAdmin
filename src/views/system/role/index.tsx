@@ -61,13 +61,11 @@ export const usePageData = ()=>{
 		formColumns:[
 			{
 				isRule:true,
-				name: 'roleName',
-				formItemOption:{ label: '角色名称' },
+				formItemOption:{ name: 'roleName', label: '角色名称' },
 			},
 			{
 				isRule:true,
-				name: 'order',
-				formItemOption:{ label: '排序' },
+				formItemOption:{ name: 'order', label: '排序' },
 				renderForm:() => {
 					return (
 						<a-input-number step={1} min={0} max={100} v-model:value={state.formParam!['order']}></a-input-number>
@@ -76,19 +74,16 @@ export const usePageData = ()=>{
 			},
 			{
 				isRule:true,
-				name: 'status',
 				formItemType:'a-select',
-				formItemOption:{ label: '状态' },
+				formItemOption:{ name: 'status', label: '状态' },
 				componentOption:{ options:starsList }
 			},
 			{
-				name: 'memo',
 				formItemType:'a-textarea',
-				formItemOption:{ label: '备注', },
+				formItemOption:{ name: 'memo', label: '备注', },
 			},
 			{
-				name: 'menuId',
-				formItemOption:{ label: '菜单分配' },
+				formItemOption:{ name: 'menuId', label: '菜单分配' },
 			},
 		]
 	})

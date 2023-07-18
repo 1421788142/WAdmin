@@ -1,4 +1,5 @@
-import { tableProps, enumProp } from "./interface";
+import { tableProps } from "./interface";
+import { enumProp } from "../searchForm";
 
 declare global {
     type wTableEnumProp = enumProp

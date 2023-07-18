@@ -1,5 +1,5 @@
 import { isArray } from "@/utils/is";
-import { enumProp } from '@/types/table/interface'
+import { enumProp } from '@/types/searchForm'
 
 /**
  * @description 清除所有localStorage
@@ -285,7 +285,7 @@ export function getUid() {
 
 export const pick = <T, K extends keyof T>(
 	target: (object | string) & T,
-	keys: (string & K) | K[],
+	keys: K[],
 	clearNull: boolean = false
 ): Pick<T, K> => {
 	const newVlaue = typeof target === 'string' && target.startsWith('{') ? JSON.parse(target) : ({} as T)
@@ -298,11 +298,30 @@ export const pick = <T, K extends keyof T>(
 	return newVlaue
 }
 
+
+/**
+ * 过滤某个对象中一个或多个key的value
+ *```
+ * const obj = {a:1,b:1,c:2}
+ * pick(obj,'a') | pick(obj,['a'])=>{b:obj.b,c:obj.c}
+ * ```
+ * @param {object} target 需要获取对应key-value的源数据 可以是一个JSON对象
+ * @param {string | string[]} keys 字符串或数组 值为需要获取的key
+ * @return {object} object
+ **/
+
+export const filterPick = <T, K extends keyof T>(
+	target: (object | string) & T,
+	keys: K[]
+): Pick<T, K> => {
+	let objKeys = (Object.keys(target) as K[]).filter((f) => !keys.includes(f)) as (string & K)[]
+	return pick<T, K>(target, objKeys)
+}
+
 /**
  * @param {string} name 文件名称：test.png
  * @returns {*|string}
  */
-
 export const getAssets = (name: string): any | string => {
 	return new URL(`/src/assets/${name}`, import.meta.url).href;
 }

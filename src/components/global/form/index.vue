@@ -14,7 +14,10 @@
             :span="formRowSpan(item)"
             v-if="item?.isHide ? item.isHide(formParam) : true"
           >
-            <a-form-item :name="item.name" v-bind="item.formItemOption">
+            <a-form-item
+              :name="item.formItemOption.name"
+              v-bind="item.formItemOption"
+            >
               <template #label>
                 <a-tooltip
                   :placement="item.tooltipPlacement ?? 'top'"
@@ -24,13 +27,16 @@
                 </a-tooltip>
                 <span class="mx-2">{{ item.label }}</span>
               </template>
-              <slot :name="`${item.name}FormItem`" :row="formParam">
+              <slot
+                :name="`${item.formItemOption.name}FormItem`"
+                :row="formParam"
+              >
                 <component
                   v-if="!item.renderForm"
                   :is="item.formItemType || 'a-input'"
                   v-bind="item.componentOption"
                   v-on="item.componentOption?.listeners || {}"
-                  v-model:value="formParam[item.name!]"
+                  v-model:value="formParam[item.formItemOption.name!]"
                 ></component>
                 <component
                   v-else
@@ -95,7 +101,7 @@ const getSort = (sort: number) => sort ?? 10; //排序
 const initParam = {};
 const formColumns = props.columns
   .map((item): wFormProp => {
-    initParam[item.name] = "";
+    initParam[item.formItemOption.name] = "";
     return {
       ...item,
       formItemOption: {

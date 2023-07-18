@@ -1,11 +1,10 @@
 import { Table } from "./interface";
 import { reactive, computed, onMounted, toRefs } from "vue";
-import { searchProps } from '@/types/table/interface'
 import { isBoolean } from '@/utils/is'
+import { getSort, setTableColumns, setSearhFormColumns } from '@/utils/index'
 import { message } from "ant-design-vue";
 
 export const useTable = ({
-	columns,
 	initParam,
 	pagination,
 	requestApi,
@@ -36,40 +35,11 @@ export const useTable = ({
 		totalParam: {},// 总参数(包含分页和查询参数)
 	});
 
-	const getSort = (sort: number) => sort ?? 10 //排序
-	const setColumns = () => {
+	const setColumns = (columns: wTableProps) => {
 		// 设置搜索模块
-		state.searchColumns = columns.filter(x => x?.search || x?.searchOption).map<searchProps>(column => {
-			let searchOption = column.searchOption
-			state.initSearchParam[searchOption?.name || column.dataIndex] = searchOption?.defaultValue || null;
-			return {
-				label: searchOption?.label || column.title,
-				name: searchOption?.name || column.dataIndex,
-				type: searchOption?.type || 'a-input',
-				searchOption: searchOption,
-				renderForm: searchOption?.renderForm,
-				listeners: searchOption?.listeners || {},
-				sort: searchOption?.sort || 0
-			}
-		}).sort((a, b) => {
-			return getSort(a?.searchOption?.sort) - getSort(b?.searchOption?.sort)
-		})
-		// 设置表格模块
-		state.tableColumns = columns.filter(x => !x.hide).map(item => {
-			return {
-				...item,
-				enum: item?.enum ?? item?.searchOption?.options,
-				show: isBoolean(item?.show) ? item?.show : true,
-				preview: isBoolean(item?.preview) ? item?.preview : true,
-				showEnum: isBoolean(item?.showEnum) ? item?.showEnum : false,
-				resizable: isBoolean(item?.resizable) ? item?.resizable : true,
-				width: item.width || 150,
-				align: item.align || 'center',
-				searchOption: {}
-			};
-		}).filter(x => !x.hide).sort((a, b) => {
-			return getSort(a.sort) - getSort(b.sort)
-		});
+		setSearhFormColumns(columns, state)
+		// 设置表格
+		setTableColumns(columns, state)
 	}
 
 	/**

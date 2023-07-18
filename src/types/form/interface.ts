@@ -23,6 +23,7 @@ export type formItemType =
     | "a-progress" //进度条
     | "a-input-password" //进度条
 
+type componentProps = Partial<formComponentProps<Ref<SelectProps['options']> | SelectProps['options']>>
 
 export interface formProps {
     formItemType?: formItemType, // 表单项类型默认文本
@@ -30,18 +31,12 @@ export interface formProps {
     sort?: number, //排序
     tooltip?: string, //label 提示语
     tooltipPlacement?: string, //label 提示语位置
-    name?: string, // 使用tooltip时需要name(并且formItemOption里面不能有name,否则冲突)
     label?: string, // 使用tooltip时需要label(并且formItemOption里面不能有label,否则冲突)
     //默认验证(默认给表单添加rules(可被formItemOption的rules替换)  rules: [{ required: true, trigger: ['change', 'blur'] }] )
     isRule?: boolean,
     validator?: (param: any) => void, //验证器
     colSpan?: number, //col占比
-    formItemOption?: FormItemProps, //form-item的api
-    componentOption?: { //表单组件api组合,可先添加通用的prop属性
-        allowClear?: boolean,
-        options?: Ref<SelectProps['options']> | SelectProps['options'],
-        [prop: string]: any
-        listeners?: { [prop: string]: Function }
-    },
+    formItemOption?: FormItemProps & { name: string, label?: string }, //form-item的api
+    componentOption?: componentProps,
     renderForm?: (params: any) => JSX.Element; //自定义表单tsx
 }

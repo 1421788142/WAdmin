@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="flex-1">
     <Table></Table>
   </div>
 </template>

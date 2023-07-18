@@ -15,7 +15,7 @@
         :search="search"
         :reset="reset"
         :loading="loading"
-        :searchParam="searchParam"
+        v-model:value="searchParam"
         :columns="searchColumns"
         v-show="showSearch"
       >
@@ -144,7 +144,7 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { watch } from "vue";
+import { watch, watchEffect } from "vue";
 import { pick } from "@/utils/util";
 import { useTable } from "./index";
 import type { Table } from "./interface";
@@ -194,7 +194,6 @@ const {
   setColumns,
 } = useTable({
   ...pick(props, [
-    "columns",
     "initParam",
     "pagination",
     "requestApi",
@@ -204,14 +203,21 @@ const {
 });
 
 // 根据配置定义搜索模块和表格数据源
-setColumns();
+
+watchEffect(() => {
+  setColumns(props.columns);
+});
+
 // 重置表格已选的值
 watch(loading, () => selectionChange([]));
+
 // 	修改表头宽度
 const handleResizeColumn = (w: number, col: wTableProp) => {
   let columns = tableColumns.value.filter(x => x.dataIndex === col.dataIndex);
   columns[0].width = w;
 };
+
+// 设置表格显示列
 const settingChange = (columns: wTableProps) => {
   loading.value = true;
   tableColumns.value = columns;
