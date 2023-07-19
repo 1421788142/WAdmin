@@ -49,7 +49,7 @@ export const usePageData = ()=>{
 				title:'创建时间',
 				dataIndex: "createdTime",
 				searchOption: { 
-					type:'a-range-picker',
+					formItemType:'a-range-picker',
 					format:'YYYY-MM-DD',
 					valueFormat:'YYYY-MM-DD',
 					defaultValue:[ "2023-04-06", "2023-05-11" ],
@@ -70,7 +70,7 @@ export const usePageData = ()=>{
 				title:'会员等级',
 				dataIndex: "grade",
 				searchOption:{
-					type:'a-select',
+					formItemType:'a-select',
 					options:gradeList,
 				},
 				tag:true,
@@ -81,7 +81,7 @@ export const usePageData = ()=>{
 				dataIndex: "userType",
 				showEnum:true,
 				searchOption: { 
-					type: 'a-select',
+					formItemType: 'a-select',
 					options:userType,
 				},
 			},

@@ -47,7 +47,7 @@ export const usePageData = ()=>{
 			{
 				title:'创建时间',
 				dataIndex: "createdTime",
-				searchOption:{ type:'a-date-picker' },
+				searchOption:{ formItemType:'a-date-picker' },
 				sorter: (a: any, b: any) =>{
 					const t1 = new Date(a.createdTime).getTime();
 					const t2 = new Date(b.createdTime).getTime();
@@ -62,14 +62,14 @@ export const usePageData = ()=>{
 				search: true,
 				tag:true,
 				showEnum:true,
-				searchOption:{ type:'a-select',options:gradeList },
+				searchOption:{ formItemType:'a-select',options:gradeList },
 				sorter: (a: any, b: any) => a.grade - b.grade,
 			},
 			{
 				title:'用户类型',
 				dataIndex: "userType",
 				showEnum:true,
-				searchOption:{ type:'a-select', options: userType }
+				searchOption:{ formItemType:'a-select', options: userType }
 			},
 			{
 				dataIndex: "operation",
@@ -112,7 +112,7 @@ export const usePageData = ()=>{
 					showSearch:true,
 					filterOption:(input: string, option: any) => {
 						return option.label.indexOf(input) != -1
-					}
+					},
 				}
 			},
 			{

@@ -45,7 +45,7 @@ export function setSearhFormColumns(columns: wTableProps, state: Table.stateProp
         let searchOption = {
             label: options?.label || m.title,
             name: options?.name || m.dataIndex,
-            type: options?.type || 'a-input',
+            formItemType: options?.formItemType || 'a-input',
             ...(options ?? {})
         }
         state.initSearchParam[searchOption.name] = searchOption?.defaultValue || null;
@@ -54,7 +54,7 @@ export function setSearhFormColumns(columns: wTableProps, state: Table.stateProp
             'label',
             'name',
             'labelCol',
-            'type',
+            'formItemType',
             'wrapperCol',
             'renderForm',
             'defaultValue',
@@ -63,7 +63,7 @@ export function setSearhFormColumns(columns: wTableProps, state: Table.stateProp
         ])
 
         return {
-            type: searchOption.type,
+            formItemType: searchOption.formItemType,
             renderForm: searchOption?.renderForm,
             sort: searchOption.sort,
             listeners: searchOption?.listeners,

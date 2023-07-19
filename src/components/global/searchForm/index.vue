@@ -16,7 +16,7 @@
               >
                 <component
                   class="!w-full"
-                  :is="item?.renderForm ?? item.type"
+                  :is="item?.renderForm ?? item.formItemType"
                   v-bind="item.componentProps"
                   v-on="item?.listeners || {}"
                   v-model:value="formParam[item.formItemProps.name!]"

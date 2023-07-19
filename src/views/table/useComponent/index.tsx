@@ -50,7 +50,6 @@ export const usePageData = ()=>{
 			{
 				title:'用户信息',
 				dataIndex:'',
-				search: true,
 				searchOption:{
 					name:'nickname',
 					label:'用户名称'
@@ -70,7 +69,7 @@ export const usePageData = ()=>{
 				title:'用户年龄',
 				dataIndex: "age",
 				searchOption:{
-					type:'a-input-number',					
+					formItemType:'a-input-number',					
 				},
 				sorter: (a: any, b: any) => a.age - b.age,
 			},
@@ -79,7 +78,7 @@ export const usePageData = ()=>{
 				dataIndex: "createdTime",
 				searchOption:{
 					defaultValue:[],
-					type:'a-range-picker',
+					formItemType:'a-range-picker',
 				},
 				sorter: (a: any, b: any) =>{
 					const t1 = new Date(a.createdTime).getTime();

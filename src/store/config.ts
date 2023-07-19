@@ -50,6 +50,7 @@ export default defineStore<'config', WAdminConfig.state, WAdminConfig.getters, W
             this.isHasFull = false
             this.modalMinNum = 2
             this.lockNum = 0
+            this.lockExpireNum = 0
             this.isHasLock = false
             this.lockPassword = '123456'
         }

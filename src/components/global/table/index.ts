@@ -1,7 +1,6 @@
 import { Table } from "./interface";
 import { reactive, computed, onMounted, toRefs } from "vue";
-import { isBoolean } from '@/utils/is'
-import { getSort, setTableColumns, setSearhFormColumns } from '@/utils/index'
+import { setTableColumns, setSearhFormColumns } from '@/utils/index'
 import { message } from "ant-design-vue";
 
 export const useTable = ({

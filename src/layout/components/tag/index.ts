@@ -4,8 +4,6 @@ import type { Router } from "vue-router"
 import userStore from '@/store/user';
 import { message } from "ant-design-vue";
 
-import { useRoute, useRouter } from "vue-router";
-
 export interface itemType {
     title: string,
     icon: string,

@@ -2,20 +2,16 @@ import type { TableColumnType, FormItemProps } from 'ant-design-vue'
 import type { searchFormProps } from '../searchForm'
 
 export interface searchProps {
-    sort?: number, //排序
     defaultValue?: string | number | Array<string | number>, // 搜索项初始值
-    renderForm?: searchFormProps['renderForm'], //自定义表单tsx
-    listeners?: searchFormProps['listeners'],
     labelCol?: searchFormProps['formItemProps']['labelCol'],
     wrapperCol?: searchFormProps['formItemProps']['wrapperCol'],
-    [prop: string]: any, //暂时为了适配其他配置项
 }
 
 export interface tableProps extends TableColumnType {
     title: string, //单元格表头（非特殊类型必填）
     dataIndex: string, //单元格表头（非特殊类型必填）
     search?: boolean, //是否作为查询条件,有搜索条件或者
-    searchOption?: searchProps & searchFormProps['componentProps'] //查询表单配置项(有此配置则默认做完搜索条件)
+    searchOption?: searchProps & searchFormProps  //查询表单配置项(有此配置则默认做完搜索条件)
     show?: boolean, //可通过表格设置显示隐藏,默认true
     hide?: boolean, //是否渲染(不会显示并且不能加入表格设置)
     tooltip?: boolean, //是否显示提示框
