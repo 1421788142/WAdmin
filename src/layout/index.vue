@@ -189,7 +189,7 @@
 import { ref, nextTick, onMounted, provide, computed, watch } from "vue";
 import { guide, getFirstMenu, openKey } from "./index";
 import { debounce } from "@/utils/util";
-import { useEmitter } from "@/hooks/useEmitter";
+import { useModalMin } from "@/hooks/useModalMin";
 
 import menuVue from "@/layout/components/sidebar/menu.vue";
 import layoutPage from "@/layout/components/page/index.vue";
@@ -210,7 +210,7 @@ const router = useRouter();
 const isHasCollapsed = computed(() => getConfigState("isHasCollapsed"));
 const menuType = computed(() => getConfigState("menuType"));
 
-const { delModalMin, openModalMin, modalMinList, modalMinUid } = useEmitter(
+const { delModalMin, openModalMin, modalMinList, modalMinUid } = useModalMin(
   route,
   router,
 );

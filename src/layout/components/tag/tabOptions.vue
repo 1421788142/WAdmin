@@ -1,28 +1,21 @@
 <template>
   <a-dropdown :trigger="[trigger]">
-    <a-button
-      v-if="tagsIndex == -1"
-      class="flex items-center justify-center"
-      type="primary"
-      size="small"
-    >
-      <span class="text-xs">更多</span>
-      <DownOutlined />
-    </a-button>
-    <a-button
-      size="small"
-      :type="route.path == item.path ? 'primary' : ''"
+    <div v-if="tagsIndex == -1" class="flex items-center">
+      <menu-outlined class="!text-xl cursor-pointer mt-[-5px]" />
+    </div>
+    <div
+      class="menu-tag"
+      :class="{ 'menu-tag-active': route.path === item.path }"
       v-else
     >
       <div class="flex items-center">
-        <span class="mr-2 text-xs">{{ title }}</span>
+        <span class="text-xs title">{{ title }}</span>
         <close-outlined
           class="!mr-0 text-[12px] close-outlined"
-          v-if="tagsIndex > 0"
           @click.stop="setupFn('closeCurrent')"
         />
       </div>
-    </a-button>
+    </div>
     <template #overlay>
       <a-menu>
         <template v-for="tabItme in tabItmes" :key="tabItme.type">
@@ -85,4 +78,48 @@ const isDisabled = (disabled: boolean) => {
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.dark {
+  .menu-tag {
+    border: 1px solid #333;
+  }
+  .menu-tag::after {
+    background-color: #177ddc;
+  }
+}
+.menu-tag {
+  cursor: pointer;
+  position: relative;
+  padding: 5px 20px;
+  border-radius: 5px;
+  border: 1px solid #eee;
+  .close-outlined {
+    position: absolute;
+    opacity: 0;
+    right: -30px;
+    transition: 0.3s;
+  }
+}
+.menu-tag::after {
+  position: absolute;
+  content: "";
+  background-color: var(--ant-primary-color);
+  bottom: 0;
+  left: 0;
+  width: 0%;
+  height: 2px;
+}
+.menu-tag:hover {
+  &::after {
+    transition: width 0.3s;
+    width: 100%;
+  }
+  .close-outlined {
+    right: 5px;
+    opacity: 1;
+  }
+}
+.menu-tag-active::after {
+  width: 100%;
+}
+</style>

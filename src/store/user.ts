@@ -11,13 +11,15 @@ import { notification, message } from 'ant-design-vue';
 import { CheckCircleTwoTone } from '@ant-design/icons-vue';
 import { h } from 'vue';
 
-export default defineStore('user', {
+import { WAdminUser } from './interface'
+
+export default defineStore<'user', WAdminUser.state, WAdminUser.getters, WAdminUser.actions>('user', {
     state: () => {
         return {
             userRouterList: [],
             userInfo: null,
             requestRecord: [],//保存请求的接口
-            historyMenuTag: [],
+            historyMenuTag: [],//历史菜单
             token: ''
         }
     },

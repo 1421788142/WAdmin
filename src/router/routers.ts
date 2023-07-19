@@ -42,7 +42,7 @@ export const routes = [
 ] as RouteRecordRaw[]
 
 // 详情菜单路由  meta parentPath 必选参数
-export const layoutRoute = [
+export const layoutDetailRoute = [
     {
         component: 'feat/infoPage/detail/index',
         path: "/feat/infoPage/detail/:id",

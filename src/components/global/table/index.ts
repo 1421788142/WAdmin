@@ -47,6 +47,7 @@ export const useTable = ({
 	 * @param selectedRowKeys 勾选的table列数据
 	 */
 	const selectionChange = (selectedRowKeys: string[] | number[] | object[]) => {
+		console.log(selectedRowKeys);
 		state.isSelected = !!selectedRowKeys.length
 		state.selectedList = selectedRowKeys
 	}

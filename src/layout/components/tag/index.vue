@@ -1,14 +1,14 @@
 <template>
-  <a-divider class="!mt-0 !mb-1" />
-  <div class="flex items-center justify-between mb-1">
-    <div class="grid justify-start flex-1 grid-flow-col gap-2 historyMenu">
+  <div class="historyMenu">
+    <a-divider class="!mt-0 !mb-1" />
+    <div class="flex w-full items-center justify-between mb-1 h-[30px]">
       <a-tabs
         type="card"
         @change="tabPage"
         size="large"
         v-model:activeKey="currentPage"
       >
-        <a-tab-pane v-for="(item, index) in historyMenu" :key="item.path">
+        <a-tab-pane v-for="(item, index) in historyMenuTag" :key="item.path">
           <template #tab>
             <tabOptions
               :tabItmes="tabItmes"
@@ -21,22 +21,19 @@
           </template>
         </a-tab-pane>
       </a-tabs>
-    </div>
-    <div class="flex items-center">
-      <sync-outlined
-        class="text-xl cursor-pointer"
-        @click="refresh"
-        :class="animate"
-      />
-      <expand-outlined
-        class="mx-4 text-xl cursor-pointer"
-        @click="fullChange"
-      />
-      <tabOptions
-        :tabItmes="tabItmes"
-        :disabled="false"
-        @change="optionChange"
-      />
+      <div class="flex items-center !text-lg">
+        <sync-outlined
+          class="cursor-pointer"
+          @click="refresh"
+          :class="animate"
+        />
+        <expand-outlined class="mx-2 cursor-pointer" @click="fullChange" />
+        <tabOptions
+          :tabItmes="tabItmes"
+          :disabled="false"
+          @change="optionChange"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -61,7 +58,7 @@ const router = useRouter();
 
 const {
   tabItmes,
-  historyMenu,
+  historyMenuTag,
   set,
   closeCurrent,
   closeLeft,
@@ -78,8 +75,9 @@ const tabPage = (path: string) => {
 const fullChange = () => {
   setConfigState("isHasFull", !getConfigState("isHasFull"));
 };
-//重新加载页面
 const emit = defineEmits(["change"]);
+
+//重新加载页面
 const animate = ref<string>("");
 const refresh = () => {
   animate.value = "animate-spin"; //加载动画
@@ -130,7 +128,7 @@ const optionChange = (value: valueInterface) => {
       closeCurrent(value.data);
       break;
   }
-  historyMenu.value.length && emit("change", value.key === "closeAll");
+  historyMenuTag.value.length && emit("change", value.key === "closeAll");
 };
 
 // 拖拽排序
@@ -152,7 +150,7 @@ nextTick(() => {
           oldIndex === newIndex
         )
           return;
-        let historyMenuList = deepCopy<menuItem[]>(historyMenu.value);
+        let historyMenuList = deepCopy<menuItem[]>(historyMenuTag.value);
         if (oldIndex > newIndex) {
           historyMenuList.splice(newIndex, 0, historyMenuList[oldIndex]);
           historyMenuList.splice(oldIndex + 1, 1);
@@ -160,7 +158,7 @@ nextTick(() => {
           historyMenuList.splice(newIndex + 1, 0, historyMenuList[oldIndex]);
           historyMenuList.splice(oldIndex, 1);
         }
-        historyMenu.value = historyMenuList;
+        historyMenuTag.value = historyMenuList;
       },
     },
   );
@@ -174,6 +172,12 @@ nextTick(() => {
   :deep(.ant-tabs) {
     .ant-tabs-nav {
       margin: 0 !important;
+    }
+    .ant-tabs-ink-bar {
+      display: none !important;
+    }
+    .ant-tabs-content-holder {
+      display: none !important;
     }
     .ant-tabs-tab {
       padding: 0 !important;

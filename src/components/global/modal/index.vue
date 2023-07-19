@@ -44,7 +44,7 @@
   </a-modal>
 </template>
 <script lang="ts" setup>
-import { ref, watch } from "vue";
+import { ref, watch, onBeforeUnmount } from "vue";
 import { sysModeEnum } from "@/enums/sys";
 import { basicProps } from "./index";
 import { useModalDragMove } from "@/hooks/useModal";
@@ -112,6 +112,10 @@ const modalMin = () => {
 };
 emitter.on("openModalMin", uId => {
   if (uId === uid) emit("update:visible", true);
+});
+
+onBeforeUnmount(() => {
+  emitter.off("openModalMin");
 });
 </script>
 <style lang="scss">

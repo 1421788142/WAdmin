@@ -6,6 +6,7 @@ interface stateInterface {
 	title:string, //modal 标题
 	visible:boolean, //modal是否显示
 	loading:boolean,
+	selecteId:number[],
 	formParam:userInterface,
 	tableColumns:wTableProps,
 	formColumns:wFormProps,
@@ -36,6 +37,7 @@ export const usePageData = ()=>{
 		visible:false,
 		loading:false,
 		fileList:[],
+		selecteId:[1,3,5], // 测试默认选中 selectedList
 		formParam:null,
 		tableColumns:[
 			{

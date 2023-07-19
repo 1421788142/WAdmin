@@ -1,5 +1,8 @@
 import { defineStore } from "pinia";
-export default defineStore('config', {
+import { WAdminConfig } from "./interface";
+
+
+export default defineStore<'config', WAdminConfig.state, WAdminConfig.getters, WAdminConfig.actions>('config', {
     state: () => {
         return {
             menuType: 'verticalDark',//菜单主题
@@ -22,13 +25,14 @@ export default defineStore('config', {
             lockPassword: '123456',//锁屏密码
         }
     },
+    getters: {},
     actions: {
         // 获取参数
         getConfigState(key: string) {
             return this[key]
         },
         // 修改参数
-        setConfigState(key: string, value: string | boolean) {
+        setConfigState<K extends keyof WAdminConfig.state>(key: K, value: WAdminConfig.state[K]) {
             this[key] = value
         },
         // 重置参数

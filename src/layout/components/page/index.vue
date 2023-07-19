@@ -25,7 +25,7 @@ import { ref, defineComponent, watch, inject, computed } from "vue";
 import { filterKeepAlive } from "@/layout";
 import userStore from "@/store/user";
 import { useRoute } from "vue-router";
-import { layoutRoute } from "@/router/routers";
+import { layoutDetailRoute } from "@/router/routers";
 import { layoutInterface } from "@/hooks/interface/layout";
 
 export default defineComponent({
@@ -36,50 +36,40 @@ export default defineComponent({
 
     const isHasFull = computed(() => getConfigState("isHasFull"));
 
-    const { getHistoryMenu, setHistoryMenu } = userStore();
+    const { getHistoryMenu } = userStore();
     const route = useRoute();
+
+    //需要缓存的页面
     const keepAliveList = [...filterKeepAlive()];
-    let detailKeepAlive = [...layoutRoute.map(x => x.path)];
+    let detailKeepAlive = [...layoutDetailRoute.map(x => x.path)];
+
+    let currentPath = ""; //刷新时过滤当前页面
+
     // 缓存的页面
     const includeList = ref<string[]>([]);
     const setIncludeList = async () => {
       let historyList: menuItem[] = await getHistoryMenu();
       let history = [...historyList.map(x => x.path)];
       let include = history.filter(x => keepAliveList.includes(x));
-      includeList.value = [...include, ...detailKeepAlive];
+      includeList.value = [...include, ...detailKeepAlive].filter(
+        x => x !== currentPath,
+      );
     };
 
     // 刷新视图
     const routerViewShow = ref<boolean>(true);
     const setViewShow = async (isHasReset = true) => {
-      routerViewShow.value = false;
-      let historyList = await getHistoryMenu();
-      // 正常菜单
-      let menuItem: menuItem[] = historyList.filter(x => x.path === route.path);
-      let menuItemList: menuItem[] = historyList.filter(
-        x => x.path !== route.path,
-      );
-
-      // 详情菜单
-      let [detailItem, detailList] = [[], []];
-      if (route.meta.parentPath && route.meta.currentPath) {
-        detailItem = detailKeepAlive.filter(x => x === route.meta.currentPath);
-        detailList = detailKeepAlive.filter(x => x !== route.meta.currentPath);
-      }
-      if (route.meta?.currentPath && isHasReset) detailKeepAlive = detailList;
-
+      // 执行刷新动作 需先剔除当前菜单 然后重新加入到historyList中、
       if (isHasReset) {
-        await setHistoryMenu(menuItemList);
+        routerViewShow.value = false;
+        currentPath = route.path;
         await setIncludeList();
       }
-      routerViewShow.value = true;
       setTimeout(async () => {
-        if (route.meta?.currentPath && isHasReset)
-          detailKeepAlive = [...detailList, ...detailItem];
-        await setHistoryMenu([...menuItemList, ...menuItem]);
-        await setIncludeList();
         routerViewShow.value = true;
-      }, 500);
+        currentPath = "";
+        await setIncludeList();
+      }, 50);
     };
 
     const targetFn = () => document.querySelector(".wrapper-box"); //回到顶部

@@ -1,4 +1,4 @@
-import { reactive, toRefs } from 'vue'
+import { reactive, toRefs, watch } from 'vue'
 import { RouteLocationNormalizedLoaded, Router } from 'vue-router';
 
 import emitter from '@/plugins/mitt'
@@ -15,7 +15,7 @@ interface stateInterface {
     modalMinUid: string
 }
 
-export const useEmitter = (
+export const useModalMin = (
     route: RouteLocationNormalizedLoaded,
     router: Router,
 ) => {
@@ -23,6 +23,18 @@ export const useEmitter = (
         modalMinList: [],
         modalMinUid: ''
     })
+
+    watch(() => getConfigState('modalMinNum'), (newV, oldV) => {
+        if (!newV) colseModalMin()
+    })
+
+    const colseModalMin = () => {
+        emitter.off('setModalMin')
+        emitter.off('delModalMin')
+        emitter.off('setRoute')
+    }
+
+    if (!getConfigState('modalMinNum')) colseModalMin()
 
     // 监听弹窗小化
     emitter.on('setModalMin', (event: any) => {

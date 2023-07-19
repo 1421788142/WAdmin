@@ -7,6 +7,7 @@ import registerForm from "./components/registerForm.vue";
 import config from "@/store/config";
 import { getAssets } from "@/utils/util";
 import { useI18n } from "vue-i18n";
+import { WAdminConfig } from "@/store/interface";
 
 const { VITE_PROJECT_NAME, VITE_PROJECT_LOGO } = import.meta.env;
 const { t, locale } = useI18n();
@@ -31,7 +32,7 @@ const chnageDark = (value: boolean) => {
 };
 
 //获取类型，语言模块
-const changLan = (value: string) => {
+const changLan = (value: WAdminConfig.state["language"]) => {
   setConfigState("language", value);
   locale.value = value;
 };

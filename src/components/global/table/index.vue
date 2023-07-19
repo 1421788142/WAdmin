@@ -100,7 +100,7 @@
       v-model:expandedRowKeys="expandedKeys"
       bordered
       @resizeColumn="handleResizeColumn"
-      :row-key="record => (rowKey === 'allKey' ? record : record[rowKey])"
+      :row-key="(record:any) => (rowKey === 'allKey' ? record : record[rowKey])"
       :row-selection="
         selection
           ? {
@@ -209,7 +209,7 @@ watchEffect(() => {
 });
 
 // 重置表格已选的值
-watch(loading, () => selectionChange([]));
+// watch(loading, () => selectionChange([]));
 
 // 	修改表头宽度
 const handleResizeColumn = (w: number, col: wTableProp) => {

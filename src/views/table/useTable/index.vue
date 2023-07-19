@@ -7,10 +7,13 @@
       :columns="tableColumns"
       rowKey="userId"
       :selectionOption="{
-        selectedRowKeys: [1, 3, 5],
+        selectedRowKeys: selecteId,
+        onChange: r => (
+          (selecteId = r), message.success(JSON.stringify(selecteId))
+        ),
       }"
     >
-      <template #tableHeader="{ selectedList }">
+      <template #tableHeader>
         <w-button type="add" btnType="primary" @click="update()" />
       </template>
       <template #url="{ row }">
@@ -73,6 +76,7 @@ const {
   title,
   loading,
   fileList,
+  selecteId,
   userList,
   open,
 } = usePageData();

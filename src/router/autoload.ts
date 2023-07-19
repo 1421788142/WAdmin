@@ -1,42 +1,41 @@
 import _ from 'loadsh'
 import { Layout } from './layout'
-import { layoutRoute } from './routers'
-import { deepCopy } from '@/utils/util'
+import { layoutDetailRoute } from './routers'
 // 根据后台返回的菜单生成路由
 export default function getRoutes(routerList: menuListType[]) {
     let menuList = _.cloneDeep(routerList) as menuListType[]
-    let router = []
-    let layoutRoutes = deepCopy<any[]>(layoutRoute)
 
+    let router = [] //注册后的路由
+
+    // 全部视图页面
     const views = import.meta.globEager('../views/**/*.vue')
+
+    // 自动注册页面
+    const autoRouterViews = (item: menuListType) => {
+        Object.entries(views).forEach(([file, module]) => {
+            let fileName = file.split('../views/')?.pop()?.split('.vue').shift()
+            if (fileName === item.component) {
+                module.default.name = item.path
+                item.component = module.default
+                router.push(item)
+            }
+        })
+    }
+    // 自动注册路由
     function setRoute(menus: menuListType[]) {
         menus.forEach(item => {
             if (item.component !== 'Layout' && !item.isFrame && item.status === 1) {
-                Object.entries(views).forEach(([file, module]) => {
-                    let fileName = file.split('../views/')?.pop()?.split('.vue').shift()
-                    if (fileName === item.component) {
-                        module.default.name = item.path
-                        item.component = module.default
-                        router.push(item)
-                    }
-                })
+                autoRouterViews(item)
             }
             item.children && item.children.length > 0
                 ? setRoute(item.children)
                 : ""
         })
     }
-
+    // 自动注册详情路由
     function setDitailRoute() {
-        layoutRoutes.forEach(item => {
-            Object.entries(views).forEach(([file, module]) => {
-                let fileName = file.split('../views/')?.pop()?.split('.vue').shift()
-                if (fileName === item.component) {
-                    module.default.name = item.path
-                    item.component = module.default
-                    router.push(item)
-                }
-            })
+        layoutDetailRoute.forEach(item => {
+            autoRouterViews(item as unknown as menuListType)
         })
     }
 
