@@ -41,7 +41,6 @@ export default defineComponent({
 
     //需要缓存的页面
     const keepAliveList = [...filterKeepAlive()];
-    let detailKeepAlive = [...layoutDetailRoute.map(x => x.path)];
 
     let currentPath = ""; //刷新时过滤当前页面
 
@@ -51,9 +50,7 @@ export default defineComponent({
       let historyList: menuItem[] = await getHistoryMenu();
       let history = [...historyList.map(x => x.path)];
       let include = history.filter(x => keepAliveList.includes(x));
-      includeList.value = [...include, ...detailKeepAlive].filter(
-        x => x !== currentPath,
-      );
+      includeList.value = [...include].filter(x => x !== currentPath);
     };
 
     // 刷新视图

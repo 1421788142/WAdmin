@@ -17,4 +17,5 @@ export type searchFormProps = {
         labelCol?: FormItemProps['labelCol'],
         wrapperCol?: FormItemProps['wrapperCol'],
     },
+    transform?: (params: any) => void,//转换搜索条件
 } & formItemOptionType & Partial<formComponentProps<SelectProps['options'] & enumProp[]>>

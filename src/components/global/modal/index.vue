@@ -23,7 +23,9 @@
         />
       </div>
     </template>
-    <div class="!max-h-[70vh] overflow-y-scroll overflow-x-hidden">
+    <div
+      class="md:!max-h-[60vh] !max-h-[80vh] overflow-y-scroll overflow-x-hidden"
+    >
       <slot></slot>
     </div>
     <template #footer>

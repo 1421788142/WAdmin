@@ -61,6 +61,7 @@ export default defineStore<'user', WAdminUser.state, WAdminUser.getters, WAdminU
             try {
                 const { code, data } = await login(query)
                 if (code === 200) {
+                    message.success('登录成功')
                     await this.setUserInfo(data)
                     await this.afterLoginAction()
                     return true
@@ -96,7 +97,6 @@ export default defineStore<'user', WAdminUser.state, WAdminUser.getters, WAdminU
         async afterLoginAction() {
             let res = await this.getUserRouter()
             if (res) {
-                message.success('跳转中...')
                 router.push({ path: '/' })
                 notification.open({
                     message: '登录成功',

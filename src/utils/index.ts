@@ -59,11 +59,13 @@ export function setSearhFormColumns(columns: wTableProps, state: Table.stateProp
             'renderForm',
             'defaultValue',
             'listeners',
-            'sort'
+            'sort',
+            'transform'
         ])
 
         return {
             formItemType: searchOption.formItemType,
+            transform: searchOption?.transform,
             renderForm: searchOption?.renderForm,
             sort: searchOption.sort,
             listeners: searchOption?.listeners,

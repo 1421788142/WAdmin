@@ -69,7 +69,9 @@ const {
 
 // 标签页切换
 const tabPage = (path: string) => {
-  router.push({ path: path });
+  let params = historyMenuTag.value.find(x => x.path === path)?.params;
+  console.log(params);
+  router.push({ path: path, query: params || {} });
 };
 // 切换全屏
 const fullChange = () => {

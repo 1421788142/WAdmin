@@ -1,8 +1,9 @@
 import { reactive, toRefs } from "vue"
 import { storeToRefs } from 'pinia'
-import type { Router } from "vue-router"
+import type { Router, RouteLocationNormalized } from "vue-router"
 import userStore from '@/store/user';
 import { message } from "ant-design-vue";
+import emitter from "@/plugins/mitt";
 
 export interface itemType {
     title: string,
@@ -13,9 +14,8 @@ export interface itemType {
 
 interface stateInterface {
     tabItmes: itemType[],//操作菜单
-    detailList: string[],//详情页菜单,
 }
-export const useTagData = (route?: any, router?: Router) => {
+export const useTagData = (route?: RouteLocationNormalized, router?: Router) => {
     const state = reactive<stateInterface>({
         tabItmes: [
             {
@@ -48,7 +48,6 @@ export const useTagData = (route?: any, router?: Router) => {
                 disabled: true
             },
         ],
-        detailList: [],
     })
 
     const { historyMenuTag } = storeToRefs(userStore())
@@ -57,23 +56,28 @@ export const useTagData = (route?: any, router?: Router) => {
         if (['/login', '/403', '/404'].includes(route.path)) return
         //是否已经存在历史页签
         const isHas = historyMenuTag.value.some(x => x.path === route.path)
-        // 有父级代表是详情页
-        let parentPath = route.meta.parentPath as string || ''
-        //是否详情页
-        const isHasDetail = state.detailList.includes(parentPath)
-        isHasDetail && (historyMenuTag.value = historyMenuTag.value.filter(x => x.parentPath !== parentPath))
-        if (!isHas || isHasDetail) {
-            parentPath && state.detailList.push(parentPath)
+        if (!isHas) {
             historyMenuTag.value.unshift({
-                title: route.meta.title,
+                title: route.meta.title as string,
                 path: route.path,
-                parentPath: route.meta.parentPath || ''
+                params: route?.params,
+                parentPath: (route.meta.parentPath || '') as string
             })
         }
         if (historyMenuTag.value.length > 50) {
             historyMenuTag.value.pop()
         }
     }
+
+    const setupMenuTag = (callBark: (tag: menuItem) => void) => {
+        historyMenuTag.value.forEach(tag => {
+            if (tag.path === route.path) {
+                callBark(tag)
+            }
+        })
+    }
+
+    emitter.on('setupMenuTag', setupMenuTag)
 
     const closeCurrent = (value: menuItem) => {
         let length = historyMenuTag.value.length

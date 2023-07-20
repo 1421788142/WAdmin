@@ -5,6 +5,7 @@ export interface searchProps {
     defaultValue?: string | number | Array<string | number>, // 搜索项初始值
     labelCol?: searchFormProps['formItemProps']['labelCol'],
     wrapperCol?: searchFormProps['formItemProps']['wrapperCol'],
+    transform?: (params: any) => void,//转换搜索条件
 }
 
 export interface tableProps extends TableColumnType {

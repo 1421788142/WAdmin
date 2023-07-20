@@ -38,19 +38,40 @@ export const routes = [
             title: "数据大屏",
             icon: "bar-chart-outlined"
         }
-    }
+    },
+    {
+        path: '/empty',
+        name: 'empty',
+        component: () => import('@/views/empty/index.vue'),
+        meta: {
+            title: "空白",
+            icon: "bar-chart-outlined"
+        }
+    },
 ] as RouteRecordRaw[]
 
 // 详情菜单路由  meta parentPath 必选参数
 export const layoutDetailRoute = [
     {
-        component: 'feat/infoPage/detail/index',
-        path: "/feat/infoPage/detail/:id",
+        component: 'feat/infoPage/queryDetail/index',
+        path: "/feat/infoPage/query-detail/:id",
+        name: "queryDetail",
         meta: {
-            title: '详情页',
+            title: 'query-详情页',
             icon: '',
             parentPath: '/feat/infoPage',
-            currentPath: "/feat/infoPage/detail/:id",
+            currentPath: "/feat/infoPage/query-detail/:id",
+        }
+    },
+    {
+        component: 'feat/infoPage/paramsDetail/index',
+        path: "/feat/infoPage/params-detail/:id",
+        name: "paramsDetail",
+        meta: {
+            title: 'params-详情页',
+            icon: '',
+            parentPath: '/feat/infoPage',
+            currentPath: "/feat/infoPage/params-detail/:id",
         }
     }
 ]

@@ -46,7 +46,6 @@ export const useTable = ({
 	 * @param selectedRowKeys 勾选的table列数据
 	 */
 	const selectionChange = (selectedRowKeys: string[] | number[] | object[]) => {
-		console.log(selectedRowKeys);
 		state.isSelected = !!selectedRowKeys.length
 		state.selectedList = selectedRowKeys
 	}
@@ -79,6 +78,7 @@ export const useTable = ({
 			state.loading = true
 			// 先更新查询参数
 			updatedTotalParam();
+			transform()
 			Object.assign(state.totalParam, initParam);
 			const { data } = await requestApi(beforeLoad ? beforeLoad(state.totalParam) : state.totalParam);
 			state.dataList = afterLoad ? afterLoad(data, state) : (() => (pagination ? data.dataList : data))()
@@ -98,6 +98,18 @@ export const useTable = ({
 			state.loading = false
 		}
 	};
+
+	/**
+	 * @description 转换传参( a.date = ['2021-01-01', '2021-01-02'] transform a.dateStart = '2021-01-01' a.dateEnd = '2021-01-02')
+	 * @return void
+	 * */
+	const transform = () => {
+		state.searchColumns.forEach((item: any) => {
+			if (item.transform) {
+				item.transform(state.totalParam)
+			}
+		})
+	}
 
 	/**
 	 * @description 更新查询参数

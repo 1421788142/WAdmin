@@ -88,7 +88,7 @@ const { width } = useElementSize(wFormRefParent);
 
 const formRowSpan = (item: wFormProp) => {
   if (width.value >= 1200) {
-    return 8;
+    return 6;
   } else if (width.value >= 700) {
     return item?.colSpan || props.span;
   } else {
