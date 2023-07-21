@@ -2,6 +2,7 @@ import { Table } from "./interface";
 import { reactive, computed, onMounted, toRefs } from "vue";
 import { setTableColumns, setSearhFormColumns } from '@/utils/index'
 import { message } from "ant-design-vue";
+import { isObject } from "@/utils/is";
 
 export const useTable = ({
 	initParam,
@@ -104,9 +105,10 @@ export const useTable = ({
 	 * @return void
 	 * */
 	const transform = () => {
-		state.searchColumns.forEach((item: any) => {
-			if (item.transform) {
-				item.transform(state.totalParam)
+		state.searchColumns.forEach((item) => {
+			if (item.transform && item.transform instanceof Function) {
+				const returnParam = item.transform(state.totalParam)
+				isObject(returnParam) && Object.assign(state.totalParam, returnParam)
 			}
 		})
 	}

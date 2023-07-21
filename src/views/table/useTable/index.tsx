@@ -54,9 +54,10 @@ export const usePageData = ()=>{
 					valueFormat:'YYYY-MM-DD',
 					defaultValue:[ "2023-04-06", "2023-05-11" ],
 					transform: (value: any) => {
-						value.createdTimeS = value?.createdTime![0]
-						value.createdTimeE = value?.createdTime![1]
-						delete value.createdTime
+						return Object.assign({
+							createdTimeS:value?.createdTime![0],
+							createdTimeE:value?.createdTime![1],
+						},value)
 					}
 				},
 				sorter: (a: any, b: any) =>{

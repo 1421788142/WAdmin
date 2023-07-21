@@ -25,6 +25,4 @@ export namespace upload {
         beforeLoad?: (params: any, state: upload.stateProps) => any, //初始化前执行可处理fileList。。
         setEmit?: (event: uploadEvent, state: upload.stateProps) => any, //处理上传后拿到的数据
     }
-
-
 }

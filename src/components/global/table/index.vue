@@ -144,7 +144,7 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { watch, watchEffect } from "vue";
+import { watchEffect } from "vue";
 import { pick } from "@/utils/util";
 import { useTable } from "./index";
 import type { Table } from "./interface";
