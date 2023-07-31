@@ -13,6 +13,7 @@ export interface userInterface {
     nickname: string,
     userId: number,
     url: string,
+    desc: string,
     userType: number,
     age: number,
     address: string,

@@ -48,10 +48,6 @@ export const routes = [
             icon: "bar-chart-outlined"
         }
     },
-] as RouteRecordRaw[]
-
-// 详情菜单路由  meta parentPath 必选参数
-export const layoutDetailRoute = [
     {
         component: 'feat/infoPage/queryDetail/index',
         path: "/feat/infoPage/query-detail/:id",
@@ -74,4 +70,4 @@ export const layoutDetailRoute = [
             currentPath: "/feat/infoPage/params-detail/:id",
         }
     }
-]
+] as RouteRecordRaw[]

@@ -14,10 +14,7 @@
             :span="formRowSpan(item)"
             v-if="item?.isHide ? item.isHide(formParam) : true"
           >
-            <a-form-item
-              :name="item.formItemOption.name"
-              v-bind="item.formItemOption"
-            >
+            <a-form-item v-bind="item.formItemOption">
               <template #label>
                 <a-tooltip
                   :placement="item.tooltipPlacement ?? 'top'"

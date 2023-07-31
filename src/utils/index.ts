@@ -1,6 +1,7 @@
 import { isBoolean } from '@/utils/is'
-import { pick, filterPick } from './util';
+import { deepMerge } from '@/utils/util';
 import { Table } from "@/components/global/table/interface";
+import { searchFormProps } from '@/types/searchForm';
 
 
 /**
@@ -20,7 +21,7 @@ export function setTableColumns(columns: wTableProps, state: Table.stateProps): 
     state.tableColumns = columns.filter(x => !x.hide).map(m => {
         return {
             ...m,
-            enum: m?.enum ?? m?.searchOption?.options,
+            enum: m?.enum ?? m?.searchOption?.componentOption?.options,
             show: isBoolean(m?.show) ? m?.show : true,
             preview: isBoolean(m?.preview) ? m?.preview : true,
             showEnum: isBoolean(m?.showEnum) ? m?.showEnum : false,
@@ -41,37 +42,16 @@ export function setTableColumns(columns: wTableProps, state: Table.stateProps): 
  * */
 export function setSearhFormColumns(columns: wTableProps, state: Table.stateProps): void {
     state.searchColumns = columns.filter(x => x.search || x.searchOption).map(m => {
-        let options = m?.searchOption
-        let searchOption = {
-            label: options?.label || m.title,
-            name: options?.name || m.dataIndex,
-            formItemType: options?.formItemType || 'a-input',
-            ...(options ?? {})
-        }
-        state.initSearchParam[searchOption.name] = searchOption?.defaultValue || null;
-        let formItemProps = pick(searchOption, ['label', 'name', 'labelCol', 'wrapperCol'])
-        let componentProps = filterPick(searchOption, [
-            'label',
-            'name',
-            'labelCol',
-            'formItemType',
-            'wrapperCol',
-            'renderForm',
-            'defaultValue',
-            'listeners',
-            'sort',
-            'transform'
-        ])
-
+        let formItemOption = {
+            name: m?.searchOption?.formItemOption?.name || m.dataIndex,
+            label: m?.searchOption?.formItemOption?.label || m.title
+        } as searchFormProps['formItemOption']
+        let options = deepMerge({}, { ...m?.searchOption ?? {}, formItemOption })
+        state.initSearchParam[options.formItemOption.name] = options?.defaultValue || null;
         return {
-            formItemType: searchOption.formItemType,
-            transform: searchOption?.transform,
-            renderForm: searchOption?.renderForm,
-            sort: searchOption.sort,
-            listeners: searchOption?.listeners,
-            formItemProps,
-            componentProps
-        }
+            formItemType: 'a-input',
+            ...options,
+        } as searchFormProps;
     }).sort((a, b) => {
         return getSort(a.sort) - getSort(b.sort)
     })

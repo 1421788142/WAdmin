@@ -50,13 +50,15 @@ export const usePageData = ()=>{
 				dataIndex: "createdTime",
 				searchOption: {
 					formItemType:'a-range-picker',
-					format:'YYYY-MM-DD',
-					valueFormat:'YYYY-MM-DD',
+					componentOption:{
+						format:'YYYY-MM-DD',
+						valueFormat:'YYYY-MM-DD',
+					},
 					defaultValue:[ "2023-04-06", "2023-05-11" ],
 					transform: (value: any) => {
 						return Object.assign({
-							createdTimeS:value?.createdTime![0],
-							createdTimeE:value?.createdTime![1],
+							createdTimeS:value?.createdTime?.[0] || '',
+							createdTimeE:value?.createdTime?.[1] || '',
 						},value)
 					}
 				},
@@ -77,7 +79,9 @@ export const usePageData = ()=>{
 				dataIndex: "grade",
 				searchOption:{
 					formItemType:'a-select',
-					options:gradeList,
+					componentOption:{
+						options:gradeList,
+					}
 				},
 				tag:true,
 				sorter: (a: any, b: any) => a.grade - b.grade,
@@ -88,7 +92,9 @@ export const usePageData = ()=>{
 				showEnum:true,
 				searchOption: { 
 					formItemType: 'a-select',
-					options:userType,
+					componentOption:{
+						options:userType,
+					}
 				},
 			},
 			{

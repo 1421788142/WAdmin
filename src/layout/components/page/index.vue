@@ -25,7 +25,6 @@ import { ref, defineComponent, watch, inject, computed } from "vue";
 import { filterKeepAlive } from "@/layout";
 import userStore from "@/store/user";
 import { useRoute } from "vue-router";
-import { layoutDetailRoute } from "@/router/routers";
 import { layoutInterface } from "@/hooks/interface/layout";
 
 export default defineComponent({

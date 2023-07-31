@@ -28,7 +28,7 @@ export const usePageData = ()=>{
 				title:'状态',
 				dataIndex: "status",
 				tag:true,
-				searchOption:{ formItemType:'a-select', options:statusList }
+				searchOption:{ formItemType:'a-select', componentOption:{ options:statusList } },
 			},
 			{
 				dataIndex: "operation",

@@ -43,7 +43,7 @@ import { ref, watch, inject, nextTick } from "vue";
 import tabOptions from "./tabOptions.vue";
 import { useTagData } from "./index";
 
-import { deepCopy } from "@/utils/util";
+import { deepClone } from "@/utils/util";
 import { isNullAndUnDef } from "@/utils/is";
 import Sortablejs from "sortablejs";
 import type Sortable from "sortablejs";
@@ -152,7 +152,7 @@ nextTick(() => {
           oldIndex === newIndex
         )
           return;
-        let historyMenuList = deepCopy<menuItem[]>(historyMenuTag.value);
+        let historyMenuList = deepClone<menuItem[]>(historyMenuTag.value);
         if (oldIndex > newIndex) {
           historyMenuList.splice(newIndex, 0, historyMenuList[oldIndex]);
           historyMenuList.splice(oldIndex + 1, 1);

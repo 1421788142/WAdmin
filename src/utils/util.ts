@@ -1,5 +1,6 @@
-import { isArray } from "@/utils/is";
+import { isArray, isObject } from "@/utils/is";
 import { enumProp } from '@/types/searchForm'
+import { DeepMerge } from "@/types/utils";
 
 /**
  * @description 清除所有localStorage
@@ -10,26 +11,65 @@ export function localClear() {
 }
 
 /**
- * @description 对象数组深克隆
- * @param {Object} obj 源对象
- * @return object
+ * 对传入数据的深克隆
+ * @param {object} target 需要克隆的对象(不可为map、set... 未做适配)
+ * @param {WeakMap} map WeakMap对象
+ * @return {object} 被克隆的target
+ **/
+export const deepClone = function <T extends object>(
+	target: T,
+	map: WeakMap<T, T> = new WeakMap(),
+): T {
+	if (!(target instanceof Object)) return target;
+	if (map.has(target)) return map.get(target);
+	const tempObject: T = Array.isArray(target)
+		? []
+		: Object.create(Object.getPrototypeOf(target));
+	// 对象保存 为了防止引用自身导致的内存溢出
+	map.set(target, tempObject);
+	Object.keys(target).forEach(key => {
+		// 对于函数的单独处理
+		if (target[key] instanceof Function)
+			return (tempObject[key] = target[key].bind(tempObject));
+		tempObject[key] = deepClone(target[key], map);
+	});
+	return tempObject;
+};
+
+
+/**
+ * 对象深合并
+ * @param target 相同属性都会被`合并`到此对象
+ * @param sources 如果多个对象的属性`相同`则会被后面的`覆盖`
+ * @example deepMerge({ a: 1, c: { c: 1, a: [1, 2, 3] } }, { b: 2, c: { a: [2] } })
+ *  // => {a:1,b:2,c:{c:1,a:[2,2,3]}}
+ * @returns 被修改之后的对象
  */
-export function deepCopy<T>(obj: any): T {
-	let newObj: any;
-	try {
-		newObj = obj.push ? [] : {};
-	} catch (error) {
-		newObj = {};
-	}
-	for (let attr in obj) {
-		if (typeof obj[attr] === "object" && ![null, 'null'].includes(obj[attr])) {
-			newObj[attr] = deepCopy(obj[attr]);
-		} else {
-			newObj[attr] = obj[attr];
-		}
-	}
-	return newObj;
-}
+export const deepMerge = <T extends object, U extends object>(
+	target: T,
+	...sources: U[]
+): DeepMerge<T, U> => {
+	if (!isObject(target)) throw new Error("Target it should be an object");
+	sources.forEach(source => {
+		if (!isObject(source)) return;
+		Object.keys(source).forEach(key => {
+			const $value = source[key],
+				_value = target[key];
+			// 源对象的属性值不为对象 ===> 直接覆盖
+			if (!isObject(_value)) return (target[key] = $value);
+			// 合并值为不为undefined ===> 直接覆盖
+			if ($value !== undefined) return (target[key] = $value);
+			// 源对象属性值为对象 要合并进来的属性值不是对象 ===> 以原属性值为准
+			if (!isObject($value)) return;
+			// 函数 ===> 覆盖
+			if (isType(_value) === isType($value) && isType($value) === "function")
+				return (target[key] = $value);
+			// 都是对象 ===> 深合并
+			deepMerge(_value, $value);
+		});
+	});
+	return target as any;
+};
 
 /**
  * @description 判断数据类型
@@ -147,17 +187,17 @@ export function setTableExportData<T>(
 	columns: wTableProps,
 	listData: T[] = []
 ): T[] {
-	let xlsxData = [] as T[]; //最终返回出去的xlsx可导出数据
+	let xlsxData = []; //最终返回出去的xlsx可导出数据
 	listData.forEach((value) => {
-		let column = {} as T;
+		let column = {};
 		columns.forEach((item) => {
 			const listDataVlaue = value[item.dataIndex];
-			const isHasEnum = item.showEnum && item?.searchOption?.options?.length || item?.enum?.length > 0; //是否从数组取label
+			const isHasEnum = item.showEnum && item?.searchOption?.componentOption?.length || item?.enum?.length > 0; //是否从数组取label
 			column[item.dataIndex] = isHasEnum
-				? getEnumLable("value", listDataVlaue, "label", item?.searchOption?.options || item?.enum)
+				? getEnumLable("value", listDataVlaue, "label", item?.searchOption?.componentOption?.options || item?.enum)
 				: listDataVlaue;
 		});
-		let columnCopy = deepCopy(column) as T;
+		let columnCopy = deepClone(column);
 		columnCopy.hasOwnProperty("operation") && delete columnCopy["operation"]; //判断有操作则删除该项
 		xlsxData.push(columnCopy);
 	});
@@ -283,7 +323,7 @@ export function getUid() {
  * @return {object} object
  **/
 
-export const pick = <T, K extends keyof T>(
+export const pick = <T extends Record<string, any>, K extends keyof T>(
 	target: (object | string) & T,
 	keys: K[],
 	clearNull: boolean = false
@@ -310,7 +350,7 @@ export const pick = <T, K extends keyof T>(
  * @return {object} object
  **/
 
-export const filterPick = <T, K extends keyof T>(
+export const filterPick = <T extends Record<string, any>, K extends keyof T>(
 	target: (object | string) & T,
 	keys: K[]
 ): Pick<T, K> => {

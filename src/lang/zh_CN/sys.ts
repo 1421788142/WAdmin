@@ -20,4 +20,5 @@ export default {
     errMsg503: '服务不可用，服务器暂时过载或维护!',
     errMsg504: '网络超时!',
     errMsg505: 'http版本不支持该请求!',
+    loginDesc: '输入您的个人详细信息开始使用！'
 }

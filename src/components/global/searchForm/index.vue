@@ -6,9 +6,9 @@
   >
     <a-form class="flex-1" :model="formParam" name="formRef">
       <a-row :gutter="gutter">
-        <template v-for="item in searchColumns" :key="item.formItemProps.name">
+        <template v-for="item in searchColumns" :key="item.formItemOption.name">
           <a-col :span="formSpan">
-            <a-form-item v-bind="item.formItemProps">
+            <a-form-item v-bind="item.formItemOption">
               <slot
                 name="formItemSlot"
                 :formItem="item"
@@ -17,10 +17,10 @@
                 <component
                   class="!w-full"
                   :is="item?.renderForm ?? item.formItemType"
-                  v-bind="item.componentProps"
-                  v-on="item?.listeners || {}"
-                  v-model:value="formParam[item.formItemProps.name!]"
-                  :row="formParam"
+                  v-bind="item.componentOption"
+                  v-on="item?.componentOption?.listeners || {}"
+                  v-model:value="formParam[item.formItemOption.name!]"
+                  :searchParam="formParam"
                 ></component>
               </slot>
             </a-form-item>

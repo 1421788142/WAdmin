@@ -103,7 +103,7 @@ const compChange = (key: string) => {
               {{ VITE_PROJECT_NAME }}
             </span>
           </div>
-          <div>输入您的个人详细信息开始使用！</div>
+          <div>{{ t("sys.loginDesc") }}</div>
         </div>
         <div class="w-[70%]">
           <a-carousel autoplay>

@@ -62,14 +62,14 @@ export const usePageData = ()=>{
 				search: true,
 				tag:true,
 				showEnum:true,
-				searchOption:{ formItemType:'a-select',options:gradeList },
+				searchOption:{ formItemType:'a-select',componentOption:{options:gradeList} },
 				sorter: (a: any, b: any) => a.grade - b.grade,
 			},
 			{
 				title:'用户类型',
 				dataIndex: "userType",
 				showEnum:true,
-				searchOption:{ formItemType:'a-select', options: userType }
+				searchOption:{ formItemType:'a-select', componentOption:{options: userType} }
 			},
 			{
 				dataIndex: "operation",

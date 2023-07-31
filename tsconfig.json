@@ -12,6 +12,7 @@
     "isolatedModules": true,
     "esModuleInterop": true,
     "lib": ["esnext", "dom"],
+    // 跳过第三方库检查，解决打包失败
     "skipLibCheck": true,
     // 解析非相对模块名的基准目录
 		"baseUrl": "./",
@@ -24,7 +25,7 @@
   "include": [
     "src/**/*.ts",
     "src/**/*.d.ts",
-    "src/**/*.tsx",
+    "src/**/*.d.ts",
     "src/**/*.vue",
     "vite.config.ts",
     "vite/**/*.ts"

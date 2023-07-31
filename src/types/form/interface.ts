@@ -23,23 +23,25 @@ export type formItemType =
     | "a-progress" //进度条
     | "a-input-password" //进度条
 
-export type formItemOptionType = {
-    formItemType?: formItemType, // 表单项类型默认文本
+export type wFormProp<T> = {
     sort?: number, //排序
-    listeners?: { [prop: string]: Function },
+    formItemType?: formItemType, // 表单项类型默认文本
     renderForm?: (params: any) => JSX.Element, //自定义表单tsx
-    [prop: string]: any, //暂时为了适配其他配置项
+    formItemOption?: FormItemProps & { name?: string, label?: string }, //form-item的api
+    componentOption?: Partial<formComponentProps<T>>,
 }
 
-export interface formProps extends formItemOptionType {
+export type wFormProps = {
     isHide?: (params: any) => boolean, //可通过表格设置显示隐藏,默认true
     tooltip?: string, //label 提示语
+    /**
+     * 使用tooltip时需要label(并且formItemOption里面不能有label,否则冲突)
+     * 
+     */
+    label?: string,
     tooltipPlacement?: string, //label 提示语位置
-    label?: string, // 使用tooltip时需要label(并且formItemOption里面不能有label,否则冲突)
     //默认验证(默认给表单添加rules(可被formItemOption的rules替换)  rules: [{ required: true, trigger: ['change', 'blur'] }] )
     isRule?: boolean,
     validator?: (param: any) => void, //验证器
     colSpan?: number, //col占比
-    formItemOption?: FormItemProps & { name: string, label?: string }, //form-item的api
-    componentOption?: Partial<formComponentProps<Ref<SelectProps['options']> | SelectProps['options']>>,
-}
+} & wFormProp<Ref<SelectProps['options']> | SelectProps['options']>

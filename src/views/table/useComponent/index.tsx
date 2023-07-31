@@ -51,8 +51,10 @@ export const usePageData = ()=>{
 				title:'用户信息',
 				dataIndex:'',
 				searchOption:{
-					name:'nickname',
-					label:'用户名称'
+					formItemOption:{
+						label:'用户名称',
+						name:',nickname',
+					},
 				},
 				filters: [
 					{ text: '彭于晏', value: 1 },
@@ -96,7 +98,7 @@ export const usePageData = ()=>{
 			{
 				title:'会员等级',
 				dataIndex: "grade",
-				searchOption:{ type:'a-select', options:gradeList },		
+				searchOption:{ formItemType:'a-select', componentOption:{options:gradeList} },		
 				sorter: (a: any, b: any) => a.grade - b.grade,
 				tag:true,
 				showEnum:true
@@ -106,8 +108,10 @@ export const usePageData = ()=>{
 				dataIndex: "userType",
 				showEnum:true,
 				searchOption:{ 
-					type:'a-select', 
-					options:userType
+					formItemType:'a-select', 
+					componentOption:{
+						options:userType
+					}
 				},		
 			},
 			{ dataIndex: "operation", title: "操作", fixed: "right" }

@@ -45,7 +45,7 @@ import { ref, nextTick, unref, watch } from "vue";
 import Sortablejs from "sortablejs";
 import type Sortable from "sortablejs";
 import { isNullAndUnDef } from "@/utils/is";
-import { deepCopy } from "@/utils/util";
+import { deepClone } from "@/utils/util";
 interface propsInterface {
   columns: wTableProps; // 搜索配置列
 }
@@ -64,7 +64,7 @@ watch(
 
 // 修改列表是否显示
 const setChecked = (checkedValue: string[]) => {
-  let columnList = deepCopy<wTableProps>(props.columns);
+  let columnList = deepClone<wTableProps>(props.columns);
   columnList.forEach(
     item => (item.show = checkedValue.some(x => item.dataIndex === x)),
   );
@@ -73,7 +73,7 @@ const setChecked = (checkedValue: string[]) => {
 
 // 修改列表是否固定
 const setupFixed = (dataIndex: string, type: any) => {
-  let columnList = deepCopy<wTableProps>(props.columns);
+  let columnList = deepClone<wTableProps>(props.columns);
   let num = 0;
   columnList.forEach((item: wTableProp, index) => {
     if (item.dataIndex === dataIndex && item.show) {
@@ -116,7 +116,7 @@ const handleVisibleChange = () => {
           oldIndex === newIndex
         )
           return;
-        let columnList = deepCopy<wTableProps>(props.columns);
+        let columnList = deepClone<wTableProps>(props.columns);
         // 发现有固定则退出拖拽
         if (columnList[oldIndex]?.fixed || columnList[newIndex]?.fixed) return;
         if (oldIndex > newIndex) {

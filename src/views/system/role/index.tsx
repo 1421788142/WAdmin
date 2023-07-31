@@ -48,7 +48,7 @@ export const usePageData = ()=>{
 			{
 				title:'状态',
 				dataIndex: "status",
-				searchOption:{ formItemType:'a-select', options:starsList },
+				searchOption:{ formItemType:'a-select', componentOption:{ options:starsList } },
 			},
 			{ title:'备注', dataIndex: "memo" },
 			{

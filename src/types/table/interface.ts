@@ -3,8 +3,8 @@ import type { searchFormProps } from '../searchForm'
 
 export interface searchProps {
     defaultValue?: string | number | Array<string | number>, // 搜索项初始值
-    labelCol?: searchFormProps['formItemProps']['labelCol'],
-    wrapperCol?: searchFormProps['formItemProps']['wrapperCol'],
+    labelCol?: searchFormProps['formItemOption']['labelCol'],
+    wrapperCol?: searchFormProps['formItemOption']['wrapperCol'],
     transform?: searchFormProps['transform'],//转换搜索条件
 }
 
@@ -23,7 +23,7 @@ export interface tableProps extends TableColumnType {
     height?: string | number, //图片高度
     summary?: boolean, //是否汇总
     renderSummary?: (pageData: any, column: tableProps) => any, //自定义汇总内容
-    enum?: searchFormProps['componentProps']['options'], //tag标签 默认取 searchOption['options']
+    enum?: searchFormProps['componentOption']['options'], //tag标签 默认取 searchOption['options']
     showEnum?: boolean; //表格有枚举时是否显示枚举内容,默认true
     children?: tableProps[],//子表格
 }
