@@ -15,7 +15,7 @@
   </div>
 </template>
 
-<script setup lang="tsx">
+<script setup lang="ts">
 import {
   ref,
   onMounted,
@@ -26,34 +26,15 @@ import {
   nextTick,
   computed,
   useAttrs,
-  defineComponent,
   h,
-  withDirectives,
 } from "vue"; // 引入 ref、onMounted、onUnmounted
 import { useResizeObserver } from "@vueuse/core";
 import { useTippy } from "vue-tippy";
 import Cropper from "cropperjs"; // 引入Cropper插件
 import "cropperjs/dist/cropper.css"; // 引入Cropper插件的样式文件
 import { defaultOptions } from "./";
-import { directive as tippy } from "vue-tippy";
 import { debounce, downloadByBase64 } from "@/utils/util";
-import { Upload } from "ant-design-vue";
-import {
-  UploadOutlined,
-  DownloadOutlined,
-  AppstoreAddOutlined,
-  SyncOutlined,
-  ArrowUpOutlined,
-  ArrowDownOutlined,
-  ArrowLeftOutlined,
-  ArrowRightOutlined,
-  RotateLeftOutlined,
-  RotateRightOutlined,
-  ZoomInOutlined,
-  ZoomOutOutlined,
-  VerticalAlignMiddleOutlined,
-  SwapOutlined,
-} from "@ant-design/icons-vue";
+import menuContent from "./menuContent";
 
 interface propsType {
   src: string;
@@ -120,113 +101,6 @@ const beforeUpload = (file: File) => {
   };
   return false;
 };
-const menuItemList = [
-  {
-    title: "上传",
-    icon: (
-      <Upload beforeUpload={beforeUpload} showUploadList={false}>
-        <UploadOutlined class='!text-xl' />
-      </Upload>
-    ),
-  },
-  {
-    title: "下载",
-    icon: <DownloadOutlined />,
-    event: () => downloadByBase64(imageBase64.value, "cropping"),
-  },
-  {
-    title: "圆形,矩形裁剪",
-    icon: <AppstoreAddOutlined />,
-    event: () => {
-      (inCircled.value = !inCircled.value), realTimeCroppered();
-    },
-  },
-  {
-    title: "重置",
-    icon: <SyncOutlined />,
-    event: () => handCropper("reset"),
-  },
-  {
-    title: "上移",
-    icon: <ArrowUpOutlined />,
-    event: () => handCropper("move", 0, -10),
-  },
-  {
-    title: "下移",
-    icon: <ArrowDownOutlined />,
-    event: () => handCropper("move", 0, 10),
-  },
-  {
-    title: "左移",
-    icon: <ArrowLeftOutlined />,
-    event: () => handCropper("move", -10, 0),
-  },
-  {
-    title: "右移",
-    icon: <ArrowRightOutlined />,
-    event: () => handCropper("move", 10, 0),
-  },
-  {
-    title: "水平翻转",
-    icon: <SwapOutlined />,
-    event: () => handCropper("scaleX", -1),
-  },
-  {
-    title: "垂直翻转",
-    icon: <VerticalAlignMiddleOutlined />,
-    event: () => handCropper("scaleY", -1),
-  },
-  {
-    title: "逆时针旋转",
-    icon: <RotateLeftOutlined />,
-    event: () => handCropper("rotate", -45),
-  },
-  {
-    title: "顺时针旋转",
-    icon: <RotateRightOutlined />,
-    event: () => handCropper("rotate", 45),
-  },
-  {
-    title: "放大",
-    icon: <ZoomInOutlined />,
-    event: () => handCropper("zoom", 0.1),
-  },
-  {
-    title: "缩小",
-    icon: <ZoomOutOutlined />,
-    event: () => handCropper("zoom", -0.1),
-  },
-];
-
-const menuContent = defineComponent({
-  directives: {
-    tippy,
-  },
-  setup() {
-    return () => (
-      <div class='p-1 bg-white w-[60px] flex justify-between flex-wrap'>
-        {menuItemList.map((item, index) =>
-          withDirectives(
-            h(
-              "span",
-              { class: "cursor-pointer mb-2 !text-xl", onClick: item.event },
-              item.icon,
-            ),
-            [
-              [
-                tippy,
-                {
-                  content: item.title,
-                  placement: `${index % 2 === 0 ? "left" : "right"}-start`,
-                },
-              ],
-            ],
-          ),
-        )}
-      </div>
-    );
-  },
-});
 
 // 裁剪预览
 const realTimeCroppered = () => {
@@ -329,10 +203,19 @@ useResizeObserver(tippyElRef, () => {
   handCropper("reset");
 });
 
+const menuContentProps = {
+  beforeUpload: beforeUpload,
+  downloadByBase64: () => downloadByBase64(imageBase64.value, "cropping"),
+  setViewType: () => (
+    (inCircled.value = !inCircled.value), realTimeCroppered()
+  ),
+  handCropper: handCropper,
+};
+
 const contextmenu = event => {
   event.preventDefault();
   const { show, setProps } = useTippy(tippyElRef, {
-    content: menuContent,
+    content: h(menuContent, { ...menuContentProps }),
     arrow: false,
     theme: "light",
     trigger: "manual",
