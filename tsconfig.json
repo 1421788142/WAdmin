@@ -24,11 +24,12 @@
   },
   "include": [
     "src/**/*.ts",
+    "src/**/*.tsx",
     "src/**/*.d.ts",
     "src/**/*.d.ts",
     "src/**/*.vue",
     "vite.config.ts",
-    "vite/**/*.ts"
+    "vite/**/*.ts",
   ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

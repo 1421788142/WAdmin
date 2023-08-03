@@ -31,10 +31,10 @@
     <div class="flex justify-end h-max">
       <div class="flex items-center ml-5">
         <slot name="searchBtn"></slot>
-        <a-button type="primary" @click="search" :loading="loading">
+        <a-button type="primary" @click="search()" :loading="loading">
           查询
         </a-button>
-        <a-button @click="reset" class="ml-1" :disabled="loading">
+        <a-button @click="reset()" class="ml-1" :disabled="loading">
           重置
         </a-button>
       </div>
@@ -62,8 +62,8 @@ interface propsInterface {
   columns: searchFormProps[]; // 搜索配置列
   value: Record<string, any>; // 搜索参数
   loading: boolean; //请求loading
-  search: (params: any) => void; // 搜索方法
-  reset: (params: any) => void; // 重置方法
+  search: () => void; // 搜索方法
+  reset: () => void; // 重置方法
 }
 
 // 默认值

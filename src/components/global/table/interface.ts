@@ -4,9 +4,10 @@ import { searchFormProps } from '@/types/searchForm'
 import { TableProps } from "ant-design-vue";
 export namespace Table {
 	type columnsType = wTableProps
-	type requestApiType = (params: any) => Promise<Result<tableResultData<any>>>
+	type resultType = tableResultData<any>
+	type requestApiType = (params: any) => Promise<Result<resultType>>
 	type beforeLoadType = (params: any) => boolean | object | void
-	type afterLoadType = (records: tableResultData<any[]>, state: stateProps) => any
+	type afterLoadType = (records: resultType, state: stateProps) => any
 	export interface hookProps {
 		initParam?: any,
 		pagination?: boolean,
@@ -20,26 +21,14 @@ export namespace Table {
 		total: number // 数据总数
 	}
 	export interface stateProps {
-		dataList: any[];
 		expandedKeys: string[],
-		pageable: pageableProps,
 		isSelected: boolean,
 		showSearch: boolean,
 		errorReset: number,
 		selectedList: string[] | number[] | any[],
 		size: string[],
-		loading: boolean,
 		searchColumns: searchFormProps[],
 		tableColumns: columnsType,
-		searchParam: {
-			[key: string]: any;
-		};
-		initSearchParam: {
-			[key: string]: any;
-		};
-		totalParam: {
-			[key: string]: any;
-		};
 	}
 
 	export interface tableProps {

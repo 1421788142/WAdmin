@@ -365,3 +365,30 @@ export const filterPick = <T extends Record<string, any>, K extends keyof T>(
 export const getAssets = (name: string): any | string => {
 	return new URL(`/src/assets/${name}`, import.meta.url).href;
 }
+
+/**
+ * base64下载图文
+ * @param { string } base64
+ * @param { string } fileName
+ */
+export const downloadByBase64 = (base64: string, fileName: string) => {
+	let parts = base64.split(';base64,')
+	let contentType = parts[0].split(':')[1]
+	let raw = window.atob(parts[1]) // 解码base64得到二进制字符串
+	let rawLength = raw.length
+	let uInt8Array = new Uint8Array(rawLength) // 创建8位无符号整数值的类型化数组
+
+	for (let i = 0; i < rawLength; ++i) {
+		uInt8Array[i] = raw.charCodeAt(i) // 数组接收二进制字符串
+	}
+
+	// 创建blob对象设置文件类型
+	var blob = new Blob([uInt8Array], { type: contentType });
+
+	var aLink = document.createElement("a");
+	// 下载的文件名称
+	aLink.download = fileName + '.' + contentType.split('/')[1];
+	aLink.href = URL.createObjectURL(blob);
+	// 执行点击事件进行下载
+	aLink.click()
+}

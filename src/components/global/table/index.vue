@@ -68,7 +68,7 @@
           </a-tooltip>
           <a-tooltip placement="top">
             <template #title>刷新</template>
-            <redo-outlined @click="reset" class="cursor-pointer" />
+            <redo-outlined @click="reset()" class="cursor-pointer" />
           </a-tooltip>
           <a-tooltip placement="top">
             <template #title>密度</template>
@@ -91,7 +91,7 @@
     <!-- 表格 -->
     <a-table
       :columns="tableColumns.filter(x => x.show)"
-      :data-source="dataList"
+      :data-source="listData"
       :size="size[0]"
       :scroll="scroll"
       v-bind="$attrs"
@@ -175,7 +175,7 @@ const props = withDefaults(defineProps<Table.tableProps>(), {
 });
 
 const {
-  dataList,
+  listData,
   pageable,
   searchParam,
   tableColumns,

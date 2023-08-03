@@ -40,14 +40,14 @@ export function setTableColumns(columns: wTableProps, state: Table.stateProps): 
  * @param {Array} columns 自定义的配置
  * @param {Array} tagget 转换后的配置
  * */
-export function setSearhFormColumns(columns: wTableProps, state: Table.stateProps): void {
+export function setSearhFormColumns(columns: wTableProps, state: Table.stateProps, initSearchParam: any): void {
     state.searchColumns = columns.filter(x => x.search || x.searchOption).map(m => {
         let formItemOption = {
             name: m?.searchOption?.formItemOption?.name || m.dataIndex,
             label: m?.searchOption?.formItemOption?.label || m.title
         } as searchFormProps['formItemOption']
         let options = deepMerge({}, { ...m?.searchOption ?? {}, formItemOption })
-        state.initSearchParam[options.formItemOption.name] = options?.defaultValue || null;
+        initSearchParam[options.formItemOption.name] = options?.defaultValue || null;
         return {
             formItemType: 'a-input',
             ...options,
