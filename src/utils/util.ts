@@ -363,6 +363,9 @@ export const filterPick = <T extends Record<string, any>, K extends keyof T>(
  * @returns {*|string}
  */
 export const getAssets = (name: string): any | string => {
+	if (!name) return Error('name is null')
+	const first = name.split('')[0]
+	if (first === '/') name = name.slice(1) //去掉前缀 携带/打包后会出现问题
 	return new URL(`/src/assets/${name}`, import.meta.url).href;
 }
 

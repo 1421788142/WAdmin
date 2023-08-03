@@ -5,7 +5,7 @@
         <cropperImageVue
           @cropper="cropper"
           :circled="false"
-          :src="getAssets('/image/cropper.png')"
+          :src="getAssets('image/cropper.png')"
         />
       </div>
       <div
