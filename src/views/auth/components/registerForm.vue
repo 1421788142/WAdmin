@@ -3,47 +3,73 @@
     <a-form class="mt-5" name="ruleFormRef" :model="form" @finish="Submit">
       <a-form-item
         name="account"
-        :rules="[{ required: true, message: '请输入账号' }]"
+        :rules="[
+          {
+            required: true,
+            message: $t('commons.pleaseEnter', { text: $t('login.account') }),
+          },
+        ]"
       >
         <a-input
           size="large"
-          placeholder="请输入账号"
+          :placeholder="
+            $t('commons.pleaseEnter', { text: $t('login.account') })
+          "
           v-model:value="form.account"
         />
       </a-form-item>
       <a-form-item
         name="phone"
-        :rules="[{ required: true, message: '请输入手机号' }]"
+        :rules="[
+          {
+            required: true,
+            message: $t('commons.pleaseEnter', { text: $t('login.phone') }),
+          },
+        ]"
       >
         <a-input
           size="large"
-          placeholder="请输入手机号"
+          :placeholder="$t('commons.pleaseEnter', { text: $t('login.phone') })"
           v-model:value="form.phone"
         />
       </a-form-item>
       <a-form-item
         name="code"
         class="mt-5"
-        :rules="[{ required: true, message: '短信验证码' }]"
+        :rules="[
+          {
+            required: true,
+            message: $t('commons.pleaseEnter', { text: $t('login.smsCode') }),
+          },
+        ]"
       >
         <div class="grid grid-flow-row-dense grid-cols-3 gap-2">
           <a-input
             class="col-span-2"
             size="large"
-            placeholder="短信验证码"
+            :placeholder="
+              $t('commons.pleaseEnter', { text: $t('login.smsCode') })
+            "
             v-model:value="form.code"
           />
-          <a-button size="large">发送验证码</a-button>
+          <a-button size="large">{{ $t("login.sendSms") }}</a-button>
         </div>
       </a-form-item>
       <a-form-item
         name="password"
-        :rules="[{ required: true, message: '请输入密码' }]"
+        :rules="[
+          {
+            required: true,
+            message: $t('commons.pleaseEnter', { text: $t('login.password') }),
+          },
+        ]"
       >
         <a-input
           size="large"
           @input="getLvl(form.password)"
-          placeholder="请输入密码"
+          :placeholder="
+            $t('commons.pleaseEnter', { text: $t('login.password') })
+          "
           v-model:value="form.password"
         />
         <div>
@@ -52,21 +78,32 @@
       </a-form-item>
       <a-form-item
         name="confirmPassword"
-        :rules="[{ required: true, message: '确认密码' }]"
+        :rules="[
+          {
+            required: true,
+            message: $t('commons.pleaseEnter', {
+              text: $t('login.confirmPassword'),
+            }),
+          },
+        ]"
       >
         <a-input
           size="large"
-          placeholder="确认密码"
+          :placeholder="
+            $t('commons.pleaseEnter', { text: $t('login.confirmPassword') })
+          "
           v-model:value="form.confirmPassword"
         />
       </a-form-item>
       <a-form-item>
         <a-button class="w-full" type="primary" style="height: 45px">
-          注册
+          {{ $t("login.register") }}
         </a-button>
       </a-form-item>
       <a-form-item>
-        <a-button size="large" class="w-full" @click="tabForm">返回</a-button>
+        <a-button size="large" class="w-full" @click="tabForm">
+          {{ $t("buttons.back") }}
+        </a-button>
       </a-form-item>
     </a-form>
   </div>

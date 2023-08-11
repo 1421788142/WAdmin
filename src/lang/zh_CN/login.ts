@@ -1,5 +1,4 @@
 export default {
-    password: '密码',
     sign: '登录',
     userExpiresTitle: '温馨提示',
     userExpiresDesc: '用户信息过期,请重新登录!',
@@ -11,6 +10,8 @@ export default {
     userOutCancel: '取消退出登录',
     scanCodeDesc: '扫码后点击"确认"，即可完成登录',
     account: '账号',
+    password: '密码',
+    confirmPassword: '确认密码',
     imgCode: '图像验证码',
     codeError: '图像验证码',
     refresh: '点击刷新',

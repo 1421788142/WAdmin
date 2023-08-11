@@ -1,5 +1,4 @@
 export default {
-    password: 'Password',
     sign: 'Sign In',
     userExpiresTitle: 'Kind tips',
     userExpiresDesc: 'User information expired, please log in again!',
@@ -11,6 +10,8 @@ export default {
     userOutCancel: 'Cancel logging out',
     scanCodeDesc: 'After scanning the code, click "Confirm" to complete the login',
     account: 'account',
+    password: 'Password',
+    confirmPassword: 'Confirm Password',
     imgCode: 'image captcha',
     codeError: 'Image verification code',
     refresh: 'click to refresh',

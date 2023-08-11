@@ -1,8 +1,8 @@
 <template>
-  <a-divider orientation="center">🚀 {{ $t("layout.projectFun") }}</a-divider>
+  <a-divider orientation="center">🚀 {{ $t("layouts.projectFun") }}</a-divider>
   <div>
     <div class="flex items-center justify-between my-4">
-      <span>{{ $t("layout.historyDialog") }}</span>
+      <span>{{ $t("layouts.historyDialog") }}</span>
       <a-input-number
         @change="
           () => {
@@ -15,7 +15,7 @@
       />
     </div>
     <div class="flex items-center justify-between my-4">
-      <span>{{ $t("layout.autoLockScreenTime") }}</span>
+      <span>{{ $t("layouts.autoLockScreenTime") }}</span>
       <a-input-number
         class="!w-[150px] h-[50px]"
         v-model:value="lockNum"
@@ -24,7 +24,7 @@
         :formatter="
           value =>
             `${value}${
-              value === '0' ? `(${$t('layout.noLock')})` : $t('commons.minute')
+              value === '0' ? `(${$t('layouts.noLock')})` : $t('commons.minute')
             }`
         "
         :parser="value => value.replace($t('commons.minute'), '')"
@@ -32,12 +32,12 @@
       />
     </div>
     <div class="flex items-center justify-between my-4">
-      <span>{{ $t("layout.historyMenu") }}</span>
+      <span>{{ $t("layouts.historyMenu") }}</span>
       <a-switch
         v-model:checked="isHasHistory"
         @change="setConfigState('isHasHistory', isHasHistory)"
-        :checked-children="$t('layout.karat')"
-        :un-checked-children="$t('layout.shut')"
+        :checked-children="$t('layouts.karat')"
+        :un-checked-children="$t('layouts.shut')"
       />
     </div>
     <div class="flex items-center justify-between">
@@ -45,36 +45,36 @@
       <a-switch
         v-model:checked="isHasLogo"
         @change="setConfigState('isHasLogo', isHasLogo)"
-        :checked-children="$t('layout.karat')"
-        :un-checked-children="$t('layout.shut')"
+        :checked-children="$t('layouts.karat')"
+        :un-checked-children="$t('layouts.shut')"
       />
     </div>
     <div class="flex items-center justify-between my-4">
-      <span>{{ $t("layout.collapseMenu") }}</span>
+      <span>{{ $t("layouts.collapseMenu") }}</span>
       <a-switch
         v-model:checked="isHasCollapsed"
         :disabled="['mix', 'horizontal'].includes(getConfigState('menuType'))"
         @change="setConfigState('isHasCollapsed', isHasCollapsed)"
-        :checked-children="$t('layout.karat')"
-        :un-checked-children="$t('layout.shut')"
+        :checked-children="$t('layouts.karat')"
+        :un-checked-children="$t('layouts.shut')"
       />
     </div>
     <div class="flex items-center justify-between">
-      <span>{{ $t("layout.grayMode") }}</span>
+      <span>{{ $t("layouts.grayMode") }}</span>
       <a-switch
         v-model:checked="isHasGrey"
         @change="setupGrey(isHasGrey)"
-        :checked-children="$t('layout.karat')"
-        :un-checked-children="$t('layout.shut')"
+        :checked-children="$t('layouts.karat')"
+        :un-checked-children="$t('layouts.shut')"
       />
     </div>
     <div class="flex items-center justify-between my-4">
-      <span>{{ $t("layout.colorWeaknessMode") }}</span>
+      <span>{{ $t("layouts.colorWeaknessMode") }}</span>
       <a-switch
         v-model:checked="isHasColorblind"
         @change="setupColorblind(isHasColorblind)"
-        :checked-children="$t('layout.karat')"
-        :un-checked-children="$t('layout.shut')"
+        :checked-children="$t('layouts.karat')"
+        :un-checked-children="$t('layouts.shut')"
       />
     </div>
     <div>
