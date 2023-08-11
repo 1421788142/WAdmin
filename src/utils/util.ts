@@ -1,7 +1,7 @@
 import { isArray, isObject } from "@/utils/is";
 import { enumProp } from '@/types/searchForm'
 import { DeepMerge } from "@/types/utils";
-import { defineAsyncComponent } from 'vue'
+import { $$t } from '@/plugins/language/setupI18n';
 
 /**
  * @description 清除所有localStorage
@@ -278,11 +278,11 @@ export const arrRemoval = (target: string[]) => {
 export function timeState() {
 	let timeNow = new Date();
 	let hours = timeNow.getHours();
-	if (hours >= 6 && hours <= 10) return `早上好 ⛅`;
-	if (hours >= 10 && hours <= 14) return `中午好 🌞`;
-	if (hours >= 14 && hours <= 18) return `下午好 🌞`;
-	if (hours >= 18 && hours <= 24) return `晚上好 🌛`;
-	return `深夜啦，注意身体哦! 🌛`
+	if (hours >= 6 && hours <= 10) return $$t('sys.timeTitle1');
+	if (hours >= 10 && hours <= 14) return $$t('sys.timeTitle2');
+	if (hours >= 14 && hours <= 18) return $$t('sys.timeTitle3');
+	if (hours >= 18 && hours <= 24) return $$t('sys.timeTitle4');
+	return $$t('sys.timeTitle5')
 }
 
 /**

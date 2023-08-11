@@ -36,14 +36,14 @@
           @click="handUploadFn"
         >
           <upload-outlined />
-          <span>确认上传</span>
+          <span>{{ $t("buttons.confirmUpload") }}</span>
         </a-button>
       </slot>
     </div>
     <w-modal
       :width="previewWidth"
       v-model:visible="visible"
-      :title="`查看${currentFile?.name}`"
+      :title="`${$t('buttons.view')}${currentFile?.name}`"
       :footer="false"
     >
       <img
@@ -64,6 +64,7 @@ import { pick } from "@/utils/util";
 import { message } from "ant-design-vue";
 import { UploadFile } from "ant-design-vue";
 import { imageUpUrl } from "@/apis/common";
+import { $$t } from "@/plugins/language/setupI18n";
 
 interface propsInterface {
   fileList?: upload.stateProps["fileListData"];
@@ -88,7 +89,7 @@ const props = withDefaults(defineProps<propsInterface>(), {
   total: 4,
   previewWidth: 400,
   fileSize: 1,
-  text: "上传图片",
+  text: () => $$t("buttons.upload", { type: $$t("commons.picture") }),
   tooltip: "",
   fileAction: imageUpUrl,
   listType: "picture-card",
@@ -103,7 +104,8 @@ const props = withDefaults(defineProps<propsInterface>(), {
 const imgType = ["jpeg", "jpg", "png"]; //图片类型
 const uploadRule = (file: UploadFile): boolean => {
   let isFileType = imgType.filter(v => file.type === `image/${v}`).length > 0;
-  if (!isFileType) message.warn(`只能上传${imgType.join("/")}格式的图片`);
+  if (!isFileType)
+    message.warn(`${$$t("messages.fileType", { type: imgType.join("/") })}`);
   return isFileType;
 };
 

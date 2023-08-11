@@ -11,10 +11,12 @@
       @btnOk="btnOk"
     >
       <div class="flex items-center">
-        <span class="mr-4 text-md text-zinc-500">模板下载:</span>
+        <span class="mr-4 text-md text-zinc-500">
+          {{ $t("commons.template") }}:
+        </span>
         <a-button type="primary" @click="downloadTemplate">
           <template #icon><DownloadOutlined /></template>
-          点击下载
+          {{ $t("buttons.clickDownload") }}
         </a-button>
       </div>
       <div class="my-2">
@@ -32,10 +34,11 @@ import { ref } from "vue";
 import aoaToSheetXlsx from "@/utils/aoaToSheetXlsx";
 import uploadXlsxVue from "./components/uploadXlsx.vue";
 import type { exportType } from "./interface";
+import { $$t } from "@/plugins/language/setupI18n";
 
 interface propsType extends exportType.props {}
 const props = withDefaults(defineProps<propsType>(), {
-  title: "批量导入",
+  title: () => $$t("components.batchImport"),
   xlsxData: () => [],
   columns: () => [],
 });

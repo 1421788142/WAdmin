@@ -26,6 +26,13 @@ import { Editor, Toolbar } from "@wangeditor/editor-for-vue";
 import { uploadImg, uploadVideo } from "@/apis/common";
 import "@wangeditor/editor/dist/css/style.css";
 import { message } from "ant-design-vue";
+import { $$t } from "@/plugins/language/setupI18n";
+import config from "@/store/config";
+import { i18nChangeLanguage } from "@wangeditor/editor";
+
+const { language } = config();
+i18nChangeLanguage(language === "en_US" ? "en" : "zh-CN");
+
 // 富文本 DOM 元素
 const editorRef = shallowRef();
 // 实列化编辑器 记录 editor 实例，重要！
@@ -52,7 +59,7 @@ const props = withDefaults(defineProps<RichEditorProps>(), {
   },
   editorConfig: () => {
     return {
-      placeholder: "请输入内容...",
+      placeholder: $$t("commons.pleaseEnter", { text: $$t("commons.content") }),
       MENU_CONF: {},
     };
   },

@@ -3,7 +3,13 @@
     class="p-2 mr-2 rounded shadow-sm bg-white dark:bg-[#141414] border border-gray-200 dark:border-gray-700"
   >
     <div class="text-xl font-bold">
-      <span>{{ `${title}[${multiple ? "多选" : "单选"}]` }}</span>
+      <span>
+        {{
+          `${title}[${
+            multiple ? $t("commons.multipleChoice") : $t("commons.radio")
+          }]`
+        }}
+      </span>
     </div>
     <div class="flex items-center">
       <a-input-search
@@ -25,22 +31,26 @@
   </div>
 </template>
 <script setup lang="ts">
+import { watch } from "vue";
 import { useTreeFilterData } from "./index";
 import { TreeProps } from "ant-design-vue";
+import { $$t } from "@/plugins/language/setupI18n";
 
 interface propInterface {
-  title: string;
+  title?: string;
   fieldNames?: TreeProps["fieldNames"];
   multiple?: boolean;
   placeholder?: string;
   defaultExpandAll?: boolean;
+  dataList: any[];
 }
-withDefaults(defineProps<propInterface>(), {
-  title: "部门列表",
+const props = withDefaults(defineProps<propInterface>(), {
+  title: () => $$t("commons.department"),
   fieldNames: () => ({ children: "children", title: "title", key: "id" }),
   multiple: false,
   defaultExpandAll: true,
-  placeholder: "输入关键字搜索",
+  dataList: () => [],
+  placeholder: () => $$t("commons.pleaseEnter", { text: $$t("commons.key") }),
 });
 
 const emit = defineEmits(["update:value", "change"]);
@@ -49,5 +59,14 @@ const select = (selectedKeys: string[], event: { selectedNodes: any[] }) => {
   emit("update:value", map.join(","));
   emit("change", map.join(","));
 };
-const { treeData, searchValue, expandedKeys } = useTreeFilterData();
+const { searchValue, expandedKeys, setTreeData, treeData } =
+  useTreeFilterData();
+
+watch(
+  () => props.dataList,
+  () => {
+    setTreeData(props.dataList);
+  },
+  { deep: true },
+);
 </script>

@@ -1,7 +1,7 @@
 <template>
   <a-drawer
     v-model:visible="drawerShow"
-    title="项目配置"
+    :title="$t('layouts.projectConfig')"
     placement="right"
     width="350px"
   >

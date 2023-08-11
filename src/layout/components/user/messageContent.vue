@@ -11,7 +11,10 @@
     <template #content>
       <div class="w-[250px]">
         <a-tabs v-model:activeKey="activeKey" centered>
-          <a-tab-pane key="1" :tab="`通知(${NoticeList.length})`">
+          <a-tab-pane
+            key="1"
+            :tab="`${$t('layouts.notify')}(${NoticeList.length})`"
+          >
             <div
               class="rounded-md border-zinc-400 px-2 max-h-[400px] overflow-y-auto"
             >

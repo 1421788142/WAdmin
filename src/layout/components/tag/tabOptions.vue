@@ -32,7 +32,7 @@
         <a-menu-item @click.stop="setupFn('closeAll')">
           <div class="flex items-center">
             <dash-outlined />
-            <span class="ml-2">关闭所有标签页</span>
+            <span class="ml-2">{{ $t("layouts.closeAllTabs") }}</span>
           </div>
         </a-menu-item>
       </a-menu>
@@ -43,6 +43,7 @@
 <script setup lang="ts">
 import { useRoute } from "vue-router";
 import type { itemType } from "./index";
+import { $$t } from "@/plugins/language/setupI18n";
 
 interface propInterface {
   disabled?: boolean;
@@ -55,7 +56,7 @@ interface propInterface {
 
 const props = withDefaults(defineProps<propInterface>(), {
   disabled: true,
-  title: "更多",
+  title: $$t("commons.more"),
   trigger: "click",
   tagsIndex: -1,
   tabItmes: () => [],

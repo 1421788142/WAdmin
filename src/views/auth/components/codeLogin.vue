@@ -6,8 +6,10 @@
       :size="data.size"
       level="H"
     />
-    <p class="my-5 text-sm text-gray-700">扫码后点击"确认"，即可完成登录</p>
-    <a-button size="large" class="w-full" @click="tabForm">返回</a-button>
+    <p class="my-5 text-sm text-gray-700">{{ $t("login.scanCodeDesc") }}</p>
+    <a-button size="large" class="w-full" @click="tabForm">
+      {{ $t("buttons.back") }}
+    </a-button>
   </div>
 </template>
 

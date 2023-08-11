@@ -15,12 +15,13 @@
         ></component>
       </slot>
     </template>
-    <span>{{ title ?? btnTitle[type] }}</span>
+    <span>{{ btnText }}</span>
   </a-button>
 </template>
 
 <script setup lang="ts">
-import { btnIcon, btnTitle } from "@/enums/menu";
+import { computed } from "vue";
+import { $$t } from "@/plugins/language/setupI18n";
 interface propsInterface {
   btnType?: string; //按钮类型
   title?: string; //按钮文字
@@ -30,11 +31,27 @@ interface propsInterface {
   disabled?: boolean; //禁用
 }
 
-withDefaults(defineProps<propsInterface>(), {
+const props = withDefaults(defineProps<propsInterface>(), {
   btnType: "text",
   type: "add",
   disabled: false,
 });
+
+enum btnIcon {
+  add = "plus-outlined",
+  update = "form-outlined",
+  delete = "delete-outlined",
+  export = "export-outlined",
+}
+
+const btnTitle = {
+  add: $$t("buttons.add"),
+  update: $$t("buttons.update"),
+  delete: $$t("buttons.delete"),
+  export: $$t("buttons.export"),
+};
+
+const btnText = computed(() => props.title || btnTitle[props.type]);
 </script>
 
 <style scoped></style>

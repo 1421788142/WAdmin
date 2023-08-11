@@ -1,6 +1,7 @@
 import { reactive, toRefs } from "vue"
 import { upload, fileList } from './interface/upload'
 import { uploadFile } from '@/apis/common'
+import { $$t } from '@/plugins/language/setupI18n';
 
 import {
     UploadProps,
@@ -37,13 +38,13 @@ export const useUpload = ({
 
     const uploadSize = (file: UploadFile): boolean => {
         const isMax = file.size / 1024 / 1024 < fileSize;
-        if (!isMax) message.warn(`文件大小不能大于${fileSize}MB!`)
+        if (!isMax) message.warn(`${$$t('messages.fileSizeMax', { num: fileSize })}`)
         return isMax
     }
 
     const beforeUpload = (file: UploadFile, fileList: UploadProps['fileList']) => {
         if (state.fileListData.length >= total) {
-            message.warn(`最多上传${total}个文件`)
+            message.warn(`${$$t('messages.uploadMaxNum', { num: total })}`)
             return false
         }
         if (!uploadSize(file) || !uploadRule(file)) { //判断文件类型,大小
@@ -72,7 +73,7 @@ export const useUpload = ({
                 })
                 setEmit('change', state)
             } else {
-                message.warn(msg ?? '上传失败')
+                message.warn(msg ?? $$t('messages.uploadFailed'))
             }
         } else if (status === 'removed') {
             state.notFileList = state.notFileList.filter(x => x.uid !== info.file.uid)

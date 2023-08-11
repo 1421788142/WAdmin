@@ -1,14 +1,7 @@
 export default {
     language: 'English',
-    zhCN: 'Chinese',//中文
-    enCN: 'English',//英文
-    FullScreen: 'Full Screen',//全屏
-    CancelFullScreen: 'Exit Full Screen',//取消全屏
-    PleaseEnter: 'Please Enter',//请输入
-    Password: 'Password',//密码
-    Sign: 'Sign In',//登录
-    OutLogin: 'Sign Out',//退出登录,
-    ModifyInfo: 'Modify info.',//修改信息
+    zhCN: 'Chinese',
+    enCN: 'English',
     errMsg401: 'User does not have permission (incorrect token, username, password)!',
     errMsg403: 'The user is authorized, but access is prohibited!',
     errMsg404: 'Network request error, the resource was not found!',
@@ -20,5 +13,12 @@ export default {
     errMsg503: 'Service unavailable, server temporarily overloaded or under maintenance!',
     errMsg504: 'Network Timeout!',
     errMsg505: 'The HTTP version does not support this request!',
-    loginDesc: 'Enter your personal details and get started!'
+    loginDesc: 'Enter your personal details and get started!',
+    timeTitle1: 'Good evening ⛅',
+    timeTitle2: 'Good midday 🌞',
+    timeTitle3: 'Good afternoon 🌞',
+    timeTitle4: 'Good evening 🌛',
+    timeTitle5: "It 's late at night, take care of yourself 🌛",
+    getMenuError: 'Failed to get the menu, please log in again',
+    repeatAxios: 'In progress, please do not repeat the request!',
 }

@@ -32,10 +32,10 @@
       <div class="flex items-center ml-5">
         <slot name="searchBtn"></slot>
         <a-button type="primary" @click="search()" :loading="loading">
-          查询
+          {{ $t("buttons.inquire") }}
         </a-button>
         <a-button @click="reset()" class="ml-1" :disabled="loading">
-          重置
+          {{ $t("buttons.reset") }}
         </a-button>
       </div>
       <div

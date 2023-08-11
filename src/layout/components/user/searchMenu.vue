@@ -1,6 +1,6 @@
 <template>
   <div class="flex items-center" id="menu-search">
-    <a-tooltip placement="bottom" title="搜索">
+    <a-tooltip placement="bottom" :title="$t('layouts.menuSearch')">
       <search-outlined
         class="mr-4"
         @click="openModal"
@@ -8,7 +8,7 @@
       />
     </a-tooltip>
     <w-modal
-      :title="'查找菜单'"
+      :title="$t('layouts.menuSearch')"
       width="50%"
       :footer="false"
       v-model:visible="visible"
@@ -48,22 +48,22 @@
           <enter-outlined />
         </div>
         <div class="my-4" v-if="!menuList.length">
-          <a-empty description="暂无菜单" />
+          <a-empty :description="$t('layouts.emptyMenu')" />
         </div>
       </div>
       <div class="flex items-center px-1 mt-4">
         <div class="flex items-center">
           <enter-outlined class="mr-2 btn" />
-          <span>确认</span>
+          <span>{{ $t("buttons.confirm") }}</span>
         </div>
         <div class="flex items-center mx-4">
           <arrow-up-outlined class="btn" />
           <arrow-down-outlined class="mx-2 btn" />
-          <span>切换</span>
+          <span>{{ $t("buttons.switch") }}</span>
         </div>
         <div class="flex items-center">
           <div class="px-1 btn">esc</div>
-          <span>关闭</span>
+          <span>{{ $t("buttons.close") }}</span>
         </div>
       </div>
     </w-modal>
@@ -76,6 +76,7 @@ import { screenPageList } from "../../index";
 import { ref, onMounted, onBeforeUnmount, nextTick } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { message } from "ant-design-vue";
+import { $$t } from "@/plugins/language/setupI18n";
 
 const route = useRoute();
 const router = useRouter();
@@ -119,7 +120,7 @@ const Highlight = (val: Active[]): boolean => {
 const toPage = (val: Active[]) => {
   setHighlight(val);
   if (route.path === menuActive.value.path)
-    return message.error("已在当前页面");
+    return message.error($$t("layouts.toHisPageError"));
   router.push({ path: menuActive.value.path });
   visible.value = false;
 };

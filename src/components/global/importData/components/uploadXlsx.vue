@@ -8,10 +8,8 @@
     <p class="ant-upload-drag-icon">
       <inbox-outlined></inbox-outlined>
     </p>
-    <p class="ant-upload-text">将文件拖到此处,或者点击上传</p>
-    <p class="ant-upload-hint">
-      请先下载模板,然后进行上传。请上传 .xls , .xlsx 标准格式文件
-    </p>
+    <p class="ant-upload-text">{{ $t("components.dropUploadTitle") }}</p>
+    <p class="ant-upload-hint">{{ $t("components.dropUploadDesc") }}</p>
   </a-upload-dragger>
 </template>
 
@@ -23,12 +21,14 @@ import type { UploadProps } from "ant-design-vue";
 import { notification } from "ant-design-vue";
 import { CheckCircleTwoTone } from "@ant-design/icons-vue";
 import { h } from "vue";
+import { $$t } from "@/plugins/language/setupI18n";
+
 const fileList = ref<UploadProps["fileList"]>([]);
 // 自定义上传事件
 const uploadXlsx = ({ file }) => {
   notification.open({
-    message: "正在导入请稍后",
-    description: `如果数据庞大会导致导入缓慢哦，请您耐心等待！`,
+    message: $$t("components.importTitle"),
+    description: $$t("components.importDesc"),
     icon: () => h(CheckCircleTwoTone, { twoToneColor: "#09F175" }),
   });
   readerData(file);

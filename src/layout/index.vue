@@ -122,7 +122,7 @@
                   v-for="item in menuMixList"
                 >
                   <span class="nav-text">
-                    {{ item.meta.title || "未命名" }}
+                    {{ item.meta.title || "--" }}
                   </span>
                   <template #icon>
                     <component v-if="item.icon" :is="item.icon"></component>

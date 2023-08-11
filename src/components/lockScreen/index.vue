@@ -2,7 +2,7 @@
   <div class="w-lock-screen" v-if="getConfigState('isHasLock')">
     <div class="cursor-pointer w-lock-screen-top" @click="open">
       <lock-outlined class="icon" />
-      <div class="title">点击解锁屏幕</div>
+      <div class="title">{{ $t("layouts.unlockScreen") }}</div>
     </div>
     <div
       class="!select-none flex flex-row justify-around grid-flow-row gap-2 my-40 text-white items-center"
@@ -18,31 +18,36 @@
           class="flex flex-col items-center justify-center mb-4 w-[300px] mx-auto fixed"
           v-show="showData"
         >
-          <a-avatar
-            src="https://vben.vvbin.cn/assets/header.1b5fa5f8.jpg"
-            :size="100"
-          />
-          <div class="my-4 text-4xl text-white">WAdmin</div>
+          <a-avatar :src="getAssets(VITE_PROJECT_LOGO)" :size="100" />
+          <div class="my-4 text-4xl text-white">{{ VITE_PROJECT_NAME }}</div>
           <a-input-password
             v-model:value="lockPassword"
-            placeholder="请输入您的锁屏密码"
+            :placeholder="
+              $t('commons.pleaseEnter', {
+                text: $t('layouts.lockScreenPassword'),
+              })
+            "
           />
           <div class="my-2 text-red-700 text-lt">{{ errMsg }}</div>
           <div class="flex justify-between w-full text-white">
-            <span class="cursor-pointer" @click="showData = false">返回</span>
+            <span class="cursor-pointer" @click="showData = false">
+              {{ $t("buttons.back") }}
+            </span>
             <span
               class="cursor-pointer"
               @click="loginOut().then(() => reset())"
             >
-              重新登录
+              {{ $t("buttons.reLogin") }}
             </span>
-            <span class="cursor-pointer" @click="toSys">进入系统</span>
+            <span class="cursor-pointer" @click="toSys">
+              {{ $t("buttons.enterSystem") }}
+            </span>
           </div>
         </div>
       </div>
     </transition>
     <div class="mt-10 text-4xl text-center text-white">
-      {{ `${year}/${month} 星期${week}` }}
+      {{ `${year} / ${month} ${week}` }}
     </div>
   </div>
 </template>
@@ -53,10 +58,13 @@ import digitalFlip from "../digitalFlip/index.vue";
 import { useTime } from "@/hooks/useTime";
 import { layoutInterface } from "@/hooks/interface/layout";
 import emitter from "@/plugins/mitt";
-
+import { getAssets } from "@/utils/util";
 import userStore from "@/store/user";
 import { Modal } from "ant-design-vue";
+import { $$t } from "@/plugins/language/setupI18n";
 const { loginOut } = userStore();
+
+const { VITE_PROJECT_NAME, VITE_PROJECT_LOGO } = import.meta.env;
 
 const { month, year, week } = useTime();
 
@@ -85,9 +93,11 @@ const timerFn = () => {
   if (getConfigState("lockExpireNum") < new Date().getTime()) {
     let secondsToGo = 5;
     const modal = Modal.success({
-      title: "锁屏时间到了,是否锁屏!",
-      content: `${secondsToGo}秒后将自动锁屏`,
-      okText: `取消锁屏,${getConfigState("lockNum")}分钟后将重新锁屏!`,
+      title: $$t("layouts.lockScreenTime"),
+      content: `${$$t("layouts.autoLockScreen", { secondsToGo })}`,
+      okText: `${$$t("layouts.cancelLockScreen", {
+        lockNum: getConfigState("lockNum"),
+      })}`,
       onOk: () => {
         setExpire();
         clearInterval(interval);
@@ -96,7 +106,7 @@ const timerFn = () => {
     const interval = setInterval(() => {
       secondsToGo -= 1;
       modal.update({
-        content: `${secondsToGo}秒后将自动锁屏`,
+        content: `${$$t("layouts.autoLockScreen", { secondsToGo })}`,
       });
       if (secondsToGo === 0) {
         clearInterval(interval);
@@ -130,7 +140,7 @@ const reset = () => {
 
 const toSys = () => {
   if (lockPassword.value !== getConfigState("lockPassword"))
-    return (errMsg.value = "密码错误");
+    return (errMsg.value = $$t("messages.wrongPassword"));
   reset();
   setExpire();
 };

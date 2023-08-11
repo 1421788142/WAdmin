@@ -1,20 +1,6 @@
 <template>
   <div class="flex flex-col h-full" v-loading="loading">
-    <div class="w-full py-10 mb-2 text-2xl text-center text-white bg-slate-400">
-      自行添加搜索模块等等...
-      <a-button
-        type="primary"
-        :disabled="pageable.pageNum === 1"
-        @click="
-          () => {
-            hasMore = true;
-            reset();
-          }
-        "
-      >
-        重置分页
-      </a-button>
-    </div>
+    <slot name="header"></slot>
     <div class="flex-1 overflow-auto rounded-lg waterfall-box">
       <Waterfall :list="listData" v-bind="options">
         <template #item="{ item, url, index }">

@@ -4,6 +4,7 @@ import { setTableColumns, setSearhFormColumns } from '@/utils/index'
 import { message } from "ant-design-vue";
 import { isObject } from "@/utils/is";
 import { useApi } from "@/hooks/useApi";
+import { $$t } from "@/plugins/language/setupI18n";
 
 export const useTable = ({
 	initParam,
@@ -60,7 +61,7 @@ export const useTable = ({
 			// 失败重启查询一次  bug:前一次请求和当前请求一样则会情况当前请求,所以导致拿不到数据  所以这里定义一下重启
 			state.errorReset += 1
 			if (state.errorReset !== 1) return
-			message.warn('查询失败,2秒后重启查询')
+			message.warn($$t('messages.queryFailed', { num: 2 }))
 			setTimeout(() => {
 				getTableList()
 			}, 2000)

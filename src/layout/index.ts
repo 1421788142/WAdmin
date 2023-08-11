@@ -1,5 +1,5 @@
 import Driver from "driver.js";
-
+import { $$t } from "@/plugins/language/setupI18n";
 import { storeToRefs } from "pinia"
 import userStore from '@/store/user';
 const { userRouterList } = storeToRefs(userStore())
@@ -8,8 +8,8 @@ const { userRouterList } = storeToRefs(userStore())
  * @description 查询出单个打开的菜单用于复合菜单
  * @param {string} fullPath //当前的菜单
  * */
-export function selected(fullPath:string){
-    let arr = [ fullPath ]
+export function selected(fullPath: string) {
+    let arr = [fullPath]
     return arr
 }
 
@@ -19,10 +19,10 @@ export function selected(fullPath:string){
  * @param {Function} filterKey  最终返回字符串的需要过滤的key
  * @param {Function} returnKey 最终返回字符串的过滤出的key
  * */
-export function findFn<T>(key:Function,filterKey:Function,returnKey:Function){
-    let stack:T[] = [];
-    let going:boolean = true;
-    let filter = (menuItem:menuListType[], keys:Function)=>{
+export function findFn<T>(key: Function, filterKey: Function, returnKey: Function) {
+    let stack: T[] = [];
+    let going: boolean = true;
+    let filter = (menuItem: menuListType[], keys: Function) => {
         menuItem.forEach(item => {
             if (!going) return;
             stack.push(returnKey(item));
@@ -44,12 +44,12 @@ export function findFn<T>(key:Function,filterKey:Function,returnKey:Function){
  * @description 查询出打开菜单
  * @param {string} fullPath //当前的菜单
  * */
-export function openKey(fullPath:string){
+export function openKey(fullPath: string) {
     let menuList = findFn(
-        ()=>fullPath,
-        (val:any)=>val.path,
-        (val:any)=>val.path,
-    ) as string []
+        () => fullPath,
+        (val: any) => val.path,
+        (val: any) => val.path,
+    ) as string[]
     return menuList
 }
 
@@ -57,11 +57,11 @@ export function openKey(fullPath:string){
  * @description 查询出面包屑
  * @param {string} fullPath //当前的菜单
  * */
-export function setBreadCrumbs(fullPath:string):menuListType[]{
+export function setBreadCrumbs(fullPath: string): menuListType[] {
     let breadList = findFn<menuListType>(
-        ()=>fullPath,
-        (val:menuListType)=>val.path,
-        (val:menuListType)=>val,
+        () => fullPath,
+        (val: menuListType) => val.path,
+        (val: menuListType) => val,
     )
     return breadList
 }
@@ -70,26 +70,26 @@ export function setBreadCrumbs(fullPath:string):menuListType[]{
  * @description 根据关键字搜索菜单
  * @param {string} key 
  */
-export function screenPageList<T>(key:string):T[][]{
-    let menuList:T[][] = [];
-    let walker = (menuItem:menuListType[], key:string)=>{
-        menuItem.forEach(item=>{
-            if((item.meta.title.search(key) != -1 || item.path.search(key) != -1) && item.component !== 'Layout' && item.hidden === 1){
+export function screenPageList<T>(key: string): T[][] {
+    let menuList: T[][] = [];
+    let walker = (menuItem: menuListType[], key: string) => {
+        menuItem.forEach(item => {
+            if ((item.meta.title.search(key) != -1 || item.path.search(key) != -1) && item.component !== 'Layout' && item.hidden === 1) {
                 let menu = findFn<T>(
-                    ()=>item.path,
-                    (val:menuListType)=>val.path,
-                    (val:menuListType)=>{
+                    () => item.path,
+                    (val: menuListType) => val.path,
+                    (val: menuListType) => {
                         return {
-                            path:val.path,
-                            title:val.meta.title,
-                            icon:val.icon
+                            path: val.path,
+                            title: val.meta.title,
+                            icon: val.icon
                         }
                     }
                 )
                 menuList.push(menu)
             }
             item.children && item.children.length > 0
-                ? walker(item.children,key)
+                ? walker(item.children, key)
                 : ""
         })
     }
@@ -101,11 +101,11 @@ export function screenPageList<T>(key:string):T[][]{
  * @description 使用递归，过滤需要缓存的路由
  * @return string[]
  * */
-export const filterKeepAlive = ()=>{
+export const filterKeepAlive = () => {
     let cacheRouter: string[] = [];
-    const filterFn = (_route:menuListType[], _cache:string[]): void => {
+    const filterFn = (_route: menuListType[], _cache: string[]): void => {
         _route.forEach(item => {
-            item.keepAlive && item.path && item.component!='Layout' && _cache.push(item.path);
+            item.keepAlive && item.path && item.component != 'Layout' && _cache.push(item.path);
             item.children && item.children.length !== 0 && filterFn(item.children, _cache);
         });
     }
@@ -118,86 +118,85 @@ export const filterKeepAlive = ()=>{
 /**
  * @description 动态取路由第一个path
  */
- export const getFirstMenu = (path:string):menuListType=>{
-    let firstMenu:menuListType = null
-    let filterFn = (item:menuListType[])=>{
-        for(let i=0; i< item.length; i++){
+export const getFirstMenu = (path: string): menuListType => {
+    let firstMenu: menuListType = null
+    let filterFn = (item: menuListType[]) => {
+        for (let i = 0; i < item.length; i++) {
             item[i].component === 'Layout' && item[i]?.children?.length > 0 ? filterFn(item[i].children) : firstMenu = item[i]
             break
         }
     }
-    let menuItem = userRouterList.value.filter(x=>x.path == path)
+    let menuItem = userRouterList.value.filter(x => x.path == path)
     filterFn(menuItem)
     return firstMenu
 }
 
 // 用户首次登录则引导页
-export const guide = async (isSystem:boolean) => {
+export const guide = async (isSystem: boolean) => {
     return new Promise<boolean>((resolve, reject) => {
         const driver: Driver = new Driver({
             allowClose: false,
-            doneBtnText: "结束",
-            closeBtnText: "关闭",
-            nextBtnText: "下一步",
-            prevBtnText: "上一步",
-            onReset(){
+            doneBtnText: $$t('layouts.driverBtnText1'),
+            closeBtnText: $$t('layouts.driverBtnText2'),
+            nextBtnText: $$t('layouts.driverBtnText3'),
+            prevBtnText: $$t('layouts.driverBtnText4'),
+            onReset() {
                 resolve(true)
             }
         });
-        if(!isSystem){
+        if (!isSystem) {
             driver.defineSteps(steps);
             driver.start();
         }
     })
 };
 const steps = [
-	{
-		element: "#w-breadcrumb",
-		popover: {
-			title: "面包屑",
-			description: "点击可快捷切换菜单",
-			position: "bottom"
-		}
-	},
-	{
-		element: "#menu-search",
-		popover: {
-			title: "菜单搜索",
-			description: "根据菜单名称可快捷搜索菜单",
-			position: "bottom"
-		}
-	},
-	{
-		element: "#full-screen",
-		popover: {
-			title: "系统全屏",
-			description: "点击可切换系统全屏模式,按下键盘Esc则可以快捷退出",
-			position: "left"
-		}
-	},
-	{
-		element: "#sys-message",
-		popover: {
-			title: "系统消息",
-			description: "点击可快捷查看系统消息",
-			position: "left"
-		}
-	},
-	{
-		element: "#chang-lan",
-		popover: {
-			title: "切换语言",
-			description: "点击可切换系统语言",
-			position: "left"
-		}
-	},
-	{
-		element: "#set-up",
-		popover: {
-			title: "系统设置",
-			description: "可设置系统主题,和菜单模式",
-			position: "left"
-		}
-	},
+    {
+        element: "#w-breadcrumb",
+        popover: {
+            title: $$t('layouts.stepTitle1'),
+            description: $$t('layouts.stepDesc1'),
+            position: "bottom"
+        }
+    },
+    {
+        element: "#menu-search",
+        popover: {
+            title: $$t('layouts.stepTitle2'),
+            description: $$t('layouts.stepDesc2'),
+            position: "bottom"
+        }
+    },
+    {
+        element: "#full-screen",
+        popover: {
+            title: $$t('layouts.stepTitle3'),
+            description: $$t('layouts.stepDesc3'),
+            position: "left"
+        }
+    },
+    {
+        element: "#sys-message",
+        popover: {
+            title: $$t('layouts.stepTitle4'),
+            description: $$t('layouts.stepDesc4'),
+            position: "left"
+        }
+    },
+    {
+        element: "#chang-lan",
+        popover: {
+            title: $$t('layouts.stepTitle5'),
+            description: $$t('layouts.stepDesc5'),
+            position: "left"
+        }
+    },
+    {
+        element: "#set-up",
+        popover: {
+            title: $$t('layouts.stepTitle6'),
+            description: $$t('layouts.stepDesc6'),
+            position: "left"
+        }
+    },
 ];
- 

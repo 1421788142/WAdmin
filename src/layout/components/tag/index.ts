@@ -4,6 +4,7 @@ import type { Router, RouteLocationNormalized } from "vue-router"
 import userStore from '@/store/user';
 import { message } from "ant-design-vue";
 import emitter from "@/plugins/mitt";
+import { $$t } from "@/plugins/language/setupI18n";
 
 export interface itemType {
     title: string,
@@ -19,30 +20,30 @@ export const useTagData = (route?: RouteLocationNormalized, router?: Router) => 
     const state = reactive<stateInterface>({
         tabItmes: [
             {
-                title: '重新加载',
+                title: $$t('layouts.reload'),
                 icon: 'reload-outlined',
                 disabled: true,
                 type: 'refresh'
             },
             {
-                title: '关闭标签页',
+                title: $$t('layouts.closeTab'),
                 icon: 'close-outlined',
                 type: 'closeCurrent',
             },
             {
-                title: '关闭左侧标签页',
+                title: $$t('layouts.closeLeftTabs'),
                 icon: 'vertical-right-outlined',
                 type: 'closeLeft',
                 disabled: true
             },
             {
-                title: '关闭右侧标签页',
+                title: $$t('layouts.closeRightTabs'),
                 icon: 'vertical-left-outlined',
                 type: 'closeRight',
                 disabled: true
             },
             {
-                title: '关闭其他标签页',
+                title: $$t('layouts.closeOtherTabs'),
                 icon: 'pic-center-outlined',
                 type: 'closeOther',
                 disabled: true
@@ -81,7 +82,7 @@ export const useTagData = (route?: RouteLocationNormalized, router?: Router) => 
 
     const closeCurrent = (value: menuItem) => {
         let length = historyMenuTag.value.length
-        if (length <= 1) return message.error('不能关闭所有标签')
+        if (length <= 1) return message.error($$t('layouts.noCloseAllTabs'))
         let current = historyMenuTag.value.findIndex(x => x.path === value.path)
         historyMenuTag.value.splice(current, 1)
         if (current === historyMenuTag.value.length && value.path === route.path) {

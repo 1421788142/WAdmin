@@ -50,10 +50,6 @@ export default function getRoutes(routerList: menuListType[]) {
         name: 'Layout',
         redirect: setRedirect() || '/login',
         component: Layout,
-        meta: {
-            title: "首页",
-            icon: ""
-        },
         children: [
             ...router,
         ]

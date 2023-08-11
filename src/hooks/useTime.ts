@@ -1,4 +1,5 @@
 import { ref } from "vue";
+import { $$t } from '@/plugins/language/setupI18n';
 
 /**
  * @description 获取本地时间
@@ -18,7 +19,15 @@ export const useTime = () => {
 		const date = new Date();
 		year.value = date.getFullYear();
 		month.value = date.getMonth() + 1;
-		week.value = "日一二三四五六".charAt(date.getDay());
+		week.value = [
+			$$t('commons.sunday'),
+			$$t('commons.monday'),
+			$$t('commons.tuesday'),
+			$$t('commons.wednesday'),
+			$$t('commons.thursday'),
+			$$t('commons.friday'),
+			$$t('commons.saturday')
+		].at(date.getDay());
 		day.value = date.getDate();
 		hour.value =
 			(date.getHours() + "")?.padStart(2, "0") ||
@@ -29,7 +38,7 @@ export const useTime = () => {
 		second.value =
 			(date.getSeconds() + "")?.padStart(2, "0") ||
 			new Intl.NumberFormat(undefined, { minimumIntegerDigits: 2 }).format(date.getSeconds());
-		nowTime.value = `${year.value}年${month.value}月${day.value} ${hour.value}:${minute.value}:${second.value}`;
+		nowTime.value = `${year.value}${$$t('commons.year')}${month.value}${$$t('commons.month')}${day.value} ${hour.value}:${minute.value}:${second.value}`;
 	};
 
 	updateTime();

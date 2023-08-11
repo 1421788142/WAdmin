@@ -16,7 +16,7 @@ export const routes = [
         name: 'login',
         component: () => import('@/views/auth/login.vue'),
         meta: {
-            title: "登录页",
+            title: "登录",
             icon: ""
         }
     },

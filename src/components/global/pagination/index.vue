@@ -1,7 +1,7 @@
 <template>
   <div class="flex justify-end py-2">
     <a-pagination
-      :show-total="(total:number) => `总共 ${total} 条数据`"
+      :show-total="(total:number) => `${$t('components.paginationTotal',{total})}`"
       v-model:current="pageable.pageNum"
       v-model:page-size="pageable.pageSize"
       :showSizeChanger="showSizeChanger"

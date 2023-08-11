@@ -37,17 +37,17 @@
         @click="handUploadFn"
       >
         <upload-outlined />
-        <span>确认上传</span>
+        <span>{{ $t("buttons.confirmUpload") }}</span>
       </a-button>
     </slot>
     <w-modal
       :width="previewWidth"
       v-model:visible="visible"
-      :title="`查看${currentFile?.name}`"
+      :title="`${$t('buttons.view')}${currentFile?.name}`"
       :footer="false"
     >
       <video style="width: 100%; height: 100%" poster="" controls id="video">
-        您的浏览器不支持播放该视频！
+        {{ $t("messages.browserNoVideo") }}
       </video>
     </w-modal>
   </div>
@@ -61,6 +61,7 @@ import { pick } from "@/utils/util";
 import { message } from "ant-design-vue";
 import { UploadFile } from "ant-design-vue";
 import { videoUpUrl } from "@/apis/common";
+import { $$t } from "@/plugins/language/setupI18n";
 
 interface propsInterface {
   fileList?: any;
@@ -84,7 +85,7 @@ const props = withDefaults(defineProps<propsInterface>(), {
   total: 2,
   previewWidth: 400,
   fileSize: 10,
-  text: "上传视频",
+  text: () => $$t("buttons.upload", { type: $$t("commons.video") }),
   fileAction: videoUpUrl,
   listType: "picture-card",
   icon: "picture-outlined",
@@ -98,7 +99,7 @@ const props = withDefaults(defineProps<propsInterface>(), {
 const imgType = ["mp4"]; //视频类型
 const uploadRule = (file: UploadFile): boolean => {
   let isFileType = imgType.filter(v => file.type === `video/${v}`).length > 0;
-  if (!isFileType) message.warn(`只能上传${imgType.join("/")}格式的视频`);
+  message.warn(`${$$t("messages.fileType", { type: imgType.join("/") })}`);
   return isFileType;
 };
 

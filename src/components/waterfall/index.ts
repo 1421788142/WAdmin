@@ -4,6 +4,7 @@ import { WaterfallType, resultType } from './interface'
 import { useApi } from "@/hooks/useApi"
 import errorImg from "@/assets/image/404.png";
 import loadingImg from "@/assets/image/403.png";
+import { $$t } from "@/plugins/language/setupI18n";
 
 const defaultOptions = {
     rowKey: "id", // 唯一key值
@@ -53,7 +54,7 @@ export const useWaterfall = ({
         }) : (() => data.dataList)()
     }
     const getListData = async () => {
-        if (!state.hasMore) return message.warn('没有更多数据了')
+        if (!state.hasMore) return message.warn($$t('commons.noMoreData'))
         try {
             loading.value = true
             await updateTotalParam()
@@ -65,14 +66,14 @@ export const useWaterfall = ({
                 listData.value = listData.value.concat(handleData(data))
             } else {
                 state.hasMore = false
-                message.warn('没有更多数据了')
+                message.warn($$t('commons.noMoreData'))
             }
             // 解构后台返回的分页数据(如果有分页更新分页信息)
             const { pageNum, pageSize, total } = data;
             pagination && updatePageable({ pageNum, pageSize, total });
         } catch (error) {
             console.log(error)
-            message.warn('请求数据错误')
+            message.warn($$t('commons.requestFailure'))
         } finally {
             loading.value = false
         }

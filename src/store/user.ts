@@ -1,8 +1,7 @@
 import { defineStore } from "pinia";
 import { arrayToTree, arrRemoval, timeState } from '@/utils/util'
-
 import { login, getRouter, userInterface, loginOut, loginInterface } from '@/apis/user'
-
+import { $$t } from '@/plugins/language/setupI18n';
 import router from "@/router";
 import getRoutes from "@/router/autoload";//自动注册路由
 import emitter from '@/plugins/mitt'
@@ -61,7 +60,7 @@ export default defineStore<'user', WAdminUser.state, WAdminUser.getters, WAdminU
             try {
                 const { code, data } = await login(query)
                 if (code === 200) {
-                    message.success('登录成功')
+                    message.success($$t('login.loginOk'))
                     await this.setUserInfo(data)
                     await this.afterLoginAction()
                     return true
@@ -84,11 +83,11 @@ export default defineStore<'user', WAdminUser.state, WAdminUser.getters, WAdminU
                     await this.setupUserRouter(menuTree)
                     return true
                 } else {
-                    message.error('获取菜单失败请重新登录')
+                    message.error($$t('sys.getMenuError'))
                     return false
                 }
             } catch {
-                message.error('获取菜单失败请重新登录')
+                message.error($$t('sys.getMenuError'))
                 return false
             }
 
@@ -99,7 +98,7 @@ export default defineStore<'user', WAdminUser.state, WAdminUser.getters, WAdminU
             if (res) {
                 router.push({ path: '/' })
                 notification.open({
-                    message: '登录成功',
+                    message: $$t('messages.loginOk'),
                     description: `${timeState()},${this.userInfo.userName}`,
                     icon: () => h(CheckCircleTwoTone, { twoToneColor: '#09F175' }),
                 });
@@ -117,10 +116,10 @@ export default defineStore<'user', WAdminUser.state, WAdminUser.getters, WAdminU
                     this.setupUserRouter([])
                     this.setHistoryMenu([])
                     router.push({ path: '/login' })
-                    message.success(res.message)
+                    message.success($$t('login.outLoginOk'))
                 }
             } catch (error) {
-
+                message.error($$t('login.outLoginError'))
             }
         },
 

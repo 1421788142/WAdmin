@@ -28,7 +28,7 @@ const toPage = (val: menuListType) => {
           ></component>
         </template>
         <template #title>
-          <hasTooltipVue :text="menuItemValue.meta.title || '未命名'" />
+          <hasTooltipVue :text="menuItemValue.meta.title || '--'" />
         </template>
         <template v-for="children of menuItemValue.children">
           <menu-item :menuItemValue="children" />
@@ -41,7 +41,7 @@ const toPage = (val: menuListType) => {
         @click="toPage(menuItemValue)"
         v-if="menuItemValue.menuType === 'C'"
       >
-        <hasTooltipVue :text="menuItemValue.meta.title || '未命名'" />
+        <hasTooltipVue :text="menuItemValue.meta.title || '--'" />
         <template #icon>
           <component
             v-if="menuItemValue.icon"
@@ -59,7 +59,7 @@ const toPage = (val: menuListType) => {
       class="!text-[#262626] dark:text-white"
     >
       <a-menu-item>
-        <hasTooltipVue :text="menuItemValue.meta.title || '未命名'" />
+        <hasTooltipVue :text="menuItemValue.meta.title || '--'" />
         <template #icon>
           <component
             v-if="menuItemValue.icon"

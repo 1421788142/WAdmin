@@ -34,7 +34,7 @@
       </a-checkbox-group>
     </template>
     <a-tooltip placement="top">
-      <template #title>列设置</template>
+      <template #title>{{ $t("components.columnSettings") }}</template>
       <setting-outlined class="cursor-pointer" />
     </a-tooltip>
   </a-popover>

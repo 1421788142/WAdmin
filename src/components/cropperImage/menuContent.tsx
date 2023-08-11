@@ -16,7 +16,7 @@ import {
   VerticalAlignMiddleOutlined,
   SwapOutlined,
 } from "@ant-design/icons-vue";
-
+import { $$t } from "@/plugins/language/setupI18n";
 import { directive as tippy } from "vue-tippy";
 
 type eventType = keyof Cropper;
@@ -55,7 +55,7 @@ export default defineComponent({
   setup(props: MyProps) {
     const menuItemList = [
       {
-        title: "上传",
+        title: $$t("buttons.upload"),
         icon: (
           <Upload
             beforeUpload={file => props.beforeUpload(file)}
@@ -65,67 +65,67 @@ export default defineComponent({
         ),
       },
       {
-        title: "下载",
+        title: $$t("buttons.download"),
         icon: <DownloadOutlined />,
         event: () => props.downloadByBase64(),
       },
       {
-        title: "圆形,矩形裁剪",
+        title: $$t("components.cropping"),
         icon: <AppstoreAddOutlined />,
         event: () => props.setViewType(),
       },
       {
-        title: "重置",
+        title: $$t("buttons.reset"),
         icon: <SyncOutlined />,
         event: () => props.handCropper("reset"),
       },
       {
-        title: "上移",
+        title: $$t("components.moveUp"),
         icon: <ArrowUpOutlined />,
         event: () => props.handCropper("move", 0, -10),
       },
       {
-        title: "下移",
+        title: $$t("components.moveDown"),
         icon: <ArrowDownOutlined />,
         event: () => props.handCropper("move", 0, 10),
       },
       {
-        title: "左移",
+        title: $$t("components.moveLeft"),
         icon: <ArrowLeftOutlined />,
         event: () => props.handCropper("move", -10, 0),
       },
       {
-        title: "右移",
+        title: $$t("components.moveRight"),
         icon: <ArrowRightOutlined />,
         event: () => props.handCropper("move", 10, 0),
       },
       {
-        title: "水平翻转",
+        title: $$t("components.xTurn"),
         icon: <SwapOutlined />,
         event: () => props.handCropper("scaleX", -1),
       },
       {
-        title: "垂直翻转",
+        title: $$t("components.yTurn"),
         icon: <VerticalAlignMiddleOutlined />,
         event: () => props.handCropper("scaleY", -1),
       },
       {
-        title: "逆时针旋转",
+        title: $$t("components.rotateL"),
         icon: <RotateLeftOutlined />,
         event: () => props.handCropper("rotate", -45),
       },
       {
-        title: "顺时针旋转",
+        title: $$t("components.rotateR"),
         icon: <RotateRightOutlined />,
         event: () => props.handCropper("rotate", 45),
       },
       {
-        title: "放大",
+        title: $$t("components.enlarge"),
         icon: <ZoomInOutlined />,
         event: () => props.handCropper("zoom", 0.1),
       },
       {
-        title: "缩小",
+        title: $$t("components.zoom"),
         icon: <ZoomOutOutlined />,
         event: () => props.handCropper("zoom", -0.1),
       },

@@ -60,25 +60,31 @@
           v-if="toolButton"
         >
           <a-tooltip placement="top" v-if="searchColumns.length > 0">
-            <template #title>数据筛选</template>
+            <template #title>{{ $$t("components.dataFilter") }}</template>
             <search-outlined
               @click="showSearch = !showSearch"
               class="cursor-pointer"
             />
           </a-tooltip>
           <a-tooltip placement="top">
-            <template #title>刷新</template>
+            <template #title>{{ $$t("buttons.refresh") }}</template>
             <redo-outlined @click="reset()" class="cursor-pointer" />
           </a-tooltip>
           <a-tooltip placement="top">
-            <template #title>密度</template>
+            <template #title>{{ $$t("components.density") }}</template>
             <a-dropdown :trigger="['click']" placement="bottom">
               <column-width-outlined class="cursor-pointer" />
               <template #overlay>
                 <a-menu v-model:selectedKeys="size" @click="setTableSize">
-                  <a-menu-item key="default">默认</a-menu-item>
-                  <a-menu-item key="middle">中等</a-menu-item>
-                  <a-menu-item key="small">紧凑</a-menu-item>
+                  <a-menu-item key="default">
+                    {{ $$t("components.default") }}
+                  </a-menu-item>
+                  <a-menu-item key="middle">
+                    {{ $$t("components.middle") }}
+                  </a-menu-item>
+                  <a-menu-item key="small">
+                    {{ $$t("components.small") }}
+                  </a-menu-item>
                 </a-menu>
               </template>
             </a-dropdown>
@@ -151,6 +157,7 @@ import type { Table } from "./interface";
 import colSetting from "./components/colSetting.vue";
 import bodyCell from "./components/bodyCell.vue";
 import summaryCell from "./components/summaryCell.vue";
+import { $$t } from "@/plugins/language/setupI18n";
 
 // 接受父组件prop，配置默认值
 const props = withDefaults(defineProps<Table.tableProps>(), {
@@ -207,9 +214,6 @@ const {
 watchEffect(() => {
   setColumns(props.columns);
 });
-
-// 重置表格已选的值
-// watch(loading, () => selectionChange([]));
 
 // 	修改表头宽度
 const handleResizeColumn = (w: number, col: wTableProp) => {

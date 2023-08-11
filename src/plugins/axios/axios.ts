@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig, Axios, AxiosResponse, AxiosError } from "axios";
 import { start, close } from '@/plugins/nprogress'
 import { message } from 'ant-design-vue';
-
+import { $$t } from "@/plugins/language/setupI18n";
 import { HandlingInterface, setUpConfig } from './utils'
 import { checkStatus } from "./checkStatus";
 import { RequestOptions, Result } from "@/types/axios";
@@ -62,7 +62,7 @@ export default class VAxios {
         for (let i = 0; i < reqList.length; i++) {
             if (reqList[i] === url && !this.option.preventDuplication) {
                 message.destroy()
-                message.error('正在请求中，请不要重复请求！')
+                message.error($$t('sys.repeatAxios'))
                 cancel(errorMessage)
                 return
             }
@@ -103,7 +103,7 @@ export default class VAxios {
                 setupRequestRecord(cancel, config.url, 'add')
             })
             // 阻止重复请求
-            this.handleStopRepeatRequest(this.reqList, config.url, cancel, `${config.url} 正在请求中，请不要重复请求！`)
+            this.handleStopRepeatRequest(this.reqList, config.url, cancel, `${config.url} ${$$t('sys.repeatAxios')}`)
             // 请求前根据option修改config
             config = { ...setUpConfig(config, this.option) }
             return config;
@@ -118,7 +118,7 @@ export default class VAxios {
         this.instance.interceptors.response.use((res: AxiosResponse<any>) => {
             this.handleAllowRequest(this.reqList, res.config.url)
             const code = res.data.code || 500
-            const msg = res.data.message || res.data.msg || '服务器错误,请联系管理员!'
+            const msg = res.data.message || res.data.msg || $$t('sys.errMsg500')
             checkStatus(code, msg)
             return res
         }, (error) => {

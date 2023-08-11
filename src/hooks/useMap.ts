@@ -16,7 +16,7 @@ function loadAMap() {
             })
         })
     } else {
-        throw new Error('地图加载失败，API Key缺失.')
+        throw new Error('map load error.')
     }
     return aMapLoaded
 }

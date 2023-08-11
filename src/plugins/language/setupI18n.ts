@@ -10,6 +10,7 @@ let i18n = createI18n({
   locale: language, // 默认语言为中文
   silentTranslationWarn: true,
   globalInjection: true, // 全局模式，可以直接使用 $t
+  allowComposition: true,// 允许组合式api
   messages: {
     ...zh_CN,
     ...en_US,
@@ -22,7 +23,9 @@ export function setupI18n(app: App) {
   app.use(i18n);
 }
 type I18Fun = typeof i18n.global.t;
-export const i18nText: I18Fun = function (...args): string {
+
+/** 配合i18n Ally插件来进行国际化智能提示，（提示起作用） */
+export const $$t: I18Fun = function (...args): string {
   try {
     const { t } = i18n.global;
     return t.apply(this, args);
@@ -30,4 +33,4 @@ export const i18nText: I18Fun = function (...args): string {
     console.log(error);
   }
 };
-// //导出语言切换使得在其他js文件中也能使用多语言
+//导出$$t使得在其他js文件中也能使用多语言

@@ -10,11 +10,10 @@ import { useI18n } from "vue-i18n";
 import { WAdminConfig } from "@/store/interface";
 
 const { VITE_PROJECT_NAME, VITE_PROJECT_LOGO } = import.meta.env;
-const { t, locale } = useI18n();
+const { locale } = useI18n();
 const { getConfigState, setConfigState } = config();
 const checked = ref<boolean>(false);
 const language = ref<string>("");
-
 watchEffect(() => {
   checked.value = getConfigState("isHasDark");
   language.value = getConfigState("language");
@@ -72,13 +71,13 @@ const compChange = (key: string) => {
               @click="changLan('zh_CN')"
               :disabled="language === 'zh_CN'"
             >
-              {{ t("sys.zhCN") }}
+              {{ $t("sys.zhCN") }}
             </a-menu-item>
             <a-menu-item
               @click="changLan('en_US')"
               :disabled="language === 'en_US'"
             >
-              {{ t("sys.enCN") }}
+              {{ $t("sys.enCN") }}
             </a-menu-item>
           </a-menu>
         </template>
@@ -103,7 +102,7 @@ const compChange = (key: string) => {
               {{ VITE_PROJECT_NAME }}
             </span>
           </div>
-          <div>{{ t("sys.loginDesc") }}</div>
+          <div>{{ $t("sys.loginDesc") }}</div>
         </div>
         <div class="w-[70%]">
           <a-carousel autoplay>
@@ -118,7 +117,7 @@ const compChange = (key: string) => {
         <div
           class="w-[100%] sm:w-[60%] xl:w-[65%] overflow-hidden mx-auto shadow-2xl bg-white dark:bg-[#333] rounded-2xl p-[2.5vw]"
         >
-          <div class="mb-6 text-4xl font-bold">{{ t("sys.Sign") }}</div>
+          <div class="mb-6 text-4xl font-bold">{{ $t("login.sign") }}</div>
           <transition appear name="login-transform" mode="out-in">
             <component :is="currentComp" @change="compChange"></component>
           </transition>

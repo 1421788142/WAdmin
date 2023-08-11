@@ -1,11 +1,11 @@
 <template>
   <div class="flex w-full">
     <w-tree-filter
+      :dataList="deptTree"
+      :placeholder="$t('commons.pleaseEnter', { text: $t('commons.key') })"
       v-model:value="initParam.deptId"
       @change="table.refresh()"
-      title="部门列表"
     />
-
     <w-table
       ref="table"
       :requestApi="userList"
@@ -75,13 +75,13 @@ const {
   title,
   initParam,
   fileList,
+  deptTree,
+  loading,
   open,
   userList,
   delUser,
   updateUser,
-  loading,
 } = usePageData();
-
 const [form, table] = [
   ref<RefComponent<typeof formVue>>(),
   ref<RefComponent<typeof tableVue>>(),

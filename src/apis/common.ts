@@ -1,4 +1,5 @@
 import { Http } from "@/plugins/axios";
+import { tableResultData } from '@/apis/interface'
 
 export interface uploadFile {
     code: number,
@@ -26,4 +27,14 @@ export const uploadImg = (data: any) => {
 // 上传视频
 export const uploadVideo = (data: any) => {
     return Http.post<fileInterface>({ url: videoUpUrl, data })
+}
+
+export interface deptListType {
+    title: string,
+    pId: number,
+    id: number
+}
+// 获取部门
+export const deptList = () => {
+    return Http.get<tableResultData<deptListType>>({ url: '/dept/list' })
 }

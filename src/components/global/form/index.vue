@@ -57,6 +57,7 @@ import { useElementSize } from "@vueuse/core";
 import type { Rule } from "ant-design-vue/es/form";
 import { FormInstance, FormProps, message } from "ant-design-vue";
 import { useVModel } from "@/hooks/useVModel";
+import { $$t } from "@/plugins/language/setupI18n";
 
 interface propsInterface {
   columns: wFormProps; //所有表单项
@@ -72,7 +73,7 @@ interface propsInterface {
 // 默认值
 const props = withDefaults(defineProps<propsInterface>(), {
   columns: () => [],
-  errorMsg: "请认真填写表单",
+  errorMsg: () => $$t("messages.formSubmitTitle"),
   labelCol: () => ({ span: 4 }),
   wrapperCol: () => ({ span: 20 }),
   gutter: 16,
@@ -114,7 +115,9 @@ const formColumns = props.columns
                       return Promise.resolve();
                     } else {
                       return Promise.reject(
-                        `${item?.formItemOption?.label || item?.label}不能为空`,
+                        `${$$t("commons.notEmpty", {
+                          text: item?.formItemOption?.label || item?.label,
+                        })}`,
                       );
                     }
                   },
