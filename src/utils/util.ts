@@ -2,6 +2,11 @@ import { isArray, isObject } from "@/utils/is";
 import { enumProp } from '@/types/searchForm'
 import { DeepMerge } from "@/types/utils";
 import { $$t } from '@/plugins/language/setupI18n';
+import {
+	RouterHistory,
+	createWebHistory,
+	createWebHashHistory
+} from "vue-router";
 
 /**
  * @description 清除所有localStorage
@@ -361,9 +366,11 @@ export const filterPick = <T extends Record<string, any>, K extends keyof T>(
 
 /**
  * @param {string} name 文件名称：test.png
+ * @param {boolean} hasLocal 是否为本地文件 否则直接返回路径
  * @returns {*|string}
  */
-export const getAssets = (name: string): any | string => {
+export const getAssets = (name: string, hasLocal: boolean = false): any | string => {
+	if (hasLocal) return name
 	if (!name) return Error('name is null')
 	const first = name.split('')[0]
 	if (first === '/') name = name.slice(1) //去掉前缀 携带/打包后会出现问题
@@ -374,7 +381,7 @@ export const getAssets = (name: string): any | string => {
  * base64下载图文
  * @param { string } base64
  * @param { string } fileName
- */
+*/
 export const downloadByBase64 = (base64: string, fileName: string) => {
 	let parts = base64.split(';base64,')
 	let contentType = parts[0].split(':')[1]
@@ -395,4 +402,30 @@ export const downloadByBase64 = (base64: string, fileName: string) => {
 	aLink.href = URL.createObjectURL(blob);
 	// 执行点击事件进行下载
 	aLink.click()
+}
+
+/**
+ * 获取路由历史模式
+ * @param { string } type
+*/
+export const getHistoryMode = (Type: 'hash' | 'h5'): RouterHistory => {
+	// len为1 代表只有历史模式 为2 代表历史模式中存在base参数
+	const historyMode = Type.split(",");
+	const leftMode = historyMode[0];
+	const rightMode = historyMode[1];
+	// no param
+	if (historyMode.length === 1) {
+		if (leftMode === "hash") {
+			return createWebHashHistory();
+		} else if (leftMode === "h5") {
+			return createWebHistory();
+		}
+	} //has param
+	else if (historyMode.length === 2) {
+		if (leftMode === "hash") {
+			return createWebHashHistory(rightMode);
+		} else if (leftMode === "h5") {
+			return createWebHistory(rightMode);
+		}
+	}
 }

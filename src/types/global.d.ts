@@ -23,4 +23,6 @@ declare type ViteEnv = {
   VITE_PROXY_URL: string;
   VITE_PROJECT_LOGO: string;
   VITE_API_URL: string;
+  VITE_ROUTER_HISTORY: 'hash' | 'h5';
+  VITE_PUBLIC_PATH: string
 }

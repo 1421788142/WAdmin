@@ -14,10 +14,12 @@ const { locale } = useI18n();
 const { getConfigState, setConfigState } = config();
 const checked = ref<boolean>(false);
 const language = ref<string>("");
+
 watchEffect(() => {
   checked.value = getConfigState("isHasDark");
   language.value = getConfigState("language");
 });
+
 const iconStyle = { width: 20, height: 20 };
 let switchDarkFn = null;
 const chnageDark = (value: boolean) => {
