@@ -98,7 +98,7 @@ export default defineStore<'user', WAdminUser.state, WAdminUser.getters, WAdminU
             if (res) {
                 router.push({ path: '/' })
                 notification.open({
-                    message: $$t('messages.loginOk'),
+                    message: $$t('login.loginOk'),
                     description: `${timeState()},${this.userInfo.userName}`,
                     icon: () => h(CheckCircleTwoTone, { twoToneColor: '#09F175' }),
                 });

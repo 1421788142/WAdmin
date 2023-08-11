@@ -1,5 +1,7 @@
 import _ from 'loadsh'
 import { Layout } from './layout'
+import { detailsRouter } from './routers'
+
 // 根据后台返回的菜单生成路由
 export default function getRoutes(routerList: menuListType[]) {
     let menuList = _.cloneDeep(routerList) as menuListType[]
@@ -20,6 +22,14 @@ export default function getRoutes(routerList: menuListType[]) {
             }
         })
     }
+
+    // 自动注册详情
+    const autoRouterDetails = () => {
+        detailsRouter.forEach((menu) => {
+            autoRouterViews(menu)
+        })
+    }
+
     // 自动注册路由
     function setRoute(menus: menuListType[]) {
         menus.forEach(item => {
@@ -32,6 +42,7 @@ export default function getRoutes(routerList: menuListType[]) {
         })
     }
     setRoute(menuList)
+    autoRouterDetails()
     // 大屏需要过滤的首页菜单
     const dataScreen = ['/dataScreen/home']
     function setRedirect() {//获取启动页

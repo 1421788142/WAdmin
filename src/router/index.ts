@@ -9,7 +9,6 @@ import { storeToRefs } from "pinia"
 import userStore from '@/store/user';
 import { getHistoryMode } from "u/util";
 // 创建
-console.log(getHistoryMode(import.meta.env.VITE_ROUTER_HISTORY))
 const router = createRouter({
     history: getHistoryMode(import.meta.env.VITE_ROUTER_HISTORY),
     routes: routes,//将布局路由和自动注册路由合并

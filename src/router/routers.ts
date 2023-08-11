@@ -47,7 +47,10 @@ export const routes = [
             title: "空白",
             icon: "bar-chart-outlined"
         }
-    },
+    }
+] as RouteRecordRaw[]
+
+export const detailsRouter = [
     {
         component: 'feat/infoPage/queryDetail/index',
         path: "/feat/infoPage/query-detail/:id",
@@ -70,4 +73,4 @@ export const routes = [
             currentPath: "/feat/infoPage/params-detail/:id",
         }
     }
-] as RouteRecordRaw[]
+] as unknown as menuListType[]
