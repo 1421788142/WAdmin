@@ -6,18 +6,35 @@ import setupPlugins from './vite'
 import { resolve } from 'path'
 // https://vitejs.dev/config/
 import { wrapperEnv } from './src/utils/getEnvConfig'
+
+/** 路径查找 */
+const pathResolve = (dir: string): string => {
+  return resolve(__dirname, ".", dir);
+};
+
+/** 设置别名 */
+const alias: Record<string, string> | Array<{ find: string | RegExp, replacement: string }> = {
+  "@": pathResolve("src"),
+  "~": pathResolve("./"),
+  "img": pathResolve("./src/assets/image/"),
+  "com": pathResolve("./src/components/"),
+  "api": pathResolve("./src/apis/"),
+  "s": pathResolve("./src/styles/"),
+  "u": pathResolve("./src/utils/"),
+  "v": pathResolve("./src/views/"),
+  "types": pathResolve("./src/types/"),
+  "vue-i18n": "vue-i18n/dist/vue-i18n.cjs.js"
+};
+
 export default defineConfig(({ mode, command }: ConfigEnv): UserConfig => {
   const isBuild = command === 'build' ? true : false
   const env = loadEnv(mode, process.cwd());
   const viteEnv = wrapperEnv(env);
   return {
+    base: viteEnv.VITE_PUBLIC_PATH,
     plugins: setupPlugins(viteEnv, isBuild),//挂载插件
     resolve: {
-      alias: {
-        '@': resolve(__dirname, 'src'),
-        '~': resolve(__dirname, './'),
-        "vue-i18n": "vue-i18n/dist/vue-i18n.cjs.js"
-      },
+      alias,
     },
     server: {
       host: '0.0.0.0',

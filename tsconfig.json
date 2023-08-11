@@ -19,7 +19,14 @@
     // 模块名到基于 baseUrl的路径映射的列表。
     "paths": {
       "@": ["src"],
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "img/*": ["./src/assets/image/*"],
+      "com/*": ["./src/components/*"],
+      "api/*": ["./src/apis/*"],
+      "s/*": ["./src/styles/*"],
+      "u/*": ["./src/utils/*"],
+      "v/*": ["./src/views/*"],
+      "types/*": ["./src/types/*"],
     }
   },
   "include": [
