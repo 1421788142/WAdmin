@@ -2,7 +2,7 @@
   <div class="flex flex-col h-full" v-loading="loading">
     <slot name="header"></slot>
     <div class="flex-1 overflow-auto rounded-lg waterfall-box">
-      <Waterfall :list="listData" v-bind="options">
+      <Waterfall :list="listData" v-bind="options" class="template-box">
         <template #item="{ item, url, index }">
           <slot name="list-item" :item="item" :url="url" :index="index"></slot>
         </template>

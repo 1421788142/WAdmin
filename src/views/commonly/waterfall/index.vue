@@ -2,15 +2,13 @@
   <div class="h-full">
     <waterfallVue :request-api="userList" :init-param="{ pageSize: 18 }">
       <template #header>
-        <div
-          class="w-full py-10 mb-2 text-2xl text-center text-white bg-slate-400"
-        >
+        <div class="w-full py-10 mb-2 text-2xl text-center bg-slate-400">
           自行添加搜索模块等等...
         </div>
       </template>
       <template #list-item="{ item, url, index }">
         <div
-          class="overflow-hidden transition-all duration-300 ease-linear rounded-lg shadow-md hover:shadow-lg hover:shadow-gray-500 group"
+          class="overflow-hidden transition-all duration-300 ease-linear rounded-lg shadow-md template-box hover:shadow-lg hover:shadow-gray-500 group"
           @click="handleClick(item)"
         >
           <LazyImg

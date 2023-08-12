@@ -37,6 +37,8 @@ WAdmin，基于 Vue3.2、TypeScript、Vite2、Pinia、antDesign 开源的一套�
 - 🚀 使用 vue-router 进行路由权限拦截（403 页面，404 页面）、页面按钮权限配置、路由懒加载
 - 🚀 使用 keep-alive 对整个页面进行缓存，支持多级嵌套页面（缓存路由里可配置、页面切换带动画）
 - 🚀 常用自定义指令开发（复制、节流、防抖、长按……）
+- 🚀 更多常用组件...
+- 🚀 持续更新
 
 ### 五、安装使用
 
@@ -66,10 +68,6 @@ yarn build
 ### 六、项目截图 📷
 
 
-![login](http://121.4.119.52/image/9.png)
-
-![web](http://121.4.119.52/image/7.png)
-
 ![web](http://121.4.119.52/image/1.png)
 
 ![web](http://121.4.119.52/image/2.png)
@@ -82,13 +80,23 @@ yarn build
 
 ![web](http://121.4.119.52/image/6.png)
 
-![web](http://121.4.119.52/image/12.png)
+![web](http://121.4.119.52/image/7.png)
 
 ![web](http://121.4.119.52/image/8.png)
+
+![web](http://121.4.119.52/image/9.png)
 
 ![web](http://121.4.119.52/image/10.png)
 
 ![web](http://121.4.119.52/image/11.png)
+
+![web](http://121.4.119.52/image/12.png)
+
+![web](http://121.4.119.52/image/13.png)
+
+![web](http://121.4.119.52/image/14.png)
+
+![web](http://121.4.119.52/image/15.png)
 
 ### 七、项目后台接口
 > 项目后台接口完全采用Mock 数据，感谢下面Mock平台支持

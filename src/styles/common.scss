@@ -3,6 +3,10 @@ html,body{
 	height: 100vh;
 	overflow:hidden
 }
+
+.template-box{
+	@apply bg-white dark:bg-black
+}
 /* scroll bar */
 ::-webkit-scrollbar {
 	width: 8px;
@@ -13,6 +17,19 @@ html,body{
 	background-color: #dddee0;
 	border-radius: 20px;
 	box-shadow: inset 0 0 0 white;
+}
+[data-theme='dark']{
+	/* scroll bar */
+::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+	background-color: rgb(42, 42, 42);
+}
+::-webkit-scrollbar-thumb {
+	background-color: #444444;
+	border-radius: 20px;
+	box-shadow: inset 0 0 0 white;
+}
 }
 
 body.color-weak, html.color-weak {
