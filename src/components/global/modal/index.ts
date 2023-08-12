@@ -1,6 +1,6 @@
 import type { PropType } from 'vue';
 import { $$t } from "@/plugins/language/setupI18n";
-
+import type { ButtonType } from 'ant-design-vue/es/button/buttonTypes';
 
 export const basicProps = {
     draggable: { type: Boolean, default: true }, //是否课拖动modal
@@ -8,7 +8,7 @@ export const basicProps = {
     okText: { type: String, default: () => $$t('buttons.confirm') },
     showCancelBtn: { type: Boolean, default: true },//显示关闭按钮
     showOkBtn: { type: Boolean, default: true },//显示确定按钮
-    okType: { type: String, default: 'primary' },//确定按钮类型
+    okType: { type: String as PropType<ButtonType>, default: 'primary' },//确定按钮类型
     isFull: { type: Boolean, default: false },//是否全屏
     title: { type: String, default: '---' },
     visible: { type: Boolean, default: false },

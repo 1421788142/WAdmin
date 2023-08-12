@@ -10,7 +10,7 @@
         class="wap-menu"
       >
         <div class="!h-screen w-full">
-          <menuVue menuTheme="vertical" class="w-full" />
+          <menuVue menuTheme="dark" class="w-full" />
         </div>
       </a-drawer>
     </div>

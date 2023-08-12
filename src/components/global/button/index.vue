@@ -22,8 +22,9 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { $$t } from "@/plugins/language/setupI18n";
+import type { ButtonType } from "ant-design-vue/es/button/buttonTypes";
 interface propsInterface {
-  btnType?: string; //按钮类型
+  btnType?: ButtonType; //按钮类型
   title?: string; //按钮文字
   icon?: string | boolean; //按钮图标
   type?: string; //权限字符串 多个权限用逗号隔开 'add' || 'add,update'

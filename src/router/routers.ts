@@ -52,7 +52,7 @@ export const routes = [
 
 export const detailsRouter = [
     {
-        component: 'feat/infoPage/queryDetail/index',
+        component: import('@/views/feat/infoPage/queryDetail/index.vue'),
         path: "/feat/infoPage/query-detail/:id",
         name: "queryDetail",
         meta: {
@@ -63,7 +63,7 @@ export const detailsRouter = [
         }
     },
     {
-        component: 'feat/infoPage/paramsDetail/index',
+        component: import('@/views/feat/infoPage/paramsDetail/index.vue'),
         path: "/feat/infoPage/params-detail/:id",
         name: "paramsDetail",
         meta: {
@@ -73,4 +73,4 @@ export const detailsRouter = [
             currentPath: "/feat/infoPage/params-detail/:id",
         }
     }
-] as unknown as menuListType[]
+]

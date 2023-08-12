@@ -4,6 +4,7 @@ import { tableResultData, queryTableInterface } from '@/apis/interface'
 export interface loginInterface {
     userName: string,
     password: string,
+    code: string
 }
 
 export interface userInterface {
@@ -23,10 +24,6 @@ export interface roleInterafce {
     status: number,
     order: number,
     menuId: string,
-}
-
-export const codeImg = () => {
-    return Http.get<{ url: string, key: string }>({ url: `/code` })
 }
 
 export const login = (data: loginInterface) => {

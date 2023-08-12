@@ -65,7 +65,7 @@ const {
 const options = computed(() => deepMerge(defaultOptions, props.option));
 
 // 回到顶部盒子
-const targetFn = () => document.querySelector(".waterfall-box"); //回到顶部
+const targetFn = (): HTMLElement => document.querySelector(".waterfall-box"); //回到顶部
 
 /** 加载更多 */
 const handleLoadMore = async () => {

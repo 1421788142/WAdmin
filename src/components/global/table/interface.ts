@@ -25,8 +25,8 @@ export namespace Table {
 		isSelected: boolean,
 		showSearch: boolean,
 		errorReset: number,
-		selectedList: string[] | number[] | any[],
-		size: string[],
+		selectedList: TableProps["rowSelection"]['selectedRowKeys'],
+		size: TableProps['size'][],
 		searchColumns: searchFormProps[],
 		tableColumns: columnsType,
 	}

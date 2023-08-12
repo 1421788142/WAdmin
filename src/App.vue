@@ -9,7 +9,7 @@ import "dayjs/locale/zh-cn";
 
 const { getConfigState } = config();
 // 配置全局组件大小 (small/default(middle)/large)
-const size = computed((): string => getConfigState("componentSize"));
+const size = computed(() => getConfigState("componentSize"));
 const colorState = reactive({
   primaryColor: getConfigState("themeColor"),
 });

@@ -110,7 +110,7 @@
       :row-selection="
         selection
           ? {
-              rowSelection: selectedList,
+              selectedRowKeys: selectedList,
               onChange: selectionChange,
               ...selectionOption,
             }

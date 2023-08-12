@@ -1,4 +1,5 @@
 import { userInterface, loginInterface } from '@/apis/user'
+export type pageType = 1 | 2 | 3 | 4 | 5
 export namespace WAdminUser {
     export type state = {
         userRouterList: menuListType[];
@@ -6,6 +7,8 @@ export namespace WAdminUser {
         requestRecord: any[];
         historyMenuTag: menuItem[];
         token: string;
+        verifyCode: string,
+        currentPage: pageType
     }
     export type getters = {
         getMenus: (state: state) => state['userRouterList'],
@@ -14,6 +17,8 @@ export namespace WAdminUser {
         [key: string]: any
     }
     export type actions = {
+        setVerifyCode: (code: string) => Promise<void>,
+        setCurrentPage: (type: pageType) => Promise<void>,
         setUserInfo: (info: userInterface) => Promise<any>,
         setHistoryMenu: (menu: state['historyMenuTag']) => Promise<any>,
         getHistoryMenu: () => Promise<state['historyMenuTag']>,

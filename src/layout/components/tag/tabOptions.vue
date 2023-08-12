@@ -44,12 +44,13 @@
 import { useRoute } from "vue-router";
 import type { itemType } from "./index";
 import { $$t } from "@/plugins/language/setupI18n";
+import { Trigger } from "ant-design-vue/es/dropdown/props";
 
 interface propInterface {
   disabled?: boolean;
   item?: any;
   title?: string;
-  trigger?: string;
+  trigger?: Trigger;
   tagsIndex?: number;
   tabItmes: itemType[];
 }

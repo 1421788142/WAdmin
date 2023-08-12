@@ -4,6 +4,7 @@ import { RouteLocationNormalizedLoaded } from 'vue-router';
 
 import { selected, openKey, setBreadCrumbs } from '@/layout/index'
 import { menuTypeEnum, menuThemeEnum } from '@/enums/menu'
+import type { MenuTheme } from 'ant-design-vue/es/menu'
 
 import { storeToRefs } from "pinia"
 import userStore from '@/store/user';
@@ -16,72 +17,72 @@ const { getConfigState } = config()
  * @description layout 页面操作方法封装
  * */
 export const useMenu = (
-    menuTheme:string = 'dark',
-    route:RouteLocationNormalizedLoaded
-)=>{
+    menuTheme: MenuTheme = 'dark',
+    route: RouteLocationNormalizedLoaded
+) => {
     const state = reactive<Layout.menuStatePrpos>({
         // 菜单列表
-        menuList:[],
+        menuList: [],
         // 当前选中的菜单项 key 数组
-        selectedKeys:[],
+        selectedKeys: [],
         // 当前展开的 SubMenu 菜单项 key 数组
-        openKeys:[],
+        openKeys: [],
         // 默认只展开一个父级菜单 保存一级目录layouy
-        rootSubmenuKeys:userRouterList.value.map(x=>x.component === 'Layout' && x.path),
+        rootSubmenuKeys: userRouterList.value.map(x => x.component === 'Layout' && x.path),
         // 菜单类型
-        mode:'vertical',
+        mode: 'vertical',
         // 是否显示logo
-        isHasLogo:false,
+        isHasLogo: false,
     })
 
-	/**
-	 * @description 获取菜单用computed方便后面迭代菜单对菜单修改
-	 * */
-    const setMenuList = (path = '')=>{
+    /**
+     * @description 获取菜单用computed方便后面迭代菜单对菜单修改
+     * */
+    const setMenuList = (path = '') => {
         state.menuList = []
-        if(getConfigState('menuType') === 'mix' && getConfigState('sysMode') === 'web'){
+        if (getConfigState('menuType') === 'mix' && getConfigState('sysMode') === 'web') {
             let routePath = (path || route.meta.parentPath || route.path) as string
-            state.menuList = userRouterList.value.filter(item=>routePath === item.path && item.children)
-            if(state.menuList.length === 0) state.menuList = setBreadCrumbs(routePath)[0]?.children || []
+            state.menuList = userRouterList.value.filter(item => routePath === item.path && item.children)
+            if (state.menuList.length === 0) state.menuList = setBreadCrumbs(routePath)[0]?.children || []
         } else {
             state.menuList = userRouterList.value
         }
     }
-    watch(()=>getConfigState('menuType'),()=>setMenuList())
+    watch(() => getConfigState('menuType'), () => setMenuList())
     // 监听路由变化设置选中菜单和展开菜单
-    watch(()=>route.path,(newValue)=>{
+    watch(() => route.path, (newValue) => {
         let routePath = route.meta.parentPath as string ?? newValue
         // 展开菜单
         state.openKeys = []
-        if(!getConfigState('isHasCollapsed')) state.openKeys = openKey(routePath);
+        if (!getConfigState('isHasCollapsed')) state.openKeys = openKey(routePath);
         (state.mode === 'vertical' && getConfigState('menuType') === 'horizontal') && (state.openKeys = [])
         setMenuList()
         // 菜单高亮
-        if(getConfigState('menuType') === 'mix'){
+        if (getConfigState('menuType') === 'mix') {
             state.selectedKeys = [routePath]
         } else {
             state.selectedKeys = selected(routePath)
         }
-    },{immediate:true,deep:true})
+    }, { immediate: true, deep: true })
 
     // 初始化的时候需要做的事情就获取菜单
-	onMounted(() => {
-        state.mode =  getConfigState('menuType') !== 'horizontal' ? 'inline' : 'horizontal'
+    onMounted(() => {
+        state.mode = getConfigState('menuType') !== 'horizontal' ? 'inline' : 'horizontal'
         state.isHasLogo = getConfigState('menuType') === 'mix' && state.mode === 'horizontal' ? false : getConfigState('isHasLogo')
-	});
-    
+    });
+
     // 菜单主题
-    const theme = computed(():string=>getConfigState('menuType') === menuTypeEnum.verticalLight ? menuThemeEnum.light : menuTheme)
+    const theme = computed((): MenuTheme => getConfigState('menuType') === menuTypeEnum.verticalLight ? menuThemeEnum.light : menuTheme)
 
     // 菜单类名
-    const menuClass = computed(():string[]=>{ //菜单类名
+    const menuClass = computed((): string[] => { //菜单类名
         return [
             getConfigState('menuType') === 'horizontal' ? 'justify-center flex-1' : 'min-h-[100%]',
         ]
     })
 
     // 默认展开一级父级菜单
-    const onOpenChange = (openKey: string[])=>{
+    const onOpenChange = (openKey: string[]) => {
         const latestOpenKey = openKey.find(key => state.openKeys.indexOf(key) === -1);
         if (state.rootSubmenuKeys.indexOf(latestOpenKey!) === -1) {
             state.openKeys = openKey;
@@ -91,11 +92,11 @@ export const useMenu = (
     }
 
     return {
-		...toRefs(state),
+        ...toRefs(state),
         menuClass,
         theme,
         getConfigState,
         setMenuList,
         onOpenChange
-	};
+    };
 }

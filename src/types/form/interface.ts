@@ -1,4 +1,5 @@
 import type { SelectProps, FormItemProps } from 'ant-design-vue'
+import type { TooltipPlacement } from 'ant-design-vue/es/tooltip/index'
 import { Ref } from 'vue'
 
 // 搜索控件类型
@@ -39,7 +40,7 @@ export type wFormProps = {
      * 
      */
     label?: string,
-    tooltipPlacement?: string, //label 提示语位置
+    tooltipPlacement?: TooltipPlacement, //label 提示语位置
     //默认验证(默认给表单添加rules(可被formItemOption的rules替换)  rules: [{ required: true, trigger: ['change', 'blur'] }] )
     isRule?: boolean,
     validator?: (param: any) => void, //验证器

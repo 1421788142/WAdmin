@@ -68,7 +68,7 @@ export default defineComponent({
       }, 50);
     };
 
-    const targetFn = () => document.querySelector(".wrapper-box"); //回到顶部
+    const targetFn = (): HTMLElement => document.querySelector(".wrapper-box"); //回到顶部
     setViewShow();
 
     watch(

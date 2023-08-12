@@ -80,7 +80,7 @@
     <div>
       <a-button
         class="!flex items-center justify-center w-full my-4"
-        @click="reset"
+        @click="reset()"
       >
         <reload-outlined />
         {{ $t("buttons.reset") }}
@@ -154,7 +154,7 @@ const change = (value: boolean | number, type: string) => {
   setConfigState(type, value);
 };
 
-const reset = async (show = true) => {
+const reset = (show = true) => {
   setTimeout(async () => {
     await resetConfig();
     setDefaultVal();

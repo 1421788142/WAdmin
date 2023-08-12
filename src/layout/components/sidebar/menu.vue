@@ -25,10 +25,11 @@
 import { useMenu } from "@/hooks/useMenu";
 import menuItemVue from "./menuItem.vue";
 import { useRoute } from "vue-router";
+import type { MenuTheme } from "ant-design-vue/es/menu";
+
 const route = useRoute();
-const props = defineProps({
-  menuTheme: String,
-});
+const props = defineProps<{ menuTheme: MenuTheme }>();
+
 // menu Hooks
 const {
   menuList,
