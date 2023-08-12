@@ -429,3 +429,16 @@ export const getHistoryMode = (Type: 'hash' | 'h5'): RouterHistory => {
 		}
 	}
 }
+
+/**
+ * @description 预加载函数
+ * @param {number} number
+ */
+
+export const preload = (number: number = 500) => {
+	return new Promise((reslove) => {
+		setTimeout(() => {
+			reslove(null)
+		}, number)
+	})
+}

@@ -1,6 +1,12 @@
 <template>
   <div>
-    <a-form class="mt-5" name="ruleFormRef" :model="form" @finish="submit">
+    <a-form
+      :rules="loginRules"
+      class="mt-5"
+      name="ruleFormRef"
+      :model="form"
+      @finish="submit"
+    >
       <a-form-item
         name="userName"
         :rules="[
@@ -12,47 +18,23 @@
       >
         <a-input
           size="large"
-          :placeholder="
-            $t('commons.pleaseEnter', { text: $t('login.account') })
-          "
+          :placeholder="$t('login.account')"
           v-model:value="form.userName"
         />
       </a-form-item>
-      <a-form-item
-        name="password"
-        class="mt-5"
-        :rules="[
-          {
-            required: true,
-            message: $t('commons.pleaseEnter', { text: $t('login.password') }),
-          },
-        ]"
-      >
+      <a-form-item name="password" class="mt-5">
         <a-input-password
           size="large"
-          :placeholder="
-            $t('commons.pleaseEnter', { text: $t('login.password') })
-          "
+          :placeholder="$t('login.password')"
           v-model:value="form.password"
         />
       </a-form-item>
-      <a-form-item
-        name="code"
-        class="mt-5"
-        :rules="[
-          {
-            required: true,
-            message: $t('commons.pleaseEnter', { text: $t('login.imgCode') }),
-          },
-        ]"
-      >
+      <a-form-item name="code" class="mt-5">
         <div class="grid grid-flow-row-dense grid-cols-3 gap-2">
           <a-input
             class="col-span-2"
             size="large"
-            :placeholder="
-              $t('commons.pleaseEnter', { text: $t('login.imgCode') })
-            "
+            :placeholder="$t('login.verifyCode')"
             v-model:value="form.code"
           />
           <a-spin :spinning="codeLoading">
@@ -65,22 +47,30 @@
                   {{ $t("login.refresh") }}
                 </span>
               </div>
-              <img class="!w-[100%] h-[50px]" :src="codeImage" />
+              <imageVerify
+                v-model:code="codeValue"
+                class="!w-full !h-[40px]"
+                ref="codeRef"
+              />
             </div>
           </a-spin>
         </div>
       </a-form-item>
       <a-form-item>
-        <a-checkbox class="my-2" v-model:checked="form.isRemember">
-          {{ $t("login.remember") }}
-        </a-checkbox>
+        <div class="flex items-center justify-between">
+          <a-checkbox class="my-2" v-model:checked="form.isRemember">
+            {{ $t("login.remember") }}
+          </a-checkbox>
+          <a-button type="link" @click="setCurrentPage(5)">
+            {{ $t("login.forget") }}
+          </a-button>
+        </div>
       </a-form-item>
       <a-form-item>
         <a-button
           class="!h-[45px] w-full"
           type="primary"
           :loading="loading"
-          :disabled="disabled"
           html-type="submit"
         >
           {{ $t("buttons.submit") }}
@@ -88,44 +78,42 @@
       </a-form-item>
     </a-form>
     <div class="grid grid-cols-1 gap-2 xl:grid-cols-3">
-      <a-button @click="tabForm('phoneLogin')">
-        {{ $t("login.phoneLogin") }}
+      <a-button @click="setCurrentPage(2)">
+        <span class="text-sm">{{ $t("login.phoneLogin") }}</span>
       </a-button>
-      <a-button @click="tabForm('codeLogin')">
-        {{ $t("login.qrCodeLogin") }}
+      <a-button @click="setCurrentPage(3)">
+        <span class="text-sm">{{ $t("login.qrCodeLogin") }}</span>
       </a-button>
-      <a-button @click="tabForm('registerForm')">
-        {{ $t("login.register") }}
+      <a-button @click="setCurrentPage(4)">
+        <span class="text-sm">{{ $t("login.register") }}</span>
       </a-button>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { reactive, ref, computed } from "vue";
+import { reactive, ref, watch } from "vue";
+import imageVerify from "com/imageVerify/index.vue";
+import { loginRules } from "../utils/rules";
 import userStore from "@/store/user";
-import { codeImg } from "@/apis/user";
-import { message } from "ant-design-vue";
-import { $$t } from "@/plugins/language/setupI18n";
 
-const { login } = userStore();
-const emit = defineEmits(["change"]);
-// 切换表单类型
-const tabForm = (type: string) => {
-  emit("change", type);
-};
+const { login, setVerifyCode, setCurrentPage } = userStore();
+
+const codeRef = ref<RefComponent<typeof imageVerify>>();
+
 // 图片验证码
-const codeLoading = ref<boolean>(true);
-const codeImage = ref<string>("");
+const codeLoading = ref<boolean>(false);
 const codeValue = ref<string>("");
 const setupCodeImg = async () => {
   codeLoading.value = true;
-  let { data } = await codeImg();
-  codeImage.value = data.url;
-  codeValue.value = data.key;
+  await codeRef.value.getImgCode();
   codeLoading.value = false;
 };
-setupCodeImg();
+
+watch(codeValue, value => {
+  setVerifyCode(value);
+});
+
 // 定义接口
 interface loginInterface {
   userName: string;
@@ -134,29 +122,20 @@ interface loginInterface {
   code: string;
 }
 const form = reactive<loginInterface>({
-  userName: "ispyy",
-  password: "123456",
+  userName: "wadmin",
+  password: "wadmin123",
   isRemember: true,
   code: "",
 });
 // 登录验证
 const loading = ref<boolean>(false);
 const submit = async () => {
-  if (codeValue.value !== form.code)
-    return message.error($$t("login.codeError"));
-  const query = {
-    userName: form.userName,
-    password: form.password,
-  };
   loading.value = true;
-  const res = await login(query);
+  const res = await login(form);
   loading.value = res;
   setupCodeImg();
+  form.code = "";
 };
-// 禁用按钮
-const disabled = computed(() => {
-  return !(form.userName && form.password && form.code);
-});
 </script>
 
 <style scoped></style>

@@ -10,7 +10,7 @@ import { notification, message } from 'ant-design-vue';
 import { CheckCircleTwoTone } from '@ant-design/icons-vue';
 import { h } from 'vue';
 
-import { WAdminUser } from './interface'
+import { WAdminUser, pageType } from './interface'
 
 export default defineStore<'user', WAdminUser.state, WAdminUser.getters, WAdminUser.actions>('user', {
     state: () => {
@@ -19,7 +19,10 @@ export default defineStore<'user', WAdminUser.state, WAdminUser.getters, WAdminU
             userInfo: null,
             requestRecord: [],//保存请求的接口
             historyMenuTag: [],//历史菜单
-            token: ''
+            token: '',//
+            verifyCode: "",// 前端生成的验证码（按实际需求替换）
+            // 判断登录页面显示哪个组件（1登录（默认）、2手机登录、3二维码登录、4注册、5忘记密码）
+            currentPage: 1
         }
     },
     getters: {
@@ -28,6 +31,12 @@ export default defineStore<'user', WAdminUser.state, WAdminUser.getters, WAdminU
         getUserInfo: (state) => state.userInfo,
     },
     actions: {
+        async setVerifyCode(code: string) {
+            this.verifyCode = code ?? '';
+        },
+        async setCurrentPage(type: pageType) {
+            this.currentPage = type ?? 1;
+        },
         async setUserInfo(info: userInterface) {
             this.userInfo = info ?? null;
         },

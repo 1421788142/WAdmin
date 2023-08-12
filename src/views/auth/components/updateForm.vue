@@ -1,28 +1,13 @@
 <template>
   <div>
     <a-form
-      :rules="registerRules"
+      :rules="updateRules"
       class="mt-5"
-      ref="registerRef"
-      name="registerRef"
+      ref="updateRef"
+      name="updateRef"
       :model="form"
       @finish="submit"
     >
-      <a-form-item
-        name="account"
-        :rules="[
-          {
-            required: true,
-            message: $t('commons.pleaseEnter', { text: $t('login.account') }),
-          },
-        ]"
-      >
-        <a-input
-          size="large"
-          :placeholder="$t('login.account')"
-          v-model:value="form.account"
-        />
-      </a-form-item>
       <a-form-item name="phone">
         <a-input
           size="large"
@@ -42,7 +27,7 @@
             class="col-span-2"
             :disabled="isDisabled"
             size="large"
-            @click="start(registerRef, 'phone')"
+            @click="start(updateRef, 'phone')"
           >
             <span class="text-sm">
               {{ text ? `${text}${$t("login.info")}` : $t("login.sendSms") }}
@@ -69,16 +54,8 @@
         />
       </a-form-item>
       <a-form-item>
-        <a-checkbox v-model="checked">
-          {{ $t("login.readAccept") }}
-        </a-checkbox>
-        <a-button type="link" class="!p-0">
-          <span class="text-sm">{{ $t("login.privacyPolicy") }}</span>
-        </a-button>
-      </a-form-item>
-      <a-form-item>
         <a-button class="w-full" html-type="submit" type="primary" size="large">
-          <span class="text-sm">{{ $t("login.register") }}</span>
+          <span class="text-sm">{{ $t("buttons.submit") }}</span>
         </a-button>
       </a-form-item>
       <a-form-item>
@@ -90,7 +67,7 @@
 
 <script setup lang="ts">
 import { ref, reactive } from "vue";
-import { registerRules } from "../utils/rules";
+import { updateRules } from "../utils/rules";
 import { useVerifyCode } from "../utils/verifyCode";
 import { FormInstance, message } from "ant-design-vue";
 import { $$t } from "@/plugins/language/setupI18n";
@@ -112,16 +89,13 @@ const getLvl = (val: any) => {
   if (num > 3) level.value = 100;
 };
 interface loginInterface {
-  account: string;
   phone: string;
   code: string;
   password: string;
   confirmPassword: string;
 }
 
-const checked = ref<boolean>(false);
 const form = reactive<loginInterface>({
-  account: "",
   phone: "",
   code: "",
   password: "",
@@ -129,7 +103,6 @@ const form = reactive<loginInterface>({
 });
 
 const submit = async () => {
-  if (!checked.value) return message.warn($$t("login.tickPrivacy"));
   message.success("ok");
 };
 
@@ -152,7 +125,7 @@ const repeatPasswordRule = [
   },
 ];
 
-const registerRef = ref<FormInstance>();
+const updateRef = ref<FormInstance>();
 </script>
 
 <style lang="scss">

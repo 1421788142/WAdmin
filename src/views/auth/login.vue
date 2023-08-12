@@ -1,17 +1,15 @@
 <script setup lang="ts">
-import { shallowRef, ref, watchEffect } from "vue";
-import loginFormVue from "./components/loginForm.vue";
-import phoneLogin from "./components/phoneLogin.vue";
-import codeLogin from "./components/codeLogin.vue";
-import registerForm from "./components/registerForm.vue";
-import config from "@/store/config";
+import { computed, ref, watchEffect, defineAsyncComponent } from "vue";
+import configStore from "@/store/config";
+import userStore from "@/store/user";
 import { getAssets } from "@/utils/util";
 import { useI18n } from "vue-i18n";
 import { WAdminConfig } from "@/store/interface";
 
 const { VITE_PROJECT_NAME, VITE_PROJECT_LOGO } = import.meta.env;
 const { locale } = useI18n();
-const { getConfigState, setConfigState } = config();
+
+const { getConfigState, setConfigState } = configStore();
 const checked = ref<boolean>(false);
 const language = ref<string>("");
 
@@ -38,16 +36,17 @@ const changLan = (value: WAdminConfig.state["language"]) => {
   locale.value = value;
 };
 
-let currentComp = shallowRef(loginFormVue);
-let loginForm = {
-  loginFormVue,
-  phoneLogin,
-  codeLogin,
-  registerForm,
+const component = {
+  1: defineAsyncComponent(() => import("./components/loginForm.vue")),
+  2: defineAsyncComponent(() => import("./components/phoneLogin.vue")),
+  3: defineAsyncComponent(() => import("./components/codeLogin.vue")),
+  4: defineAsyncComponent(() => import("./components/registerForm.vue")),
+  5: defineAsyncComponent(() => import("./components/updateForm.vue")),
 };
-const compChange = (key: string) => {
-  currentComp.value = loginForm[key];
-};
+
+const currentCom = computed(() => {
+  return component[userStore().currentPage];
+});
 </script>
 <template>
   <div class="relative w-screen h-screen dark:bg-[#333]">
@@ -119,9 +118,8 @@ const compChange = (key: string) => {
         <div
           class="w-[100%] sm:w-[60%] xl:w-[65%] overflow-hidden mx-auto shadow-2xl bg-white dark:bg-[#333] rounded-2xl p-[2.5vw]"
         >
-          <div class="mb-6 text-4xl font-bold">{{ $t("login.sign") }}</div>
           <transition appear name="login-transform" mode="out-in">
-            <component :is="currentComp" @change="compChange"></component>
+            <component :is="currentCom" />
           </transition>
         </div>
       </div>
