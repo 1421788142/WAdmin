@@ -67,35 +67,35 @@ yarn build
 
 ### 六、项目截图 📷
 
-![web](http://121.4.119.52/image/1.png)
+![web](http://121.4.119.52/image/v2/1.png)
 
-![web](http://121.4.119.52/image/2.png)
+![web](http://121.4.119.52/image/v2/2.png)
 
-![web](http://121.4.119.52/image/3.png)
+![web](http://121.4.119.52/image/v2/3.png)
 
-![web](http://121.4.119.52/image/4.png)
+![web](http://121.4.119.52/image/v2/4.png)
 
-![web](http://121.4.119.52/image/5.png)
+![web](http://121.4.119.52/image/v2/5.png)
 
-![web](http://121.4.119.52/image/6.png)
+![web](http://121.4.119.52/image/v2/6.png)
 
-![web](http://121.4.119.52/image/7.png)
+![web](http://121.4.119.52/image/v2/7.png)
 
-![web](http://121.4.119.52/image/8.png)
+![web](http://121.4.119.52/image/v2/8.png)
 
-![web](http://121.4.119.52/image/9.png)
+![web](http://121.4.119.52/image/v2/9.png)
 
-![web](http://121.4.119.52/image/10.png)
+![web](http://121.4.119.52/image/v2/10.png)
 
-![web](http://121.4.119.52/image/11.png)
+![web](http://121.4.119.52/image/v2/11.png)
 
-![web](http://121.4.119.52/image/12.png)
+![web](http://121.4.119.52/image/v2/12.png)
 
-![web](http://121.4.119.52/image/13.png)
+![web](http://121.4.119.52/image/v2/13.png)
 
-![web](http://121.4.119.52/image/14.png)
+![web](http://121.4.119.52/image/v2/14.png)
 
-![web](http://121.4.119.52/image/15.png)
+![web](http://121.4.119.52/image/v2/15.png)
 
 ### 七、项目后台接口
 > 项目后台接口完全采用Mock 数据，感谢下面Mock平台支持
