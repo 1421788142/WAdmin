@@ -1,31 +1,14 @@
 <template>
   <div
     class="flex flex-col px-2 pt-2 border border-gray-200 dark:border-gray-700 rounded shadow-sm overflow-auto bg-white dark:bg-[#141414]"
-    :class="{ 'pb-2': !pagination, wrapClass }"
-  >
+    :class="{ 'pb-2': !pagination, wrapClass }">
     <!-- 表格搜索 -->
-    <slot
-      name="search"
-      :search="search"
-      :reset="reset"
-      :loading="loading"
-      :searchParam="searchParam"
-    >
-      <w-search-form
-        :search="search"
-        :reset="reset"
-        :loading="loading"
-        v-model:value="searchParam"
-        :columns="searchColumns"
-        v-show="showSearch"
-      >
+    <slot name="search" :search="search" :reset="reset" :loading="loading" :searchParam="searchParam">
+      <w-search-form :search="search" :reset="reset" :loading="loading" v-model:value="searchParam"
+        :columns="searchColumns" v-show="showSearch">
         <!-- 搜索条件插槽 -->
         <template #formItemSlot="{ formItem, searchParam }">
-          <slot
-            :name="`${formItem.name}FormItem`"
-            :formItem="formItem"
-            :searchParam="searchParam"
-          ></slot>
+          <slot :name="`${formItem.formItemOption.name}FormItem`" :formItem="formItem" :searchParam="searchParam"></slot>
         </template>
         <template #searchBtn>
           <slot name="searchBtnSlot"></slot>
@@ -48,23 +31,13 @@
       <div class="flex items-center max-w-[70%] overflow-auto">
         <div class="flex min-w-min">
           <!-- 按钮插槽 isSelected 是否已选择, selectedList根据key所取的data数据集合 -->
-          <slot
-            name="tableHeader"
-            :selectedList="selectedList"
-            :isSelected="isSelected"
-          ></slot>
+          <slot name="tableHeader" :selectedList="selectedList" :isSelected="isSelected"></slot>
         </div>
         <!-- 表格操作模块 -->
-        <div
-          class="grid grid-flow-col grid-rows-1 gap-2 ml-2 text-xl"
-          v-if="toolButton"
-        >
+        <div class="grid grid-flow-col grid-rows-1 gap-2 ml-2 text-xl" v-if="toolButton">
           <a-tooltip placement="top" v-if="searchColumns.length > 0">
             <template #title>{{ $$t("components.dataFilter") }}</template>
-            <search-outlined
-              @click="showSearch = !showSearch"
-              class="cursor-pointer"
-            />
+            <search-outlined @click="showSearch = !showSearch" class="cursor-pointer" />
           </a-tooltip>
           <a-tooltip placement="top">
             <template #title>{{ $$t("buttons.refresh") }}</template>
@@ -95,28 +68,17 @@
       </div>
     </div>
     <!-- 表格 -->
-    <a-table
-      :columns="tableColumns.filter(x => x.show)"
-      :data-source="listData"
-      :size="size[0]"
-      :scroll="scroll"
-      v-bind="$attrs"
-      :pagination="false"
-      :loading="loading"
-      v-model:expandedRowKeys="expandedKeys"
-      bordered
-      @resizeColumn="handleResizeColumn"
-      :row-key="(record:any) => (rowKey === 'allKey' ? record : record[rowKey])"
-      :row-selection="
-        selection
-          ? {
-              selectedRowKeys: selectedList,
-              onChange: selectionChange,
-              ...selectionOption,
-            }
-          : null
-      "
-    >
+    <a-table :columns="tableColumns.filter(x => x.show)" :data-source="listData" :size="size[0]" :scroll="scroll"
+      v-bind="$attrs" :pagination="false" :loading="loading" v-model:expandedRowKeys="expandedKeys" bordered
+      @resizeColumn="handleResizeColumn" :row-key="(record: any) => (rowKey === 'allKey' ? record : record[rowKey])"
+      :row-selection="selection
+        ? {
+          selectedRowKeys: selectedList,
+          onChange: selectionChange,
+          ...selectionOption,
+        }
+        : null
+        ">
       <template #headerCell="{ column }">
         <slot :name="`${column['dataIndex']}TableHeader`" :row="column"></slot>
       </template>
@@ -130,10 +92,7 @@
       </template>
       <template #summary="{ pageData }">
         <slot name="summaryCell">
-          <summaryCell
-            v-if="summary"
-            :row="{ pageData, fixed: summaryFixed, tableColumns, selection }"
-          />
+          <summaryCell v-if="summary" :row="{ pageData, fixed: summaryFixed, tableColumns, selection }" />
         </slot>
       </template>
     </a-table>

@@ -24,7 +24,7 @@ export default function getRoutes(routerList: menuListType[]) {
     }
 
     // 自动注册路由
-    function setRoute(menus: menuListType[]) {
+    const setRoute = (menus: menuListType[]) => {
         menus.forEach(item => {
             if (item.component !== 'Layout' && !item.isFrame && item.status === 1) {
                 autoRouterViews(item)
@@ -37,7 +37,7 @@ export default function getRoutes(routerList: menuListType[]) {
     setRoute(menuList)
     // 大屏需要过滤的首页菜单
     const dataScreen = ['/dataScreen/home']
-    function setRedirect() {//获取启动页
+    const setRedirect = () => {//获取启动页
         let redirect = null
         for (let i = 0; i < router.length; i++) {
             if (!router[i].meta?.hidden && !router[i].meta?.parentPath && !dataScreen.includes(router[i].path)) {

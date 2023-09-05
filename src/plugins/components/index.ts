@@ -8,10 +8,10 @@ import _ from 'loadsh'
  * @param app
  */
 
-export const autoRegister = async (app:App)=>{
+export const autoRegister = async (app: App) => {
     const components = import.meta.globEager('@/components/global/*/index.vue')
     Object.keys(components).forEach((key) => {
         let componentName = key.split('../components/global/')?.pop()?.split('/index.vue').shift()
-        app.component(_.camelCase(`w-${componentName}`),components[key].default)
+        app.component((`W${_.upperFirst(componentName)}`), components[key].default)
     })
 }

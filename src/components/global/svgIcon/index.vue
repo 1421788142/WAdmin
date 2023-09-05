@@ -15,7 +15,7 @@ interface SvgProps {
 // 接收父组件参数并设置默认值
 const props = withDefaults(defineProps<SvgProps>(), {
 	prefix: "icon",
-	iconStyle: () => ({ width: "100px", height: "100px" })
+	iconStyle: () => ({ width: 100, height: 100 })
 });
 
 const symbolId = computed(() => `#${props.prefix}-${props.name}`);

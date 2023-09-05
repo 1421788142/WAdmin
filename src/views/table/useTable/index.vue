@@ -1,18 +1,11 @@
 <template>
   <div class="h-full">
-    <w-table
-      ref="table"
-      selection
-      :requestApi="userList"
-      :columns="tableColumns"
-      rowKey="userId"
-      :selectionOption="{
-        selectedRowKeys: selecteId,
-        onChange: r => (
-          (selecteId = r), message.success(JSON.stringify(selecteId))
-        ),
-      }"
-    >
+    <w-table ref="table" selection :requestApi="userList" :columns="tableColumns" rowKey="userId" :selectionOption="{
+      selectedRowKeys: selecteId,
+      onChange: r => (
+        (selecteId = r), message.success(JSON.stringify(selecteId))
+      ),
+    }">
       <template #tableHeader>
         <w-button type="add" btnType="primary" @click="update()" />
       </template>
@@ -22,37 +15,20 @@
       <template #operation="{ row }">
         <div class="w-table-btn">
           <w-button @click="update('edit', row.record)" type="update" />
-          <w-button
-            @click="update('delete', row.record)"
-            color="red"
-            type="delete"
-          />
+          <w-button @click="update('delete', row.record)" color="red" type="delete" />
         </div>
       </template>
     </w-table>
     <!-- 新增编辑框 -->
-    <w-modal
-      :destroyOnClose="false"
-      :loading="loading"
-      :title="title"
-      width="1000px"
-      v-model:visible="visible"
-      @btnOk="btnOk"
-    >
+    <w-modal :destroyOnClose="false" :loading="loading" :title="title" width="1000px" v-model:visible="visible"
+      @btnOk="btnOk">
       <w-form v-model:value="formParam" :columns="formColumns" ref="form">
         <template #avatarFormItem>
-          <uploadImgVue
-            ref="uploadImgRef"
-            :total="1"
-            accept="image/*"
-            :fileList="fileList"
-            @change="
-              state =>
-                (formParam.avatar = state.fileListData
-                  .map(x => x.url)
-                  .join(','))
-            "
-          />
+          <uploadImgVue ref="uploadImgRef" :total="1" accept="image/*" :fileList="fileList" @change="state =>
+          (formParam.avatar = state.fileListData
+            .map(x => x.url)
+            .join(','))
+            " />
         </template>
       </w-form>
     </w-modal>

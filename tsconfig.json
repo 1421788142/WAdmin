@@ -16,9 +16,6 @@
     "skipLibCheck": true,
     // 解析非相对模块名的基准目录
 		"baseUrl": "./",
-    "types": [
-      "ant-design-vue/typings/global"
-    ],
     // 模块名到基于 baseUrl的路径映射的列表。
     "paths": {
       "@": ["src"],
