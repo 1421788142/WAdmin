@@ -27,7 +27,7 @@ interface listInterface {
     unit: string
 }
 
-const iconStyle = { width: '50px', height: '50px' }
+const iconStyle = { width: 50, height: 50 }
 
 const list = reactive<listInterface[]>([
     { title: '小区数量', icon: 'village', value: 0, key: 'parkNum', unit: '个' },

@@ -51,9 +51,7 @@ const currentCom = computed(() => {
 <template>
   <div class="relative w-screen h-screen dark:bg-[#333]">
     <!-- 主题切换 -->
-    <div
-      class="fixed z-50 flex items-center md:top-10 top-5 md:right-10 right-5"
-    >
+    <div class="fixed z-50 flex items-center md:top-10 top-5 md:right-10 right-5">
       <a-switch v-model:checked="checked" @change="chnageDark">
         <template #checkedChildren>
           <w-svg-icon name="sun" :iconStyle="iconStyle" />
@@ -68,16 +66,10 @@ const currentCom = computed(() => {
         </span>
         <template #overlay>
           <a-menu>
-            <a-menu-item
-              @click="changLan('zh_CN')"
-              :disabled="language === 'zh_CN'"
-            >
+            <a-menu-item @click="changLan('zh_CN')" :disabled="language === 'zh_CN'">
               {{ $t("sys.zhCN") }}
             </a-menu-item>
-            <a-menu-item
-              @click="changLan('en_US')"
-              :disabled="language === 'en_US'"
-            >
+            <a-menu-item @click="changLan('en_US')" :disabled="language === 'en_US'">
               {{ $t("sys.enCN") }}
             </a-menu-item>
           </a-menu>
@@ -90,15 +82,10 @@ const currentCom = computed(() => {
     </div>
     <!-- 主体内容 -->
     <div class="flex items-center justify-center w-screen h-screen">
-      <div
-        class="w-[60%] h-[65%] p-20 items-center hidden xl:flex flex-col justify-center z-10"
-      >
+      <div class="w-[60%] h-[65%] p-20 items-center hidden xl:flex flex-col justify-center z-10">
         <div class="w-full pl-40 mb-6">
           <div class="flex items-center w-full">
-            <img
-              class="max-w-[70px] mr-[1%]"
-              :src="getAssets(VITE_PROJECT_LOGO)"
-            />
+            <img class="max-w-[70px] mr-[1%]" :src="getAssets(VITE_PROJECT_LOGO)" />
             <span class="text-3xl font-black">
               {{ VITE_PROJECT_NAME }}
             </span>
@@ -112,12 +99,9 @@ const currentCom = computed(() => {
           </a-carousel>
         </div>
       </div>
-      <div
-        class="w-[100%] xl:w-[50%] h-[100%] px-2 flex items-center justify-center"
-      >
+      <div class="w-[100%] xl:w-[50%] h-[100%] px-2 flex items-center justify-center">
         <div
-          class="w-[100%] sm:w-[60%] xl:w-[65%] overflow-hidden mx-auto shadow-2xl bg-white dark:bg-[#333] rounded-2xl p-[2.5vw]"
-        >
+          class="w-[100%] sm:w-[60%] xl:w-[65%] overflow-hidden mx-auto shadow-2xl bg-white dark:bg-[#333] rounded-2xl p-[2.5vw]">
           <transition appear name="login-transform" mode="out-in">
             <component :is="currentCom" />
           </transition>

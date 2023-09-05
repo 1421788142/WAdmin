@@ -2,37 +2,18 @@
   <div class="historyMenu">
     <a-divider class="!mt-0 !mb-1" />
     <div class="flex w-full items-center justify-between mb-1 h-[30px]">
-      <a-tabs
-        type="card"
-        @change="tabPage"
-        size="large"
-        v-model:activeKey="currentPage"
-      >
+      <a-tabs type="card" @change="tabPage" size="large" v-model:activeKey="currentPage">
         <a-tab-pane v-for="(item, index) in historyMenuTag" :key="item.path">
           <template #tab>
-            <tabOptions
-              :tabItmes="tabItmes"
-              :title="item.title"
-              :tagsIndex="Number(index)"
-              trigger="contextmenu"
-              :item="item"
-              @change="optionChange"
-            />
+            <tabOptions :tabItmes="tabItmes" :title="item.title" :tagsIndex="Number(index)" trigger="contextmenu"
+              :item="item" @change="optionChange" />
           </template>
         </a-tab-pane>
       </a-tabs>
       <div class="flex items-center !text-lg">
-        <sync-outlined
-          class="cursor-pointer"
-          @click="refresh"
-          :class="animate"
-        />
+        <sync-outlined class="cursor-pointer" @click="refresh" :class="animate" />
         <expand-outlined class="mx-2 cursor-pointer" @click="fullChange" />
-        <tabOptions
-          :tabItmes="tabItmes"
-          :disabled="false"
-          @change="optionChange"
-        />
+        <tabOptions :tabItmes="tabItmes" :disabled="false" @change="optionChange" />
       </div>
     </div>
   </div>
@@ -108,7 +89,7 @@ type keyType =
   | "closeAll";
 interface valueInterface {
   key: keyType;
-  data: menuItem;
+  data: historyTagItem;
 }
 
 const optionChange = (value: valueInterface) => {
@@ -152,7 +133,7 @@ nextTick(() => {
           oldIndex === newIndex
         )
           return;
-        let historyMenuList = deepClone<menuItem[]>(historyMenuTag.value);
+        let historyMenuList = deepClone<historyTagItem[]>(historyMenuTag.value);
         if (oldIndex > newIndex) {
           historyMenuList.splice(newIndex, 0, historyMenuList[oldIndex]);
           historyMenuList.splice(oldIndex + 1, 1);
@@ -175,17 +156,21 @@ nextTick(() => {
     .ant-tabs-nav {
       margin: 0 !important;
     }
+
     .ant-tabs-ink-bar {
       display: none !important;
     }
+
     .ant-tabs-content-holder {
       display: none !important;
     }
+
     .ant-tabs-tab {
       padding: 0 !important;
       border: 0 !important;
       font-size: 12px !important;
     }
+
     .ant-tabs-tab-active {
       border-bottom-color: #f0f0f0 !important;
     }

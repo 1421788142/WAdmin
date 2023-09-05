@@ -1,4 +1,3 @@
-import { Result } from '@/types/axios'
 import { tableResultData } from '@/apis/interface'
 export type resultType = tableResultData<any>
 type requestApiType = (params: any) => Promise<Result<resultType>>

@@ -1,4 +1,4 @@
-interface menuItem {
+declare interface historyTagItem {
     title: string,
     path: string,
     parentPath?: string,

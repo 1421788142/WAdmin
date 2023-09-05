@@ -23,7 +23,7 @@ const params =
 const test = ref<string>("");
 
 onMounted(() => {
-  emitter.emit("setupMenuTag", (tag: menuItem) => {
+  emitter.emit("setupMenuTag", (tag: historyTagItem) => {
     tag.title = `No.${params.id}详情信息-params`;
   });
 });

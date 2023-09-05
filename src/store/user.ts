@@ -40,7 +40,7 @@ export default defineStore<'user', WAdminUser.state, WAdminUser.getters, WAdminU
         async setUserInfo(info: userInterface) {
             this.userInfo = info ?? null;
         },
-        async setHistoryMenu(menu: menuItem[]) {
+        async setHistoryMenu(menu: historyTagItem[]) {
             emitter.emit('setRoute', menu)
             this.historyMenuTag = menu ?? [];
         },

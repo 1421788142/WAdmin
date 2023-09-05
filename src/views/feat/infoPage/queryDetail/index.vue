@@ -22,7 +22,7 @@ const query = route.params;
 const test = ref<string>("");
 
 onMounted(() => {
-  emitter.emit("setupMenuTag", (tag: menuItem) => {
+  emitter.emit("setupMenuTag", (tag: historyTagItem) => {
     tag.title = `No.${query.id}详情信息-query`;
   });
 });

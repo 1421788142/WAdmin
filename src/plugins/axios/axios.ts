@@ -4,7 +4,6 @@ import { message } from 'ant-design-vue';
 import { $$t } from "@/plugins/language/setupI18n";
 import { HandlingInterface, setUpConfig } from './utils'
 import { checkStatus } from "./checkStatus";
-import { RequestOptions, Result } from "@/types/axios";
 import userStore from '@/store/user';
 
 export default class VAxios {

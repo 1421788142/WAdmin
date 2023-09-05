@@ -1,4 +1,4 @@
-export interface RequestOptions {
+declare interface RequestOptions {
     // 将请求参数拼接到url
     joinParamsToUrl?: boolean;
     // 接口地址，留空使用默认apiUrl
@@ -13,9 +13,9 @@ export interface RequestOptions {
     preventDuplication?: boolean
 }
 // 接口返回参数
-export interface Result<T>{
+declare interface Result<T> {
     code: number,
-    message:string,
-    msg?:string,
+    message: string,
+    msg?: string,
     data: T
 }

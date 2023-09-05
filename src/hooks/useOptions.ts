@@ -1,6 +1,5 @@
 import { reactive, toRefs } from "vue";
 import { tableResultData } from "@/apis/interface";
-import { Result } from "@/types/axios";
 import _ from 'loadsh'
 type Api = (...args: any[]) => Promise<Result<tableResultData<any>>>
 type UseOptions<T extends Api> = {

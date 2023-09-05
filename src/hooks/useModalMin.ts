@@ -47,7 +47,7 @@ export const useModalMin = (
         })
     })
     emitter.on('delModalMin', (uid: string) => delModalMin(uid))
-    emitter.on('setRoute', (historyMenu: menuItem[]) => {
+    emitter.on('setRoute', (historyMenu: historyTagItem[]) => {
         state.modalMinList.forEach(min => {
             let has = historyMenu.some(menu => menu.path === min.path)
             if (!has) state.modalMinList = state.modalMinList.filter(x => x.uid !== min.uid)

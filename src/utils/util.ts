@@ -442,3 +442,19 @@ export const preload = (number: number = 500) => {
 		}, number)
 	})
 }
+
+/**
+ * 将对象里面的字符串json属性转化为正常的对象
+ * @param {object} data 需要转换属性的对象
+ * @return {object} object 正常的对象格式
+*/
+export const resetObject = <T extends object>(data: T): T => {
+	if (!data) return new Object() as T
+	const hasJsonString = (value: unknown) => typeof value === 'string' && (value.startsWith('{') || value.startsWith('['))
+	for (const key of Object.keys(data)) {
+		const value = data[key];
+		(hasJsonString(value) && (data[key] = JSON.parse(value)));
+		(isArray(data[key]) || isObject(data[key])) && (data[key] = resetObject(data[key]))
+	}
+	return data
+}

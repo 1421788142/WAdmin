@@ -1,4 +1,3 @@
-import { Result } from '@/types/axios'
 import { tableResultData } from '@/apis/interface'
 import { searchFormProps } from '@/types/searchForm'
 import { TableProps } from "ant-design-vue";

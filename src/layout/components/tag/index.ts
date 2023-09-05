@@ -70,7 +70,7 @@ export const useTagData = (route?: RouteLocationNormalized, router?: Router) => 
         }
     }
 
-    const setupMenuTag = (callBark: (tag: menuItem) => void) => {
+    const setupMenuTag = (callBark: (tag: historyTagItem) => void) => {
         historyMenuTag.value.forEach(tag => {
             if (tag.path === route.path) {
                 callBark(tag)
@@ -80,7 +80,7 @@ export const useTagData = (route?: RouteLocationNormalized, router?: Router) => 
 
     emitter.on('setupMenuTag', setupMenuTag)
 
-    const closeCurrent = (value: menuItem) => {
+    const closeCurrent = (value: historyTagItem) => {
         let length = historyMenuTag.value.length
         if (length <= 1) return message.error($$t('layouts.noCloseAllTabs'))
         let current = historyMenuTag.value.findIndex(x => x.path === value.path)
@@ -93,12 +93,12 @@ export const useTagData = (route?: RouteLocationNormalized, router?: Router) => 
     }
 
     // 关闭左侧
-    const closeLeft = (value: menuItem) => {
+    const closeLeft = (value: historyTagItem) => {
         let index = historyMenuTag.value.findIndex(x => value.path == x.path)
         historyMenuTag.value.splice(0, index)
     }
     // 关闭右侧
-    const closeRight = (value: menuItem) => {
+    const closeRight = (value: historyTagItem) => {
         let index = historyMenuTag.value.findIndex(x => value.path == x.path)
         historyMenuTag.value.splice(index + 1, historyMenuTag.value.length)
     }
@@ -108,7 +108,7 @@ export const useTagData = (route?: RouteLocationNormalized, router?: Router) => 
         router.push({ path: '/' })
     }
     // 关闭其他
-    const closeOther = (value: menuItem) => {
+    const closeOther = (value: historyTagItem) => {
         historyMenuTag.value = historyMenuTag.value.filter(x => value.path == x.path)
     }
 

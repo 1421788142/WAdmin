@@ -2,4 +2,4 @@ declare type ComponentRef<T extends HTMLElement = HTMLDivElement> = ComponentElR
 declare type RefComponent<T> = Partial<InstanceType<T>>
 
 declare type EmitType = (event: string, ...args: any[]) => void;
-type Nullable<T> = T | null;
+declare type Nullable<T> = T | null;

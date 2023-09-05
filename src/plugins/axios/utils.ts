@@ -1,7 +1,6 @@
 import { AxiosRequestConfig } from "axios";
 
 import userStore from '@/store/user';
-import { RequestOptions } from "@/types/axios";
 
 const baseURL = import.meta.env.VITE_API_URL as string
 export function HandlingInterface(config: AxiosRequestConfig, options: RequestOptions): AxiosRequestConfig {

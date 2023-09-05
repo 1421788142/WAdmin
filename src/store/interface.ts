@@ -5,7 +5,7 @@ export namespace WAdminUser {
         userRouterList: menuListType[];
         userInfo: userInterface;
         requestRecord: any[];
-        historyMenuTag: menuItem[];
+        historyMenuTag: historyTagItem[];
         token: string;
         verifyCode: string,
         currentPage: pageType

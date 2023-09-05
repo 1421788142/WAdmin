@@ -1,12 +1,6 @@
 <template>
-  <div
-    class="wrapper-box h-[-webkit-fill-available] px-1 my-1 mb-1 dark:!bg-[#141414] overflow-y-auto overflow-x-hidden"
-  >
-    <div
-      class="close-full"
-      v-if="isHasFull"
-      @click="setConfigState('isHasFull', false)"
-    >
+  <div class="wrapper-box h-[-webkit-fill-available] px-1 my-1 mb-1 dark:!bg-[#141414] overflow-y-auto overflow-x-hidden">
+    <div class="close-full" v-if="isHasFull" @click="setConfigState('isHasFull', false)">
       <close-outlined />
     </div>
     <router-view #default="{ Component, route }">
@@ -46,7 +40,7 @@ export default defineComponent({
     // 缓存的页面
     const includeList = ref<string[]>([]);
     const setIncludeList = async () => {
-      let historyList: menuItem[] = await getHistoryMenu();
+      let historyList: historyTagItem[] = await getHistoryMenu();
       let history = [...historyList.map(x => x.path)];
       let include = history.filter(x => keepAliveList.includes(x));
       includeList.value = [...include].filter(x => x !== currentPath);
@@ -110,6 +104,7 @@ export default defineComponent({
   background-color: var(--ant-primary-color);
   cursor: pointer;
 }
+
 .dark {
   .close-full {
     box-shadow: 0 0 5px #177ddc;
