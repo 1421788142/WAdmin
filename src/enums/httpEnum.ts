@@ -2,25 +2,25 @@
  * @description：请求配置
  */
 export enum ResultEnum {
-	SUCCESS = 200,
-	ERROR = 500,
-	OVERDUE = 599,
-	TIMEOUT = 10000,
-	TYPE = "success"
+  SUCCESS = 200,
+  ERROR = 500,
+  OVERDUE = 599,
+  TIMEOUT = 10000,
+  TYPE = "success"
 }
 /**
  * @description: request method
  */
 export enum RequestEnum {
-    GET = 'GET',
-    POST = 'POST',
-    PUT = 'PUT',
-    DELETE = 'DELETE',
+  GET = 'GET',
+  POST = 'POST',
+  PUT = 'PUT',
+  DELETE = 'DELETE',
 }
-  
-  /**
-   * @description:  contentTyp
-   */
+
+/**
+ * @description:  contentTyp
+ */
 export enum ContentTypeEnum {
   // json
   JSON = 'application/json; charset=utf-8',

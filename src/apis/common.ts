@@ -1,5 +1,5 @@
 import { Http } from "@/plugins/axios";
-import { tableResultData } from '@/apis/interface'
+import { tableResultData, queryTableInterface } from '@/apis/interface'
 
 export interface uploadFile {
     code: number,
@@ -37,4 +37,18 @@ export interface deptListType {
 // 获取部门
 export const deptList = () => {
     return Http.get<tableResultData<deptListType>>({ url: '/dept/list' })
+}
+
+export interface generalParamType {
+    name: string,
+    color?: string,
+    value: number,
+    valueType: number,
+    id: number
+}
+// 获取通用参数
+export const generalParam = (data: queryTableInterface & {
+    valueType: string
+}) => {
+    return Http.get<tableResultData<generalParamType>>({ url: '/generalParameters', data })
 }

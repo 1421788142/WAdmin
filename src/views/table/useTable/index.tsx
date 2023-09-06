@@ -1,6 +1,8 @@
 import { reactive, toRefs } from "vue";
 import { upload } from "@/hooks/interface/upload";
 import { userList, userInterface } from "@/apis/system/user";
+import { useOptions } from "@/hooks/useOptions";
+import { generalParam } from "@/apis/common";
 
 interface stateInterface {
   title: string; //modal 标题
@@ -13,19 +15,29 @@ interface stateInterface {
   fileList: upload.stateProps["fileListData"];
 }
 
-const gradeList: wTableEnumProps = [
-  { label: "一级", color: "blue", value: 1 },
-  { label: "二级", color: "#FF9800", value: 2 },
-  { label: "三级", color: "red", value: 3 },
-  { label: "四级", color: "yellow", value: 4 },
-  { label: "五级", color: "#9C27B0", value: 5 },
-];
-const userType: wTableEnumProps = [
-  { label: "管理员", value: 1 },
-  { label: "普通用户", value: 2 },
-];
-
 export const usePageData = () => {
+  const colors = ["blue", "#FF9800", "red", "yellow", "#9C27B0"];
+
+  const { list: userType } = useOptions(generalParam, [
+    { valueType: "1", pageNum: 1, pageSize: 99 },
+  ]);
+
+  const { list: gradeList } = useOptions(
+    generalParam,
+    [{ valueType: "2", pageNum: 1, pageSize: 99 }],
+    {
+      optionKey: { label: "name", value: "value", color: "color" },
+      afterRequest: record => {
+        return record.map((x, i) => {
+          return {
+            ...x,
+            color: colors[i],
+          };
+        });
+      },
+    },
+  );
+
   // 自定义(使用tsx语法)
   const renderAge = ({ row, value }) => {
     return (

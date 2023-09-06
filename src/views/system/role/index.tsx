@@ -8,7 +8,8 @@ import {
 } from "@/apis/system/role";
 import { arrayToTree } from "@/utils/util";
 import { DataNode } from "ant-design-vue/es/tree";
-
+import { useOptions } from "@/hooks/useOptions";
+import { generalParam } from "@/apis/common";
 interface stateInterface {
   title: string; //modal 标题
   visible: boolean; //modal是否显示
@@ -23,12 +24,11 @@ interface stateInterface {
   treeData: DataNode[];
 }
 
-const starsList: wTableEnumProps = [
-  { label: "禁用", value: 0 },
-  { label: "正常", value: 1 },
-];
-
 export const usePageData = () => {
+  const { list: statusList } = useOptions(generalParam, [
+    { valueType: "3", pageNum: 1, pageSize: 99 },
+  ]);
+
   const state = reactive<stateInterface>({
     title: "新增数据",
     visible: false,
@@ -56,7 +56,7 @@ export const usePageData = () => {
         dataIndex: "status",
         searchOption: {
           formItemType: "a-select",
-          componentOption: { options: starsList },
+          componentOption: { options: statusList },
         },
       },
       { title: "备注", dataIndex: "memo" },
@@ -89,7 +89,7 @@ export const usePageData = () => {
         isRule: true,
         formItemType: "a-select",
         formItemOption: { name: "status", label: "状态" },
-        componentOption: { options: starsList },
+        componentOption: { options: statusList },
       },
       {
         formItemType: "a-textarea",

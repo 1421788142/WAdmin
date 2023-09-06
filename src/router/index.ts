@@ -20,8 +20,6 @@ export async function setupRouter(app: App) {
     guard(router)
     const appStore = userStore()
     let { userRouterList } = storeToRefs(appStore)
-    console.log(userRouterList.value)
-    console.log(getRoutes(userRouterList.value || []))
     // 动态添加菜单
     router.addRoute(getRoutes(userRouterList.value || []))
     app.use(router)
