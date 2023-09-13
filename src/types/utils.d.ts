@@ -1,7 +1,6 @@
 type JSONString<T> = T & string;
 
 declare global {
-    type PromiseReturn<T> = ReturnType<T> extends Promise<infer R> ? R : any;
     type PromiseReturnType<T> = ReturnType<T> extends Promise<infer R> ? R : any;
 
     type DeepPartial<T> = {

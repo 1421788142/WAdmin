@@ -46,7 +46,7 @@ export const useOptions = <
 
     const getOptions = async (..._args: Parameters<T>): Promise<void> => {
         paramsArgs = _.merge(paramsArgs, _args);
-        const result = (await api.apply(null, paramsArgs)) as PromiseReturn<Api>;
+        const result = (await api.apply(null, paramsArgs)) as PromiseReturnType<Api>;
         if (result.code !== 200) return
         options.splice(0); // 不改变options指向的前提 重置options
         options.push(

@@ -3,21 +3,23 @@
     <a-button @click="cancel" :disabled="loading" v-if="showCancelBtn">
       {{ cancelText }}
     </a-button>
-    <a-button
-      @click="confirm"
-      :loading="loading"
-      :type="okType"
-      v-if="showOkBtn"
-    >
+    <a-button @click="confirm" :loading="loading" :type="okType" v-if="showOkBtn">
       {{ okText }}
     </a-button>
   </div>
 </template>
 
 <script setup lang="ts">
-import { basicProps } from "../index";
+import type { ButtonType } from 'ant-design-vue/es/button/buttonTypes';
 
-defineProps(basicProps);
+withDefaults(defineProps<{
+  okText: string,
+  loading: boolean,
+  cancelText: string,
+  showCancelBtn: boolean,
+  showOkBtn: boolean,
+  okType: ButtonType,
+}>(), {});
 const emit = defineEmits(["cancel", "confirm"]);
 const cancel = (e: Event) => {
   emit("cancel", e);

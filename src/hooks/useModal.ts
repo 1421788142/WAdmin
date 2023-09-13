@@ -11,7 +11,7 @@ export function useModalDragMove(context: useModalInterface) {
     const getStyle = (dom: any, attr: any) => getComputedStyle(dom)[attr]
     const drag = (wrap: any) => {
         if (!wrap) return;
-        
+
         wrap.setAttribute('data-drag', unref(context.draggable)); //添加属性 是否打开了model框
 
         const modelHeaderEl = wrap.querySelector('.ant-modal-header');//获取拖动dom
