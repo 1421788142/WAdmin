@@ -4,8 +4,18 @@ import { defineConfig, loadEnv, ConfigEnv, UserConfig } from 'vite'
 import setupPlugins from './vite'
 // @ts-ignore
 import { resolve } from 'path'
-// https://vitejs.dev/config/
+// @ts-ignore
 import { wrapperEnv } from './src/utils/getEnvConfig'
+// @ts-ignore
+import pkg from "./package.json";
+// @ts-ignore
+import dayjs from "dayjs";
+const { dependencies, devDependencies, name, version } = pkg;
+
+const __APP_INFO__ = {
+  pkg: { dependencies, devDependencies, name, version },
+  lastBuildTime: dayjs().format("YYYY-MM-DD HH:mm:ss")
+};
 
 /** 路径查找 */
 const pathResolve = (dir: string): string => {
@@ -66,6 +76,7 @@ export default defineConfig(({ mode, command }: ConfigEnv): UserConfig => {
       __VUE_I18N_FULL_INSTALL__: true,
       __VUE_I18N_LEGACY_API__: false,
       __INTLIFY_PROD_DEVTOOLS__: false,
+      __APP_INFO__: JSON.stringify(__APP_INFO__)
     },
     css: {
       preprocessorOptions: {

@@ -26,3 +26,14 @@ declare type ViteEnv = {
   VITE_ROUTER_HISTORY: 'hash' | 'h5';
   VITE_PUBLIC_PATH: string
 }
+
+/* __APP_INFO__ */
+declare const __APP_INFO__: {
+  pkg: {
+    name: string;
+    version: string;
+    dependencies: Recordable<string>;
+    devDependencies: Recordable<string>;
+  };
+  lastBuildTime: string;
+};

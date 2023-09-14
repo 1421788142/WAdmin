@@ -915,6 +915,21 @@ const menus = reactive<menuListType[]>([
     keepAlive: 1,
     hidden: 1,
   },
+  {
+    component: "about/index",
+    path: "/about",
+    menuType: "C",
+    id: 11,
+    orderNum: 10,
+    pId: 0,
+    title: "关于",
+    icon: "QuestionCircleOutlined",
+    perms: "",
+    isFrame: 0,
+    status: 1,
+    keepAlive: 1,
+    hidden: 1,
+  },
 ])
 
 export default menus

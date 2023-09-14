@@ -47,7 +47,6 @@ export default function getRoutes(routerList: menuListType[]) {
         }
         return redirect
     }
-    setRedirect()
     let routers = {
         path: '/',
         name: 'Layout',
