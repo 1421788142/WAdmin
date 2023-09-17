@@ -1,4 +1,8 @@
-import { defineComponent, h, withDirectives } from "vue";
+import {
+  defineComponent,
+  h,
+  withDirectives,
+} from "vue";
 import { Upload } from "ant-design-vue";
 import {
   UploadOutlined,
@@ -58,7 +62,9 @@ export default defineComponent({
         title: $$t("buttons.upload"),
         icon: (
           <Upload
-            beforeUpload={file => props.beforeUpload(file)}
+            beforeUpload={file =>
+              props.beforeUpload(file)
+            }
             showUploadList={false}>
             <UploadOutlined class='!text-xl' />
           </Upload>
@@ -82,52 +88,62 @@ export default defineComponent({
       {
         title: $$t("components.moveUp"),
         icon: <ArrowUpOutlined />,
-        event: () => props.handCropper("move", 0, -10),
+        event: () =>
+          props.handCropper("move", 0, -10),
       },
       {
         title: $$t("components.moveDown"),
         icon: <ArrowDownOutlined />,
-        event: () => props.handCropper("move", 0, 10),
+        event: () =>
+          props.handCropper("move", 0, 10),
       },
       {
         title: $$t("components.moveLeft"),
         icon: <ArrowLeftOutlined />,
-        event: () => props.handCropper("move", -10, 0),
+        event: () =>
+          props.handCropper("move", -10, 0),
       },
       {
         title: $$t("components.moveRight"),
         icon: <ArrowRightOutlined />,
-        event: () => props.handCropper("move", 10, 0),
+        event: () =>
+          props.handCropper("move", 10, 0),
       },
       {
         title: $$t("components.xTurn"),
         icon: <SwapOutlined />,
-        event: () => props.handCropper("scaleX", -1),
+        event: () =>
+          props.handCropper("scaleX", -1),
       },
       {
         title: $$t("components.yTurn"),
         icon: <VerticalAlignMiddleOutlined />,
-        event: () => props.handCropper("scaleY", -1),
+        event: () =>
+          props.handCropper("scaleY", -1),
       },
       {
         title: $$t("components.rotateL"),
         icon: <RotateLeftOutlined />,
-        event: () => props.handCropper("rotate", -45),
+        event: () =>
+          props.handCropper("rotate", -45),
       },
       {
         title: $$t("components.rotateR"),
         icon: <RotateRightOutlined />,
-        event: () => props.handCropper("rotate", 45),
+        event: () =>
+          props.handCropper("rotate", 45),
       },
       {
         title: $$t("components.enlarge"),
         icon: <ZoomInOutlined />,
-        event: () => props.handCropper("zoom", 0.1),
+        event: () =>
+          props.handCropper("zoom", 0.1),
       },
       {
         title: $$t("components.zoom"),
         icon: <ZoomOutOutlined />,
-        event: () => props.handCropper("zoom", -0.1),
+        event: () =>
+          props.handCropper("zoom", -0.1),
       },
     ];
     return () => (
@@ -136,7 +152,11 @@ export default defineComponent({
           withDirectives(
             h(
               "span",
-              { class: "cursor-pointer mb-2 !text-xl", onClick: item.event },
+              {
+                class:
+                  "cursor-pointer mb-2 !text-xl",
+                onClick: item.event,
+              },
               item.icon,
             ),
             [
@@ -144,7 +164,11 @@ export default defineComponent({
                 tippy,
                 {
                   content: item.title,
-                  placement: `${index % 2 === 0 ? "left" : "right"}-start`,
+                  placement: `${
+                    index % 2 === 0
+                      ? "left"
+                      : "right"
+                  }-start`,
                 },
               ],
             ],

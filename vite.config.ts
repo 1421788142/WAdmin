@@ -25,7 +25,6 @@ const pathResolve = (dir: string): string => {
 /** 设置别名 */
 const alias: Record<string, string> | Array<{ find: string | RegExp, replacement: string }> = {
   "@": pathResolve("src"),
-  "~": pathResolve("./"),
   "img": pathResolve("./src/assets/image/"),
   "com": pathResolve("./src/components/"),
   "api": pathResolve("./src/apis/"),

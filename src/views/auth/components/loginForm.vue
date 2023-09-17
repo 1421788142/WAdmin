@@ -1,57 +1,29 @@
 <template>
   <div>
-    <a-form
-      :rules="loginRules"
-      class="mt-5"
-      name="ruleFormRef"
-      :model="form"
-      @finish="submit"
-    >
-      <a-form-item
-        name="userName"
-        :rules="[
-          {
-            required: true,
-            message: $t('commons.pleaseEnter', { text: $t('login.account') }),
-          },
-        ]"
-      >
-        <a-input
-          size="large"
-          :placeholder="$t('login.account')"
-          v-model:value="form.userName"
-        />
+    <a-form :rules="loginRules" class="mt-5" name="ruleFormRef" :model="form" @finish="submit">
+      <a-form-item name="userName" :rules="[
+        {
+          required: true,
+          message: $t('commons.pleaseEnter', { text: $t('login.account') }),
+        },
+      ]">
+        <a-input size="large" :placeholder="$t('login.account')" v-model:value="form.userName" />
       </a-form-item>
       <a-form-item name="password" class="mt-5">
-        <a-input-password
-          size="large"
-          :placeholder="$t('login.password')"
-          v-model:value="form.password"
-        />
+        <a-input-password size="large" :placeholder="$t('login.password')" v-model:value="form.password" />
       </a-form-item>
       <a-form-item name="code" class="mt-5">
         <div class="grid grid-flow-row-dense grid-cols-3 gap-2">
-          <a-input
-            class="col-span-2"
-            size="large"
-            :placeholder="$t('login.verifyCode')"
-            v-model:value="form.code"
-          />
+          <a-input class="col-span-2" size="large" :placeholder="$t('login.verifyCode')" v-model:value="form.code" />
           <a-spin :spinning="codeLoading">
             <div class="relative cursor-pointer">
-              <div
-                @click="setupCodeImg"
-                class="w-[100%] h-[100%] opacity-0 hover:opacity-100 absolute backdrop-invert backdrop-opacity-30 flex justify-center items-center"
-              >
+              <div @click="setupCodeImg"
+                class="w-[100%] h-[100%] opacity-0 hover:opacity-100 absolute backdrop-invert backdrop-opacity-30 flex justify-center items-center">
                 <span class="text-white text-md">
                   {{ $t("login.refresh") }}
                 </span>
               </div>
-              <imageVerify
-                v-model:code="codeValue"
-                class="!w-full !h-[40px]"
-                ref="codeRef"
-              />
+              <imageVerify v-model:code="codeValue" class="!w-full !h-[40px]" ref="codeRef" />
             </div>
           </a-spin>
         </div>
@@ -67,12 +39,7 @@
         </div>
       </a-form-item>
       <a-form-item>
-        <a-button
-          class="!h-[45px] w-full"
-          type="primary"
-          :loading="loading"
-          html-type="submit"
-        >
+        <a-button class="!h-[45px] w-full" type="primary" :loading="loading" html-type="submit">
           {{ $t("buttons.submit") }}
         </a-button>
       </a-form-item>
@@ -105,6 +72,7 @@ const codeRef = ref<RefComponent<typeof imageVerify>>();
 const codeLoading = ref<boolean>(false);
 const codeValue = ref<string>("");
 const setupCodeImg = async () => {
+  form.code = ''
   codeLoading.value = true;
   await codeRef.value.getImgCode();
   codeLoading.value = false;
