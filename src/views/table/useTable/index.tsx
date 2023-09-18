@@ -1,6 +1,9 @@
 import { reactive, toRefs } from "vue";
 import { upload } from "@/hooks/interface/upload";
-import { userList, userInterface } from "@/apis/system/user";
+import {
+  userList,
+  userInterface,
+} from "@/apis/system/user";
 import { useOptions } from "@/hooks/useOptions";
 import { generalParam } from "@/apis/common";
 
@@ -16,17 +19,40 @@ interface stateInterface {
 }
 
 export const usePageData = () => {
-  const colors = ["blue", "#FF9800", "red", "yellow", "#9C27B0"];
+  const colors = [
+    "blue",
+    "#FF9800",
+    "red",
+    "yellow",
+    "#9C27B0",
+  ];
 
-  const { list: userType } = useOptions(generalParam, [
-    { valueType: "1", pageNum: 1, pageSize: 99 },
-  ]);
+  const { list: userType } = useOptions(
+    generalParam,
+    [
+      {
+        valueType: "1",
+        pageNum: 1,
+        pageSize: 99,
+      },
+    ],
+  );
 
   const { list: gradeList } = useOptions(
     generalParam,
-    [{ valueType: "2", pageNum: 1, pageSize: 99 }],
+    [
+      {
+        valueType: "2",
+        pageNum: 1,
+        pageSize: 99,
+      },
+    ],
     {
-      optionKey: { label: "name", value: "value", color: "color" },
+      optionKey: {
+        label: "name",
+        value: "value",
+        color: "color",
+      },
       afterRequest: record => {
         return record.map((x, i) => {
           return {
@@ -45,7 +71,9 @@ export const usePageData = () => {
         step={1}
         min={1}
         max={100}
-        v-model:value={row!["age"]}></a-input-number>
+        v-model:value={
+          row!["age"]
+        }></a-input-number>
     );
   };
   const state = reactive<stateInterface>({
@@ -70,20 +98,29 @@ export const usePageData = () => {
             format: "YYYY-MM-DD",
             valueFormat: "YYYY-MM-DD",
           },
-          defaultValue: ["2023-04-06", "2023-05-11"],
+          defaultValue: [
+            "2023-04-06",
+            "2023-05-11",
+          ],
           transform: (value: any) => {
             return Object.assign(
               {
-                createdTimeS: value?.createdTime?.[0] || "",
-                createdTimeE: value?.createdTime?.[1] || "",
+                createdTimeS:
+                  value?.createdTime?.[0] || "",
+                createdTimeE:
+                  value?.createdTime?.[1] || "",
               },
               value,
             );
           },
         },
         sorter: (a: any, b: any) => {
-          const t1 = new Date(a.createdTime).getTime();
-          const t2 = new Date(b.createdTime).getTime();
+          const t1 = new Date(
+            a.createdTime,
+          ).getTime();
+          const t2 = new Date(
+            b.createdTime,
+          ).getTime();
           return t1 - t2;
         },
       },
@@ -92,7 +129,11 @@ export const usePageData = () => {
         dataIndex: "url",
         ellipsis: true,
       },
-      { title: "用户头像", dataIndex: "avatar", image: true },
+      {
+        title: "用户头像",
+        dataIndex: "avatar",
+        image: true,
+      },
       {
         title: "会员等级",
         dataIndex: "grade",
@@ -103,7 +144,8 @@ export const usePageData = () => {
           },
         },
         tag: true,
-        sorter: (a: any, b: any) => a.grade - b.grade,
+        sorter: (a: any, b: any) =>
+          a.grade - b.grade,
       },
       {
         title: "用户类型",
@@ -126,38 +168,61 @@ export const usePageData = () => {
     formColumns: [
       {
         isRule: true,
-        formItemOption: { name: "nickname", label: "用户姓名" },
+        formItemOption: {
+          name: "nickname",
+          label: "用户姓名",
+        },
       },
       {
         isRule: true,
-        formItemOption: { name: "age", label: "用户年龄" },
+        formItemOption: {
+          name: "age",
+          label: "用户年龄",
+        },
         renderForm: renderAge,
       },
       {
         isRule: true,
-        formItemOption: { name: "url", label: "门户地址" },
+        formItemOption: {
+          name: "url",
+          label: "门户地址",
+        },
       },
       {
         isRule: true,
-        formItemOption: { name: "avatar", label: "用户头像" },
+        formItemOption: {
+          name: "avatar",
+          label: "用户头像",
+        },
       },
       {
         formItemType: "a-select",
         isRule: true,
-        formItemOption: { name: "grade", label: "会员等级" },
+        formItemOption: {
+          name: "grade",
+          label: "会员等级",
+        },
         componentOption: {
           options: gradeList,
           showSearch: true,
           allowClear: true,
-          filterOption: (input: string, option: any) => {
-            return option.label.indexOf(input) != -1;
+          filterOption: (
+            input: string,
+            option: any,
+          ) => {
+            return (
+              option.label.indexOf(input) != -1
+            );
           },
         },
       },
       {
         formItemType: "a-select",
         isRule: true,
-        formItemOption: { name: "userType", label: "用户类型" },
+        formItemOption: {
+          name: "userType",
+          label: "用户类型",
+        },
         componentOption: {
           options: userType,
         },
@@ -165,9 +230,13 @@ export const usePageData = () => {
     ],
   });
 
-  const open = async (type: string, row?: userInterface) => {
+  const open = async (
+    type: string,
+    row?: userInterface,
+  ) => {
     state.visible = true;
-    state.title = type === "add" ? "新增" : `编辑`;
+    state.title =
+      type === "add" ? "新增" : `编辑`;
     state.fileList = row
       ? [
           {

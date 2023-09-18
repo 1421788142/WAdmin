@@ -3,7 +3,7 @@
     <!-- 移动端菜单 -->
     <div v-if="getConfigState('sysMode') === sysModeEnum.phone">
       <a-drawer width="220px" v-model:visible="wapMenuVisible" placement="left" :closable="false" class="wap-menu">
-        <div class="!h-screen w-full" :class="`bg-[${getConfigState('isHasDark') ? '#1F1F1F' : '#001529'}]`">
+        <div class="!h-screen w-full" :class="`!bg-[${getConfigState('isHasDark') ? '#1F1F1F' : '#001529'}]`">
           <menuVue menu-type="app" menuTheme="dark" class="w-full" />
         </div>
       </a-drawer>
