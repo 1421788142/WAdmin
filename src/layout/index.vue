@@ -2,125 +2,61 @@
   <div class="w-screen h-screen overflow-hidden bg-slate-500">
     <!-- 移动端菜单 -->
     <div v-if="getConfigState('sysMode') === sysModeEnum.phone">
-      <a-drawer
-        width="220px"
-        v-model:visible="wapMenuVisible"
-        placement="left"
-        :closable="false"
-        class="wap-menu"
-      >
-        <div class="!h-screen w-full">
-          <menuVue menuTheme="dark" class="w-full" />
+      <a-drawer width="220px" v-model:visible="wapMenuVisible" placement="left" :closable="false" class="wap-menu">
+        <div class="!h-screen w-full" :class="`bg-[${getConfigState('isHasDark') ? '#1F1F1F' : '#001529'}]`">
+          <menuVue menu-type="app" menuTheme="dark" class="w-full" />
         </div>
       </a-drawer>
     </div>
     <!-- 页面菜单 -->
     <a-layout class="w-full h-full">
       <!-- 侧边栏 -->
-      <a-layout-sider
-        :collapsedWidth="50"
-        v-if="
-          getConfigState('sysMode') === sysModeEnum.web &&
-          !getConfigState('isHasFull') &&
-          menuType !== 'horizontal'
-        "
-        width="230px"
-        :theme="menuType === 'verticalDark' ? 'dark' : 'light'"
-        v-model:collapsed="isHasCollapsed"
-        :trigger="null"
-      >
+      <a-layout-sider :collapsedWidth="50" v-if="getConfigState('sysMode') === sysModeEnum.web &&
+        !getConfigState('isHasFull') &&
+        menuType !== 'horizontal'
+        " width="230px" :theme="menuType === 'verticalDark' ? 'dark' : 'light'" v-model:collapsed="isHasCollapsed"
+        :trigger="null">
         <div class="flex flex-col h-screen">
-          <logo
-            :collapsed="isHasCollapsed"
-            :menuType="menuType"
-            v-if="getConfigState('isHasLogo')"
-          />
-          <menuVue
-            ref="leftMenu"
-            :collapsed="isHasCollapsed"
-            menuTheme="dark"
-          />
+          <logo :collapsed="isHasCollapsed" :menuType="menuType" v-if="getConfigState('isHasLogo')" />
+          <menuVue ref="leftMenu" :collapsed="isHasCollapsed" menuTheme="dark" />
         </div>
       </a-layout-sider>
       <!-- 右侧 -->
       <a-layout>
         <!-- 顶部 -->
-        <a-layout-header
-          class="md:!pr-4 !px-1 !bg-white dark:!bg-[#141414] !h-max"
-        >
-          <div
-            class="flex items-center justify-between"
-            v-if="!getConfigState('isHasFull')"
-          >
-            <div
-              class="flex items-center"
-              v-if="
-                ['verticalDark', 'verticalLight'].includes(menuType) ||
-                getConfigState('sysMode') === sysModeEnum.phone
-              "
-            >
-              <div
-                class="flex items-center"
-                v-if="getConfigState('sysMode') === sysModeEnum.web"
-              >
-                <component
-                  class="text-xl"
-                  @click="setConfigState('isHasCollapsed', !isHasCollapsed)"
-                  :is="
+        <a-layout-header class="md:!pr-4 !px-1 !bg-white dark:!bg-[#141414] !h-max">
+          <div class="flex items-center justify-between" v-if="!getConfigState('isHasFull')">
+            <div class="flex items-center" v-if="['verticalDark', 'verticalLight'].includes(menuType) ||
+              getConfigState('sysMode') === sysModeEnum.phone
+              ">
+              <div class="flex items-center" v-if="getConfigState('sysMode') === sysModeEnum.web">
+                <component class="text-xl" @click="setConfigState('isHasCollapsed', !isHasCollapsed)" :is="
                     isHasCollapsed
                       ? 'menu-unfold-outlined'
                       : 'menu-fold-outlined'
-                  "
-                ></component>
+                  "></component>
                 <breadcrumb />
               </div>
-              <div
-                class="flex items-center"
-                v-if="getConfigState('sysMode') === sysModeEnum.phone"
-              >
-                <component
-                  class="text-xl"
-                  @click="wapMenuVisible = !wapMenuVisible"
-                  :is="
+              <div class="flex items-center" v-if="getConfigState('sysMode') === sysModeEnum.phone">
+                <component class="text-xl" @click="wapMenuVisible = !wapMenuVisible" :is="
                     wapMenuVisible
                       ? 'menu-unfold-outlined'
                       : 'menu-fold-outlined'
-                  "
-                ></component>
+                  "></component>
               </div>
             </div>
-            <div
-              v-if="
-                menuType === 'horizontal' &&
-                getConfigState('sysMode') === sysModeEnum.web
-              "
-              class="flex flex-1"
-            >
-              <logo
-                :collapsed="isHasCollapsed"
-                :menuType="menuType"
-                v-if="getConfigState('isHasLogo')"
-              />
+            <div v-if="menuType === 'horizontal' &&
+              getConfigState('sysMode') === sysModeEnum.web
+              " class="flex flex-1">
+              <logo :collapsed="isHasCollapsed" :menuType="menuType" v-if="getConfigState('isHasLogo')" />
               <menuVue menuTheme="light" />
             </div>
             <!-- 混合模式顶部菜单 -->
-            <div
-              v-if="
-                menuType === 'mix' &&
-                getConfigState('sysMode') === sysModeEnum.web
-              "
-              class="flex flex-1 max-w-[80%]"
-            >
-              <a-menu
-                mode="horizontal"
-                class="!justify-center flex-1 max-w-[100%]"
-                :selectedKeys="selectedKeys"
-              >
-                <a-menu-item
-                  @click="toPage(item)"
-                  :key="item.path"
-                  v-for="item in menuMixList"
-                >
+            <div v-if="menuType === 'mix' &&
+              getConfigState('sysMode') === sysModeEnum.web
+              " class="flex flex-1 max-w-[80%]">
+              <a-menu mode="horizontal" class="!justify-center flex-1 max-w-[100%]" :selectedKeys="selectedKeys">
+                <a-menu-item @click="toPage(item)" :key="item.path" v-for="item in menuMixList">
                   <span class="nav-text">
                     {{ item.meta.title || "--" }}
                   </span>
@@ -133,31 +69,18 @@
             <userInfo />
           </div>
           <!-- 历史菜单 -->
-          <navTag
-            v-if="
-              getConfigState('isHasHistory') && !getConfigState('isHasFull')
-            "
-            @change="
-              isHasReset => {
-                setViewShow(isHasReset);
-              }
-            "
-          />
+          <navTag v-if="getConfigState('isHasHistory') && !getConfigState('isHasFull')
+            " @change="isHasReset => {
+    setViewShow(isHasReset);
+  }
+    " />
         </a-layout-header>
         <layoutPage ref="pageContent" />
       </a-layout>
     </a-layout>
     <!-- 系统设置 -->
-    <div
-      id="set-up"
-      :class="{ '!right-0': !getConfigState('isHasSystem') }"
-      class="set-up"
-    >
-      <a-button
-        type="primary"
-        class="flex items-center justify-center cursor-pointer"
-        @click="openSet"
-      >
+    <div id="set-up" :class="{ '!right-0': !getConfigState('isHasSystem') }" class="set-up">
+      <a-button type="primary" class="flex items-center justify-center cursor-pointer" @click="openSet">
         <setting-outlined :style="{ fontSize: '20px' }" />
       </a-button>
     </div>
@@ -165,18 +88,11 @@
 
     <!-- 缓存的model小化 -->
     <div class="modal-min-box" v-if="modalMinList.length">
-      <div
-        class="flex justify-between py-2 pl-4 pr-2 mb-2 text-center cursor-pointer modal-min-item"
-        :class="{ active: modalMinUid === modal.uid }"
-        v-for="modal in modalMinList"
-        :key="modal.uid"
-        @click="openModalMin(modal)"
-      >
+      <div class="flex justify-between py-2 pl-4 pr-2 mb-2 text-center cursor-pointer modal-min-item"
+        :class="{ active: modalMinUid === modal.uid }" v-for="modal in modalMinList" :key="modal.uid"
+        @click="openModalMin(modal)">
         <span class="truncate text-md">{{ `${modal.title}` }}</span>
-        <CloseOutlined
-          @click.stop="delModalMin(modal.uid)"
-          :style="{ fontSize: '18px' }"
-        />
+        <CloseOutlined @click.stop="delModalMin(modal.uid)" :style="{ fontSize: '18px' }" />
       </div>
     </div>
 

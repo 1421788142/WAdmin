@@ -1,19 +1,11 @@
 <template>
-  <div
-    class="min-w-[0] flex-1 items-center"
-    :class="[
-      { 'overflow-y-auto': getConfigState('menuType') !== 'horizontal' },
-      { '!w-[600px]': getConfigState('menuType') === 'horizontal' },
-    ]"
-  >
-    <a-menu
-      :mode="mode"
-      :theme="theme"
-      :class="menuClass"
-      :selectedKeys="selectedKeys"
-      :openKeys="getConfigState('menuType') === 'horizontal' ? [] : openKeys"
-      @openChange="onOpenChange"
-    >
+  <div class="min-w-[0] flex-1 items-center" :class="[
+    { 'overflow-y-auto': getConfigState('menuType') !== 'horizontal' },
+    { '!w-[220px]': getConfigState('menuType') === 'horizontal' },
+  ]">
+    <a-menu :mode="menuType === 'app' ? 'inline' : mode" :theme="menuType === 'app' ? 'dark' : theme" :class="menuClass"
+      :selectedKeys="selectedKeys" :openKeys="getConfigState('menuType') === 'horizontal' ? [] : openKeys"
+      @openChange="onOpenChange">
       <template v-for="item in menuList" :key="item.path">
         <menuItemVue :menuItemValue="item" />
       </template>
@@ -28,7 +20,9 @@ import { useRoute } from "vue-router";
 import type { MenuTheme } from "ant-design-vue/es/menu";
 
 const route = useRoute();
-const props = defineProps<{ menuTheme: MenuTheme }>();
+const props = withDefaults(defineProps<{ menuTheme: MenuTheme, menuType?: 'app' | 'web' }>(), {
+  menuType: 'web'
+});
 
 // menu Hooks
 const {
