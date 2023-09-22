@@ -4,7 +4,7 @@ export namespace WAdminUser {
     export type state = {
         userRouterList: menuListType[];
         userInfo: userInterface;
-        requestRecord: any[];
+        requestRecord: { cancel: Function, url: string }[];
         historyMenuTag: historyTagItem[];
         token: string;
         verifyCode: string,

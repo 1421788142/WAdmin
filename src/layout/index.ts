@@ -74,7 +74,7 @@ export function screenPageList<T>(key: string): T[][] {
     let menuList: T[][] = [];
     let walker = (menuItem: menuListType[], key: string) => {
         menuItem.forEach(item => {
-            if ((item.meta.title.search(key) != -1 || item.path.search(key) != -1) && item.component !== 'Layout' && item.hidden === 1) {
+            if ((item.meta.title.search(key) != -1 || item.path.search(key) != -1) && item.component !== 'Layout' && !item.hidden) {
                 let menu = findFn<T>(
                     () => item.path,
                     (val: menuListType) => val.path,

@@ -17,9 +17,19 @@ export const usePageData = () => {
   const colors = ["green", "red"];
   const { list: statusList } = useOptions(
     generalParam,
-    [{ valueType: "3", pageNum: 1, pageSize: 99 }],
+    [
+      {
+        valueType: "3",
+        pageNum: 1,
+        pageSize: 99,
+      },
+    ],
     {
-      optionKey: { label: "name", value: "value", color: "color" },
+      optionKey: {
+        label: "name",
+        value: "value",
+        color: "color",
+      },
       afterRequest: record => {
         return record.map((x, i) => {
           return {
@@ -44,8 +54,16 @@ export const usePageData = () => {
         search: true,
         resizable: true,
       },
-      { width: 50, title: "图标", dataIndex: "icon" },
-      { width: 400, title: "组件", dataIndex: "component" },
+      {
+        width: 50,
+        title: "图标",
+        dataIndex: "icon",
+      },
+      {
+        width: 400,
+        title: "组件",
+        dataIndex: "component",
+      },
       {
         width: 50,
         title: "状态",
@@ -53,7 +71,9 @@ export const usePageData = () => {
         tag: true,
         searchOption: {
           formItemType: "a-select",
-          componentOption: { options: statusList },
+          componentOption: {
+            options: statusList,
+          },
         },
       },
       {
@@ -68,12 +88,13 @@ export const usePageData = () => {
   state.formColumns = [
     {
       isRule: true,
-      formItemOption: { name: "menuType", label: "菜单类型" },
+      formItemOption: {
+        name: "menuType",
+        label: "菜单类型",
+      },
       renderForm: () => {
         return (
-          <a-radio-group
-            v-model:value={state.formParam["menuType"]}
-            button-style='solid'>
+          <a-radio-group v-model:value={state.formParam["menuType"]} button-style='solid'>
             <a-radio-button value='M'>目录</a-radio-button>
             <a-radio-button value='C'>菜单</a-radio-button>
             <a-radio-button value='F'>按钮</a-radio-button>
@@ -83,7 +104,10 @@ export const usePageData = () => {
     },
     {
       isRule: true,
-      formItemOption: { name: "pId", label: "上级菜单" },
+      formItemOption: {
+        name: "pId",
+        label: "上级菜单",
+      },
       formItemType: "a-tree-select",
       componentOption: {
         showSearch: true,
@@ -92,16 +116,29 @@ export const usePageData = () => {
           maxHeight: "400px",
           overflow: "auto",
         },
-        fieldNames: { children: "children", label: "title", value: "id" },
+        fieldNames: {
+          children: "children",
+          label: "title",
+          value: "id",
+        },
         allowClear: true,
         treeDefaultExpandAll: true,
         treeData: [],
         treeNodeFilterProp: "title",
       },
     },
-    { isRule: true, formItemOption: { name: "title", label: "菜单名称" } },
     {
-      formItemOption: { name: "icon", label: "图标" },
+      isRule: true,
+      formItemOption: {
+        name: "title",
+        label: "菜单名称",
+      },
+    },
+    {
+      formItemOption: {
+        name: "icon",
+        label: "图标",
+      },
       renderForm: () => {
         return <w-icon-picker v-model:icon={state.formParam["icon"]} />;
       },
@@ -109,7 +146,10 @@ export const usePageData = () => {
     },
     {
       isRule: true,
-      formItemOption: { name: "orderNum", label: "显示排序" },
+      formItemOption: {
+        name: "orderNum",
+        label: "显示排序",
+      },
       formItemType: "a-input-number",
       componentOption: { min: 0, step: 1 },
     },
@@ -136,9 +176,7 @@ export const usePageData = () => {
       isHide: () => state.formParam?.menuType !== "F",
       renderForm: () => {
         return (
-          <a-radio-group
-            v-model:value={state.formParam["isFrame"]}
-            button-style='solid'>
+          <a-radio-group v-model:value={state.formParam["isFrame"]} button-style='solid'>
             <a-radio-button value={0}>否</a-radio-button>
             <a-radio-button value={1}>是</a-radio-button>
           </a-radio-group>
@@ -147,15 +185,13 @@ export const usePageData = () => {
     },
     {
       isRule: true,
-      tooltip: "选择否则路由将不会出现在菜单栏,但依然会加载菜单",
-      label: "是否显示",
+      tooltip: "选择是则路由将不会出现在菜单栏,但依然会加载菜单",
+      label: "是否隐藏",
       formItemOption: { name: "hidden" },
       isHide: () => state.formParam?.menuType !== "F",
       renderForm: () => {
         return (
-          <a-radio-group
-            v-model:value={state.formParam["hidden"]}
-            button-style='solid'>
+          <a-radio-group v-model:value={state.formParam["hidden"]} button-style='solid'>
             <a-radio-button value={0}>否</a-radio-button>
             <a-radio-button value={1}>是</a-radio-button>
           </a-radio-group>
@@ -164,13 +200,14 @@ export const usePageData = () => {
     },
     {
       isRule: true,
-      formItemOption: { name: "keepAlive", label: "是否缓存" },
+      formItemOption: {
+        name: "keepAlive",
+        label: "是否缓存",
+      },
       isHide: () => state.formParam?.menuType === "C",
       renderForm: () => {
         return (
-          <a-radio-group
-            v-model:value={state.formParam["keepAlive"]}
-            button-style='solid'>
+          <a-radio-group v-model:value={state.formParam["keepAlive"]} button-style='solid'>
             <a-radio-button value={0}>否</a-radio-button>
             <a-radio-button value={1}>是</a-radio-button>
           </a-radio-group>
@@ -185,9 +222,7 @@ export const usePageData = () => {
       isHide: () => state.formParam?.menuType !== "F",
       renderForm: () => {
         return (
-          <a-radio-group
-            v-model:value={state.formParam["status"]}
-            button-style='solid'>
+          <a-radio-group v-model:value={state.formParam["status"]} button-style='solid'>
             <a-radio-button value={1}>正常</a-radio-button>
             <a-radio-button value={2}>停用</a-radio-button>
           </a-radio-group>
@@ -196,7 +231,10 @@ export const usePageData = () => {
     },
     {
       isRule: true,
-      formItemOption: { name: "perms", label: "权限字符串" },
+      formItemOption: {
+        name: "perms",
+        label: "权限字符串",
+      },
       isHide: () => state.formParam?.menuType === "F",
     },
   ];
@@ -205,11 +243,7 @@ export const usePageData = () => {
     let { code, data } = await menuList();
     let treeData = arrayToTree<menuListType>(data.dataList);
     if (code === 200) {
-      state.formColumns.forEach(
-        x =>
-          x.formItemOption.name === "pId" &&
-          (x.componentOption.treeData = treeData),
-      );
+      state.formColumns.forEach(x => x.formItemOption.name === "pId" && (x.componentOption.treeData = treeData));
     }
   };
 
@@ -221,7 +255,7 @@ export const usePageData = () => {
       title: type === "update" ? row?.title : "",
       icon: type === "update" ? row?.icon : "",
       menuType: type === "update" ? row?.menuType : "M",
-      hidden: type === "update" ? row?.hidden : 1,
+      hidden: type === "update" ? row?.hidden : 0,
       keepAlive: type === "update" ? row?.keepAlive : 1,
       status: type === "update" ? row?.status : 1,
       isFrame: type === "update" ? row?.isFrame : 0,

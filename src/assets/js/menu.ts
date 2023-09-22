@@ -13,7 +13,7 @@ const menus = reactive<menuListType[]>([
     isFrame: 0,
     status: 1,
     keepAlive: 1,
-    hidden: 1,
+    hidden: 0,
   },
   {
     component: "home/index",
@@ -28,7 +28,7 @@ const menus = reactive<menuListType[]>([
     isFrame: 0,
     status: 1,
     keepAlive: 1,
-    hidden: 1,
+    hidden: 0,
   },
   {
     component: "Layout",
@@ -43,7 +43,7 @@ const menus = reactive<menuListType[]>([
     isFrame: 0,
     status: 1,
     keepAlive: 1,
-    hidden: 1,
+    hidden: 0,
   },
   {
     component: "iframe/doc",
@@ -58,7 +58,7 @@ const menus = reactive<menuListType[]>([
     isFrame: 0,
     status: 1,
     keepAlive: 1,
-    hidden: 1,
+    hidden: 0,
   },
   {
     component: "iframe/antd",
@@ -73,7 +73,7 @@ const menus = reactive<menuListType[]>([
     isFrame: 0,
     status: 1,
     keepAlive: 1,
-    hidden: 1,
+    hidden: 0,
   },
   {
     component: "iframe/v3",
@@ -88,7 +88,7 @@ const menus = reactive<menuListType[]>([
     isFrame: 0,
     status: 1,
     keepAlive: 1,
-    hidden: 1,
+    hidden: 0,
   },
   {
     component: "iframe/vite",
@@ -103,7 +103,7 @@ const menus = reactive<menuListType[]>([
     isFrame: 0,
     status: 1,
     keepAlive: 1,
-    hidden: 1,
+    hidden: 0,
   },
   {
     component: "iframe/pinia",
@@ -118,7 +118,7 @@ const menus = reactive<menuListType[]>([
     isFrame: 0,
     status: 1,
     keepAlive: 1,
-    hidden: 1,
+    hidden: 0,
   },
   {
     component: "iframe/router",
@@ -133,7 +133,7 @@ const menus = reactive<menuListType[]>([
     isFrame: 0,
     status: 1,
     keepAlive: 1,
-    hidden: 1,
+    hidden: 0,
   },
   {
     component: "iframe/tailwindcss",
@@ -148,7 +148,7 @@ const menus = reactive<menuListType[]>([
     isFrame: 0,
     status: 1,
     keepAlive: 1,
-    hidden: 1,
+    hidden: 0,
   },
   {
     component: "Layout",
@@ -163,7 +163,7 @@ const menus = reactive<menuListType[]>([
     isFrame: 0,
     status: 1,
     keepAlive: 1,
-    hidden: 1,
+    hidden: 0,
   },
   {
     component: "system/menu/index",
@@ -178,7 +178,7 @@ const menus = reactive<menuListType[]>([
     isFrame: 0,
     status: 1,
     keepAlive: 1,
-    hidden: 1,
+    hidden: 0,
   },
   {
     component: "",
@@ -193,7 +193,7 @@ const menus = reactive<menuListType[]>([
     isFrame: 0,
     status: 1,
     keepAlive: 1,
-    hidden: 1,
+    hidden: 0,
   },
   {
     component: "",
@@ -208,7 +208,7 @@ const menus = reactive<menuListType[]>([
     isFrame: 0,
     status: 1,
     keepAlive: 1,
-    hidden: 1,
+    hidden: 0,
   },
   {
     component: "",
@@ -223,7 +223,7 @@ const menus = reactive<menuListType[]>([
     isFrame: 0,
     status: 1,
     keepAlive: 1,
-    hidden: 1,
+    hidden: 0,
   },
   {
     component: "system/role/index",
@@ -238,7 +238,7 @@ const menus = reactive<menuListType[]>([
     isFrame: 0,
     status: 1,
     keepAlive: 1,
-    hidden: 1,
+    hidden: 0,
   },
   {
     component: "",
@@ -253,7 +253,7 @@ const menus = reactive<menuListType[]>([
     isFrame: 0,
     status: 1,
     keepAlive: 1,
-    hidden: 1,
+    hidden: 0,
   },
   {
     component: "",
@@ -268,7 +268,7 @@ const menus = reactive<menuListType[]>([
     isFrame: 0,
     status: 1,
     keepAlive: 1,
-    hidden: 1,
+    hidden: 0,
   },
   {
     component: "",
@@ -283,7 +283,7 @@ const menus = reactive<menuListType[]>([
     isFrame: 0,
     status: 1,
     keepAlive: 1,
-    hidden: 1,
+    hidden: 0,
   },
   {
     component: "system/user/index",
@@ -298,7 +298,7 @@ const menus = reactive<menuListType[]>([
     isFrame: 0,
     status: 1,
     keepAlive: 1,
-    hidden: 1,
+    hidden: 0,
   },
   {
     component: "",
@@ -313,7 +313,7 @@ const menus = reactive<menuListType[]>([
     isFrame: 0,
     status: 1,
     keepAlive: 1,
-    hidden: 1,
+    hidden: 0,
   },
   {
     component: "",
@@ -328,7 +328,7 @@ const menus = reactive<menuListType[]>([
     isFrame: 0,
     status: 1,
     keepAlive: 1,
-    hidden: 1,
+    hidden: 0,
   },
   {
     component: "",
@@ -343,7 +343,7 @@ const menus = reactive<menuListType[]>([
     isFrame: 0,
     status: 1,
     keepAlive: 1,
-    hidden: 1,
+    hidden: 0,
   },
   {
     component: "Layout",
@@ -358,7 +358,7 @@ const menus = reactive<menuListType[]>([
     isFrame: 0,
     status: 1,
     keepAlive: 1,
-    hidden: 1,
+    hidden: 0,
   },
   {
     component: "menu/menu1/index",
@@ -373,7 +373,7 @@ const menus = reactive<menuListType[]>([
     isFrame: 0,
     status: 1,
     keepAlive: 1,
-    hidden: 1,
+    hidden: 0,
   },
   {
     component: "Layout",
@@ -388,7 +388,7 @@ const menus = reactive<menuListType[]>([
     isFrame: 0,
     status: 1,
     keepAlive: 1,
-    hidden: 1,
+    hidden: 0,
   },
   {
     component: "menu/menu2/menu21/index",
@@ -403,7 +403,7 @@ const menus = reactive<menuListType[]>([
     isFrame: 0,
     status: 1,
     keepAlive: 0,
-    hidden: 1,
+    hidden: 0,
   },
   {
     component: "Layout",
@@ -418,7 +418,7 @@ const menus = reactive<menuListType[]>([
     isFrame: 0,
     status: 1,
     keepAlive: 1,
-    hidden: 1,
+    hidden: 0,
   },
   {
     component: "menu/menu3/menu31/index",
@@ -433,7 +433,7 @@ const menus = reactive<menuListType[]>([
     isFrame: 0,
     status: 1,
     keepAlive: 1,
-    hidden: 1,
+    hidden: 0,
   },
   {
     component: "Layout",
@@ -448,7 +448,7 @@ const menus = reactive<menuListType[]>([
     isFrame: 0,
     status: 1,
     keepAlive: 1,
-    hidden: 1,
+    hidden: 0,
   },
   {
     component: "menu/menu3/menu31/menu312/index",
@@ -463,7 +463,7 @@ const menus = reactive<menuListType[]>([
     isFrame: 0,
     status: 1,
     keepAlive: 1,
-    hidden: 1,
+    hidden: 0,
   },
   {
     component: "Layout",
@@ -478,7 +478,7 @@ const menus = reactive<menuListType[]>([
     isFrame: 0,
     status: 1,
     keepAlive: 1,
-    hidden: 1,
+    hidden: 0,
   },
   {
     component: "table/useTable/index",
@@ -493,7 +493,7 @@ const menus = reactive<menuListType[]>([
     isFrame: 0,
     status: 1,
     keepAlive: 1,
-    hidden: 1,
+    hidden: 0,
   },
   {
     component: "",
@@ -508,7 +508,7 @@ const menus = reactive<menuListType[]>([
     isFrame: 0,
     status: 1,
     keepAlive: 1,
-    hidden: 1,
+    hidden: 0,
   },
   {
     component: "",
@@ -523,7 +523,7 @@ const menus = reactive<menuListType[]>([
     isFrame: 0,
     status: 1,
     keepAlive: 1,
-    hidden: 1,
+    hidden: 0,
   },
   {
     component: "",
@@ -538,7 +538,7 @@ const menus = reactive<menuListType[]>([
     isFrame: 0,
     status: 1,
     keepAlive: 1,
-    hidden: 1,
+    hidden: 0,
   },
   {
     component: "table/useComponent/index",
@@ -553,7 +553,7 @@ const menus = reactive<menuListType[]>([
     isFrame: 0,
     status: 1,
     keepAlive: 1,
-    hidden: 1,
+    hidden: 0,
   },
   {
     component: "",
@@ -568,7 +568,7 @@ const menus = reactive<menuListType[]>([
     isFrame: 0,
     status: 1,
     keepAlive: 1,
-    hidden: 1,
+    hidden: 0,
   },
   {
     component: "",
@@ -583,7 +583,7 @@ const menus = reactive<menuListType[]>([
     isFrame: 0,
     status: 1,
     keepAlive: 1,
-    hidden: 1,
+    hidden: 0,
   },
   {
     component: "",
@@ -598,7 +598,7 @@ const menus = reactive<menuListType[]>([
     isFrame: 0,
     status: 1,
     keepAlive: 1,
-    hidden: 1,
+    hidden: 0,
   },
   {
     component: "",
@@ -613,7 +613,7 @@ const menus = reactive<menuListType[]>([
     isFrame: 0,
     status: 1,
     keepAlive: 1,
-    hidden: 1,
+    hidden: 0,
   },
   {
     component: "Layout",
@@ -628,7 +628,7 @@ const menus = reactive<menuListType[]>([
     isFrame: 0,
     status: 1,
     keepAlive: 1,
-    hidden: 1,
+    hidden: 0,
   },
   {
     component: "commonly/editor/index",
@@ -643,7 +643,7 @@ const menus = reactive<menuListType[]>([
     isFrame: 0,
     status: 1,
     keepAlive: 1,
-    hidden: 1,
+    hidden: 0,
   },
   {
     component: "commonly/selectIcon/index",
@@ -658,7 +658,7 @@ const menus = reactive<menuListType[]>([
     isFrame: 0,
     status: 1,
     keepAlive: 1,
-    hidden: 1,
+    hidden: 0,
   },
   {
     component: "commonly/upload/index",
@@ -673,7 +673,7 @@ const menus = reactive<menuListType[]>([
     isFrame: 0,
     status: 1,
     keepAlive: 1,
-    hidden: 1,
+    hidden: 0,
   },
   {
     component: "commonly/batchImport/index",
@@ -688,7 +688,7 @@ const menus = reactive<menuListType[]>([
     isFrame: 0,
     status: 1,
     keepAlive: 1,
-    hidden: 1,
+    hidden: 0,
   },
   {
     component: "commonly/svgIcon/index",
@@ -703,7 +703,7 @@ const menus = reactive<menuListType[]>([
     isFrame: 0,
     status: 1,
     keepAlive: 1,
-    hidden: 1,
+    hidden: 0,
   },
   {
     component: "commonly/waterfall/index",
@@ -718,7 +718,7 @@ const menus = reactive<menuListType[]>([
     isFrame: 0,
     status: 1,
     keepAlive: 1,
-    hidden: 1,
+    hidden: 0,
   },
   {
     component: "commonly/cropper/index",
@@ -733,7 +733,7 @@ const menus = reactive<menuListType[]>([
     isFrame: 0,
     status: 1,
     keepAlive: 1,
-    hidden: 1,
+    hidden: 0,
   },
   {
     component: "commonly/typeit/index",
@@ -748,7 +748,7 @@ const menus = reactive<menuListType[]>([
     isFrame: 0,
     status: 1,
     keepAlive: 1,
-    hidden: 1,
+    hidden: 0,
   },
   {
     component: "commonly/jsonEditor/index",
@@ -763,7 +763,7 @@ const menus = reactive<menuListType[]>([
     isFrame: 0,
     status: 1,
     keepAlive: 1,
-    hidden: 1,
+    hidden: 0,
   },
   {
     component: "Layout",
@@ -778,7 +778,7 @@ const menus = reactive<menuListType[]>([
     isFrame: 0,
     status: 1,
     keepAlive: 1,
-    hidden: 1,
+    hidden: 0,
   },
   {
     component: "feat/directive/index",
@@ -793,7 +793,7 @@ const menus = reactive<menuListType[]>([
     isFrame: 0,
     status: 1,
     keepAlive: 1,
-    hidden: 1,
+    hidden: 0,
   },
   {
     component: "feat/loginExpired/index",
@@ -808,7 +808,7 @@ const menus = reactive<menuListType[]>([
     isFrame: 0,
     status: 1,
     keepAlive: 1,
-    hidden: 1,
+    hidden: 0,
   },
   {
     component: "feat/infoPage/index",
@@ -823,7 +823,7 @@ const menus = reactive<menuListType[]>([
     isFrame: 0,
     status: 1,
     keepAlive: 1,
-    hidden: 1,
+    hidden: 0,
   },
   {
     component: "Layout",
@@ -838,7 +838,7 @@ const menus = reactive<menuListType[]>([
     isFrame: 0,
     status: 1,
     keepAlive: 0,
-    hidden: 1,
+    hidden: 0,
   },
   {
     component: "",
@@ -853,7 +853,7 @@ const menus = reactive<menuListType[]>([
     isFrame: 1,
     status: 1,
     keepAlive: 0,
-    hidden: 1,
+    hidden: 0,
   },
   {
     component: "",
@@ -868,7 +868,7 @@ const menus = reactive<menuListType[]>([
     isFrame: 1,
     status: 1,
     keepAlive: 0,
-    hidden: 1,
+    hidden: 0,
   },
   {
     component: "",
@@ -883,7 +883,7 @@ const menus = reactive<menuListType[]>([
     isFrame: 1,
     status: 1,
     keepAlive: 0,
-    hidden: 1,
+    hidden: 0,
   },
   {
     component: "Layout",
@@ -898,7 +898,7 @@ const menus = reactive<menuListType[]>([
     isFrame: 0,
     status: 1,
     keepAlive: 1,
-    hidden: 1,
+    hidden: 0,
   },
   {
     component: "menuOverflow/index",
@@ -913,7 +913,7 @@ const menus = reactive<menuListType[]>([
     isFrame: 0,
     status: 1,
     keepAlive: 1,
-    hidden: 1,
+    hidden: 0,
   },
   {
     component: "about/index",
@@ -928,7 +928,7 @@ const menus = reactive<menuListType[]>([
     isFrame: 0,
     status: 1,
     keepAlive: 1,
-    hidden: 1,
+    hidden: 0,
   },
 ])
 

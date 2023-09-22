@@ -40,7 +40,7 @@
       </a-form-item>
       <a-form-item>
         <a-button class="!h-[45px] w-full" type="primary" :loading="loading" html-type="submit">
-          {{ $t("buttons.submit") }}
+          {{ $t("login.sign") }}
         </a-button>
       </a-form-item>
     </a-form>

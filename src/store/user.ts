@@ -15,11 +15,11 @@ import { WAdminUser, pageType } from './interface'
 export default defineStore<'user', WAdminUser.state, WAdminUser.getters, WAdminUser.actions>('user', {
     state: () => {
         return {
+            token: '',//项目暂时没有启用token模式 可以按需使用
             userRouterList: [],
             userInfo: null,
             requestRecord: [],//保存请求的接口
             historyMenuTag: [],//历史菜单
-            token: '',//
             verifyCode: "",// 前端生成的验证码（按实际需求替换）
             // 判断登录页面显示哪个组件（1登录（默认）、2手机登录、3二维码登录、4注册、5忘记密码）
             currentPage: 1
@@ -99,7 +99,6 @@ export default defineStore<'user', WAdminUser.state, WAdminUser.getters, WAdminU
                 message.error($$t('sys.getMenuError'))
                 return false
             }
-
         },
         // 登录后的操作
         async afterLoginAction() {
@@ -148,6 +147,7 @@ export default defineStore<'user', WAdminUser.state, WAdminUser.getters, WAdminU
                     meta: {
                         title: item.title,
                         permission: (item?.children && item.menuType === 'C') ? getPermission(item) : [],
+                        hidden: item.hidden
                     }
                 }
                 Object.assign(item, menuItem)

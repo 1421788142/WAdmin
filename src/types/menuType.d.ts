@@ -2,7 +2,7 @@ interface menuListType {
     title: string, //标题
     icon: string, //图标
     menuType: string, //菜单类型(M:目录 C:菜单 F:按钮)
-    hidden: number, //是否显示页面(0否1是)
+    hidden: number, //是否隐藏页面(0否1是)
     keepAlive: number, //是否缓存页面(0否1是)
     status: number, //菜单状态(0停用1启用)
     isFrame: number, //是否外链菜单(0否1是)
