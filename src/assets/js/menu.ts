@@ -1,5 +1,4 @@
-import { reactive } from 'vue'
-const menus = reactive<menuListType[]>([
+const menus = [
   {
     component: "dataScreen/home/index",
     path: "/dataScreen/home",
@@ -930,6 +929,6 @@ const menus = reactive<menuListType[]>([
     keepAlive: 1,
     hidden: 0,
   },
-])
+]
 
 export default menus
