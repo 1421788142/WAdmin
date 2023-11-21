@@ -13,12 +13,15 @@ WAdmin，基于 Vue3.2、TypeScript、Vite2、Pinia、antDesign 开源的一套�
 
 - Link：https://1421788142.github.io/xiaowu.pro.wadmin/
 
+- 另外推荐一个React-18开源项目
+- Link：https://1421788142.github.io/xiaowu.pro.wadmin.react/
+
 - 另外推荐一个我的小项目，也是平时写着练习的
-- Link：http://121.4.119.52:81
+- Link：https://1421788142.github.io/xiaowu.pro.offic/
 
 ### 二、项目文档 📚
 
-- 项目文档地址：http://121.4.119.52:82/
+- 项目文档地址：https://1421788142.github.io/xiaowu.pro.wadmin.doc/
 
 ### 三、Git 仓库地址 (欢迎 Star⭐)
 
