@@ -11,7 +11,7 @@ WAdmin，基于 Vue3.2、TypeScript、Vite2、Pinia、antDesign 开源的一套�
 
 ### 一、在线预览 👀
 
-- Link：http://121.4.119.52
+- Link：https://1421788142.github.io/xiaowu.pro.wadmin/
 
 - 另外推荐一个我的小项目，也是平时写着练习的
 - Link：http://121.4.119.52:81
