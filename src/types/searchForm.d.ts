@@ -12,9 +12,4 @@ export interface enumProp {
 export type searchFormProps = {
     transform?: (params: any) => any//转换搜索条件
     defaultValue?: string | number | Array<string | number>,// 搜索项初始值
-} & wFormProp<Partial<
-    Pick<enumProps, "label" | "value"> & {
-        disabled?: boolean;
-        [prop: string]: any;
-    }
->[]>
+} & wFormProp<Ref<SelectProps['options']> | SelectProps['options']>

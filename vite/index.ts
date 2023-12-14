@@ -14,6 +14,8 @@ export default function setupPlugins(env: ViteEnv, isBuild: boolean) {
             inject: {
                 data: {
                     title: env.VITE_PROJECT_NAME,
+                    logo: `<img src="/src/assets/image/logo.png" class="app-loading-logo" alt="Logo" />`, //项目logo
+                    favicon: `<link rel="icon" type="image/svg+xml" href="./src/assets/image/logo.png " />`, //网页图标
                 }
             }
         }),

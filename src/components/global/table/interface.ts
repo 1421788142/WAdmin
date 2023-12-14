@@ -50,7 +50,6 @@ export namespace Table {
 		summaryFixed?: boolean | "top" | "bottom"; //汇总是否固定
 		subTitle?: string; //副标题
 		rowKey?: string; //选择框所选键值 allKey代表选择行数据
-		searchShowTotal?: number; //搜索条件显示数量
 		scroll?: TableProps["scroll"]; // 滚动配置项
 		wrapClass?: string; //外层盒子的css类名
 		expandedRowRender?: boolean; //是否自定义子级插槽

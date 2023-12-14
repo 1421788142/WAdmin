@@ -1,14 +1,25 @@
 <template>
   <div
     class="flex flex-col px-2 pt-2 border border-gray-200 dark:border-gray-700 rounded shadow-sm overflow-auto bg-white dark:bg-[#141414]"
-    :class="{ 'pb-2': !pagination, wrapClass }">
+    :class="{ 'pb-2': !pagination, wrapClass }"
+  >
     <!-- 表格搜索 -->
     <slot name="search" :search="search" :reset="reset" :loading="loading" :searchParam="searchParam">
-      <w-search-form :search="search" :reset="reset" :loading="loading" v-model:value="searchParam"
-        :columns="searchColumns" v-show="showSearch">
+      <w-search-form
+        :search="search"
+        :reset="reset"
+        :loading="loading"
+        v-model:value="searchParam"
+        :columns="searchColumns"
+        v-show="showSearch"
+      >
         <!-- 搜索条件插槽 -->
         <template #formItemSlot="{ formItem, searchParam }">
-          <slot :name="`${formItem.formItemOption.name}FormItem`" :formItem="formItem" :searchParam="searchParam"></slot>
+          <slot
+            :name="`${formItem.formItemOption.name}FormItem`"
+            :formItem="formItem"
+            :searchParam="searchParam"
+          ></slot>
         </template>
         <template #searchBtn>
           <slot name="searchBtnSlot"></slot>
@@ -68,17 +79,28 @@
       </div>
     </div>
     <!-- 表格 -->
-    <a-table :columns="tableColumns.filter(x => x.show)" :data-source="listData" :size="size[0]" :scroll="scroll"
-      v-bind="$attrs" :pagination="false" :loading="loading" v-model:expandedRowKeys="expandedKeys" bordered
-      @resizeColumn="handleResizeColumn" :row-key="(record: any) => (rowKey === 'allKey' ? record : record[rowKey])"
-      :row-selection="selection
-        ? {
-          selectedRowKeys: selectedList,
-          onChange: selectionChange,
-          ...selectionOption,
-        }
-        : null
-        ">
+    <a-table
+      :columns="tableColumns.filter(x => x.show)"
+      :data-source="listData"
+      :size="size[0]"
+      :scroll="scroll"
+      v-bind="$attrs"
+      :pagination="false"
+      :loading="loading"
+      v-model:expandedRowKeys="expandedKeys"
+      bordered
+      @resizeColumn="handleResizeColumn"
+      :row-key="(record: any) => (rowKey === 'allKey' ? record : record[rowKey])"
+      :row-selection="
+        selection
+          ? {
+              selectedRowKeys: selectedList,
+              onChange: selectionChange,
+              ...selectionOption,
+            }
+          : null
+      "
+    >
       <template #headerCell="{ column }">
         <slot :name="`${column['dataIndex']}TableHeader`" :row="column"></slot>
       </template>
@@ -159,13 +181,7 @@ const {
   selectionChange,
   setColumns,
 } = useTable({
-  ...pick(props, [
-    "initParam",
-    "pagination",
-    "requestApi",
-    "beforeLoad",
-    "afterLoad",
-  ]),
+  ...pick(props, ["initParam", "pagination", "requestApi", "beforeLoad", "afterLoad"]),
 });
 
 // 根据配置定义搜索模块和表格数据源

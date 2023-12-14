@@ -57,16 +57,16 @@ export default class VAxios {
      * @param {function} cancel - 请求中断函数
      * @param {string} errorMessage - 请求中断是需提示的错误信息
      */
-    private handleStopRepeatRequest = (reqList: string[], url: string, cancel: Function, errorMessage: string = ''): void => {
-        for (let i = 0; i < reqList.length; i++) {
-            if (reqList[i] === url && !this.option.preventDuplication) {
+    private handleStopRepeatRequest = (url: string, cancel: Function, errorMessage: string = ''): void => {
+        for (let i = 0; i < this.reqList.length; i++) {
+            if (this.reqList[i] === url && !this.option.preventDuplication) {
                 message.destroy()
                 message.error($$t('sys.repeatAxios'))
                 cancel(errorMessage)
                 return
             }
         }
-        reqList.push(url)
+        this.reqList.push(url)
     }
     /**
      * 允许某个请求可以继续进行
@@ -102,7 +102,7 @@ export default class VAxios {
                 setupRequestRecord(cancel, config.url, 'add')
             })
             // 阻止重复请求
-            this.handleStopRepeatRequest(this.reqList, config.url, cancel, `${config.url} ${$$t('sys.repeatAxios')}`)
+            this.handleStopRepeatRequest(config.url, cancel, `${config.url} ${$$t('sys.repeatAxios')}`)
             // 请求前根据option修改config
             config = { ...setUpConfig(config, this.option) }
             return config;

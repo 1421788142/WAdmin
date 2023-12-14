@@ -1,5 +1,5 @@
 import { isArray, isObject } from "@/utils/is";
-import { enumProp } from '@/types/searchForm'
+import { enumProp, searchFormProps } from '@/types/searchForm'
 import { DeepMerge } from "@/types/utils";
 import { $$t } from '@/plugins/language/setupI18n';
 import {
@@ -123,7 +123,7 @@ export function defaultFormat(callValue: any, joinStr: string = ',') {
  * */
 export function filterEnum(
 	callValue: any,
-	enumData: enumProp[] = [],
+	enumData: searchFormProps['componentOption']['options'] = [],
 	type?: string
 ): string {
 	let filterData = enumData.find((item) => item.value === callValue);

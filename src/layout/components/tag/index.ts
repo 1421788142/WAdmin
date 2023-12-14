@@ -9,7 +9,7 @@ import { $$t } from "@/plugins/language/setupI18n";
 export interface itemType {
     title: string,
     icon: string,
-    type?: string,
+    type?: 'refresh' | 'closeCurrent' | 'closeLeft' | 'closeRight' | 'closeOther',
     disabled?: boolean
 }
 

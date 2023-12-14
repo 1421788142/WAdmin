@@ -5,8 +5,14 @@
       <a-tabs type="card" @change="tabPage" size="large" v-model:activeKey="currentPage">
         <a-tab-pane v-for="(item, index) in historyMenuTag" :key="item.path">
           <template #tab>
-            <tabOptions :tabItmes="tabItmes" :title="item.title" :tagsIndex="Number(index)" trigger="contextmenu"
-              :item="item" @change="optionChange" />
+            <tabOptions
+              :tabItmes="tabItmes"
+              :title="item.title"
+              :tagsIndex="Number(index)"
+              trigger="contextmenu"
+              :item="item"
+              @change="optionChange"
+            />
           </template>
         </a-tab-pane>
       </a-tabs>
@@ -37,21 +43,14 @@ const { getConfigState, setConfigState } = inject<layoutInterface>("sysConfig");
 const route = useRoute();
 const router = useRouter();
 
-const {
-  tabItmes,
-  historyMenuTag,
-  set,
-  closeCurrent,
-  closeLeft,
-  closeRight,
-  closeAll,
-  closeOther,
-} = useTagData(route, router);
+const { tabItmes, historyMenuTag, set, closeCurrent, closeLeft, closeRight, closeAll, closeOther } = useTagData(
+  route,
+  router,
+);
 
 // 标签页切换
 const tabPage = (path: string) => {
   let params = historyMenuTag.value.find(x => x.path === path)?.params;
-  console.log(params);
   router.push({ path: path, query: params || {} });
 };
 // 切换全屏
@@ -80,13 +79,7 @@ watch(
 );
 
 // 标签操作栏事件
-type keyType =
-  | "refresh"
-  | "closeCurrent"
-  | "closeLeft"
-  | "closeRight"
-  | "closeOther"
-  | "closeAll";
+type keyType = "refresh" | "closeCurrent" | "closeLeft" | "closeRight" | "closeOther" | "closeAll";
 interface valueInterface {
   key: keyType;
   data: historyTagItem;
@@ -118,33 +111,25 @@ const optionChange = (value: valueInterface) => {
 let sortableOrder: string[] = [];
 let sortable: Sortable;
 nextTick(() => {
-  sortable = Sortablejs.create(
-    document.getElementsByClassName("ant-tabs-nav-list")[0],
-    {
-      animation: 500,
-      delay: 400,
-      delayOnTouchOnly: true,
-      handle: ".ant-tabs-tab",
-      onEnd: (evt: Sortable) => {
-        const { oldIndex, newIndex } = evt;
-        if (
-          isNullAndUnDef(oldIndex) ||
-          isNullAndUnDef(newIndex) ||
-          oldIndex === newIndex
-        )
-          return;
-        let historyMenuList = deepClone<historyTagItem[]>(historyMenuTag.value);
-        if (oldIndex > newIndex) {
-          historyMenuList.splice(newIndex, 0, historyMenuList[oldIndex]);
-          historyMenuList.splice(oldIndex + 1, 1);
-        } else {
-          historyMenuList.splice(newIndex + 1, 0, historyMenuList[oldIndex]);
-          historyMenuList.splice(oldIndex, 1);
-        }
-        historyMenuTag.value = historyMenuList;
-      },
+  sortable = Sortablejs.create(document.getElementsByClassName("ant-tabs-nav-list")[0], {
+    animation: 500,
+    delay: 400,
+    delayOnTouchOnly: true,
+    handle: ".ant-tabs-tab",
+    onEnd: (evt: Sortable) => {
+      const { oldIndex, newIndex } = evt;
+      if (isNullAndUnDef(oldIndex) || isNullAndUnDef(newIndex) || oldIndex === newIndex) return;
+      let historyMenuList = deepClone<historyTagItem[]>(historyMenuTag.value);
+      if (oldIndex > newIndex) {
+        historyMenuList.splice(newIndex, 0, historyMenuList[oldIndex]);
+        historyMenuList.splice(oldIndex + 1, 1);
+      } else {
+        historyMenuList.splice(newIndex + 1, 0, historyMenuList[oldIndex]);
+        historyMenuList.splice(oldIndex, 1);
+      }
+      historyMenuTag.value = historyMenuList;
     },
-  );
+  });
   // 记录原始order 序列
   sortableOrder = sortable.toArray();
 });

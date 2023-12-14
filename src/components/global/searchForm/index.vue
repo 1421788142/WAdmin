@@ -9,11 +9,7 @@
         <template v-for="item in searchColumns" :key="item.formItemOption.name">
           <a-col :span="formSpan">
             <a-form-item v-bind="item.formItemOption">
-              <slot
-                name="formItemSlot"
-                :formItem="item"
-                :searchParam="formParam"
-              >
+              <slot name="formItemSlot" :formItem="item" :searchParam="formParam">
                 <component
                   class="!w-full"
                   :is="item?.renderForm ?? item.formItemType"
@@ -38,10 +34,7 @@
           {{ $t("buttons.reset") }}
         </a-button>
       </div>
-      <div
-        class="flex pt-1 ml-1 cursor-pointer"
-        v-if="columns.length > maxLength"
-      >
+      <div class="flex pt-1 ml-2 cursor-pointer" v-if="columns.length > maxLength">
         <div class="flex items-center" @click="isShowMax = !isShowMax">
           <span class="mr-1">{{ isShowMax ? "收起" : "展开" }}</span>
           <component :is="isShowMax ? UpOutlined : DownOutlined"></component>
@@ -82,11 +75,7 @@ const maxLength = ref<number>(4); //搜索最大展示数量
 const formSpan = ref(maxLength.value);
 
 onMounted(() => {
-  let { num, init } = useAutoFormRow(
-    searchFormRef,
-    maxLength.value,
-    maxLength.value,
-  );
+  let { num, init } = useAutoFormRow(searchFormRef, maxLength.value, maxLength.value);
   watchEffect(() => {
     maxLength.value = num.value;
     formSpan.value = Math.ceil(gutter / num.value);
@@ -96,9 +85,7 @@ onMounted(() => {
 
 // 根据是否展开配置搜索项长度
 const searchColumns = computed((): searchFormProps[] => {
-  return isShowMax.value
-    ? props.columns
-    : props.columns.slice(0, maxLength.value);
+  return isShowMax.value ? props.columns : props.columns.slice(0, maxLength.value);
 });
 </script>
 

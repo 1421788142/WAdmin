@@ -1,5 +1,7 @@
 <template>
-  <div class="wrapper-box h-[-webkit-fill-available] px-1 my-1 mb-1 dark:!bg-[#141414] overflow-y-auto overflow-x-hidden">
+  <div
+    class="wrapper-box h-[-webkit-fill-available] px-1 my-1 mb-1 dark:!bg-[#141414] overflow-y-auto overflow-x-hidden"
+  >
     <div class="close-full" v-if="isHasFull" @click="setConfigState('isHasFull', false)">
       <close-outlined />
     </div>
@@ -24,8 +26,7 @@ import { layoutInterface } from "@/hooks/interface/layout";
 export default defineComponent({
   name: "layoutContent",
   setup() {
-    const { getConfigState, setConfigState } =
-      inject<layoutInterface>("sysConfig");
+    const { getConfigState, setConfigState } = inject<layoutInterface>("sysConfig");
 
     const isHasFull = computed(() => getConfigState("isHasFull"));
 

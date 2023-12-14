@@ -3,26 +3,16 @@
     <div v-if="tagsIndex == -1" class="flex items-center">
       <menu-outlined class="!text-xl cursor-pointer mt-[-5px]" />
     </div>
-    <div
-      class="menu-tag"
-      :class="{ 'menu-tag-active': route.path === item.path }"
-      v-else
-    >
+    <div class="menu-tag" :class="{ 'menu-tag-active': route.path === item.path }" v-else>
       <div class="flex items-center">
         <span class="text-xs title">{{ title }}</span>
-        <close-outlined
-          class="!mr-0 text-[12px] close-outlined"
-          @click.stop="setupFn('closeCurrent')"
-        />
+        <close-outlined class="!mr-0 text-[12px] close-outlined" @click.stop="setupFn('closeCurrent')" />
       </div>
     </div>
     <template #overlay>
       <a-menu>
         <template v-for="tabItme in tabItmes" :key="tabItme.type">
-          <a-menu-item
-            @click.stop="setupFn(tabItme.type)"
-            :disabled="isDisabled(tabItme.disabled)"
-          >
+          <a-menu-item @click.stop="setupFn(tabItme.type)" :disabled="isDisabled(tabItme.disabled)">
             <div class="flex items-center">
               <component :is="tabItme.icon"></component>
               <span class="ml-2">{{ tabItme.title }}</span>
