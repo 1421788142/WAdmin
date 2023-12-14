@@ -5,6 +5,7 @@
       v-model:current="pageable.pageNum"
       v-model:page-size="pageable.pageSize"
       :showSizeChanger="showSizeChanger"
+      showQuickJumper
       :total="pageable.total"
       show-less-items
       @change="change"
