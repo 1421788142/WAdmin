@@ -10,24 +10,15 @@
     >
       <a-row :gutter="gutter">
         <template v-for="item in formColumns" :key="item.prop">
-          <a-col
-            :span="formRowSpan(item)"
-            v-if="item?.isHide ? item.isHide(formParam) : true"
-          >
+          <a-col :span="formRowSpan(item)" v-if="item?.isHide ? item.isHide(formParam) : true">
             <a-form-item v-bind="item.formItemOption">
               <template #label>
-                <a-tooltip
-                  :placement="item.tooltipPlacement ?? 'top'"
-                  :title="item.tooltip"
-                >
+                <a-tooltip :placement="item.tooltipPlacement ?? 'top'" :title="item.tooltip">
                   <info-circle-outlined />
                 </a-tooltip>
                 <span class="mx-2">{{ item.label }}</span>
               </template>
-              <slot
-                :name="`${item.formItemOption.name}FormItem`"
-                :row="formParam"
-              >
+              <slot :name="`${item.formItemOption.name}FormItem`" :row="formParam">
                 <component
                   v-if="!item.renderForm"
                   :is="item.formItemType || 'a-input'"
@@ -35,11 +26,7 @@
                   v-on="item.componentOption?.listeners || {}"
                   v-model:value="formParam[item.formItemOption.name!]"
                 ></component>
-                <component
-                  v-else
-                  :is="item.renderForm"
-                  :row="formParam"
-                ></component>
+                <component v-else :is="item.renderForm" :row="formParam"></component>
               </slot>
             </a-form-item>
           </a-col>
@@ -108,10 +95,9 @@ const formColumns = props.columns
               required: true,
               trigger: ["change", "blur"],
               validator: item?.validator
-                ? (rule: Rule, value: any) =>
-                    item.validator({ value, formParam: formParam.value })
+                ? (rule: Rule, value: any) => item.validator({ value, formParam: formParam.value })
                 : (rule: Rule, value: any) => {
-                    if (value && String(value)) {
+                    if ([0].includes(value) || (value && String(value))) {
                       return Promise.resolve();
                     } else {
                       return Promise.reject(
