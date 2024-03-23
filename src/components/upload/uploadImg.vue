@@ -29,12 +29,7 @@
     <div class="text-center">
       <p>{{ tooltip }}</p>
       <slot name="autoBtnSlot">
-        <a-button
-          type="primary"
-          v-if="handUpload && notFileList.length"
-          class="mt-2 mb-2 mr-2"
-          @click="handUploadFn"
-        >
+        <a-button type="primary" v-if="handUpload && notFileList.length" class="mt-2 mb-2 mr-2" @click="handUploadFn">
           <upload-outlined />
           <span>{{ $t("buttons.confirmUpload") }}</span>
         </a-button>
@@ -46,11 +41,7 @@
       :title="`${$t('buttons.view')}${currentFile?.name}`"
       :footer="false"
     >
-      <img
-        alt="example"
-        style="width: 100%"
-        :src="currentFile?.url || currentFile?.thumbUrl"
-      />
+      <img alt="example" style="width: 100%" :src="currentFile?.url || currentFile?.thumbUrl" />
     </w-modal>
   </div>
 </template>
@@ -104,8 +95,7 @@ const props = withDefaults(defineProps<propsInterface>(), {
 const imgType = ["jpeg", "jpg", "png"]; //图片类型
 const uploadRule = (file: UploadFile): boolean => {
   let isFileType = imgType.filter(v => file.type === `image/${v}`).length > 0;
-  if (!isFileType)
-    message.warn(`${$$t("messages.fileType", { type: imgType.join("/") })}`);
+  if (!isFileType) message.warn(`${$$t("messages.fileType", { type: imgType.join("/") })}`);
   return isFileType;
 };
 
@@ -128,14 +118,7 @@ const {
 } = useUpload({
   uploadRule,
   setEmit,
-  ...pick(props, [
-    "fileList",
-    "total",
-    "fileSize",
-    "fileAction",
-    "handUpload",
-    "beforeLoad",
-  ]),
+  ...pick(props, ["fileList", "total", "fileSize", "fileAction", "handUpload", "beforeLoad"]),
 });
 
 watch(

@@ -1,11 +1,6 @@
 import { reactive, toRefs } from "vue";
 import { getRouter } from "@/apis/user/index";
-import {
-  roleList,
-  updateRole,
-  delRole,
-  roleInterface,
-} from "@/apis/system/role";
+import { roleList, updateRole, delRole, roleInterface } from "@/apis/system/role";
 import { arrayToTree } from "@/utils/util";
 import { DataNode } from "ant-design-vue/es/tree";
 import { useOptions } from "@/hooks/useOptions";
@@ -25,9 +20,7 @@ interface stateInterface {
 }
 
 export const usePageData = () => {
-  const { list: statusList } = useOptions(generalParam, [
-    { valueType: "3", pageNum: 1, pageSize: 99 },
-  ]);
+  const { list: statusList } = useOptions(generalParam, [{ valueType: "3", pageNum: 1, pageSize: 99 }]);
 
   const state = reactive<stateInterface>({
     title: "新增数据",
@@ -76,13 +69,7 @@ export const usePageData = () => {
         isRule: true,
         formItemOption: { name: "order", label: "排序" },
         renderForm: () => {
-          return (
-            <a-input-number
-              step={1}
-              min={0}
-              max={100}
-              v-model:value={state.formParam!["order"]}></a-input-number>
-          );
+          return <a-input-number step={1} min={0} max={100} v-model:value={state.formParam!["order"]}></a-input-number>;
         },
       },
       {
@@ -105,13 +92,8 @@ export const usePageData = () => {
     let { code, data } = await getRouter();
     if (code !== 200) return;
     let dataList = data.dataList;
-    let [menuBtn, menuList] = [
-      dataList.filter(x => x.menuType === "F"),
-      dataList.filter(x => x.menuType !== "F"),
-    ];
-    state.treeData = arrayToTree<menuListType>(
-      menuList,
-    ) as unknown as DataNode[];
+    let [menuBtn, menuList] = [dataList.filter(x => x.menuType === "F"), dataList.filter(x => x.menuType !== "F")];
+    state.treeData = arrayToTree<menuListType>(menuList) as unknown as DataNode[];
     state.menuBtn = menuBtn;
     state.menuList = menuList;
   };
@@ -128,8 +110,7 @@ export const usePageData = () => {
   const change = (btnList: menuListType[], menuItem: menuListType) => {
     let pageBtnIds = btnList.map(x => x.id);
     setTimeout(() => {
-      let hasBtn =
-        pageBtnIds.filter(x => state.roleBtnIds.indexOf(x) !== -1).length > 0;
+      let hasBtn = pageBtnIds.filter(x => state.roleBtnIds.indexOf(x) !== -1).length > 0;
       if (hasBtn) {
         state.rolePagesId.push(menuItem.id);
       } else {
@@ -142,16 +123,8 @@ export const usePageData = () => {
     state.title = type === "add" ? "新增" : `编辑`;
     state.visible = true;
     // 因为角色id返回格式是合并菜单和按钮  但是tree组件id过多会报警告 所以做一下过滤
-    state.rolePagesId = row
-      ? state.menuList
-          .filter(x => row?.menuId.indexOf(x.id) !== -1)
-          .map(x => x.id)
-      : []; //过滤目录和菜单id
-    state.roleBtnIds = row
-      ? state.menuBtn
-          .filter(x => row?.menuId.indexOf(x.id) !== -1)
-          .map(x => x.id)
-      : []; //过滤按钮id
+    state.rolePagesId = row ? state.menuList.filter(x => row?.menuId.indexOf(x.id) !== -1).map(x => x.id) : []; //过滤目录和菜单id
+    state.roleBtnIds = row ? state.menuBtn.filter(x => row?.menuId.indexOf(x.id) !== -1).map(x => x.id) : []; //过滤按钮id
     state.formParam = {
       id: row?.id ?? null,
       memo: row?.memo ?? "",
